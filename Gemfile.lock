@@ -274,6 +274,7 @@ DEPENDENCIES
   better_errors
   bootsnap (>= 1.1.0)
   bootstrap (~> 4.0.0)
+  bundler (~> 1.16.6)
   byebug
   capistrano (~> 3.0.1)
   capistrano-bundler
@@ -308,4 +309,4 @@ RUBY VERSION
    ruby 2.6.1p33
 
 BUNDLED WITH
-   1.17.3
+   1.16.6
