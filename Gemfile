@@ -1,7 +1,6 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
-ruby '2.6.1'
-gem 'bundler', '~> 1.16.6'
+ruby '2.6.2'
 gem 'rails', '~> 5.2.3'
 gem 'puma', '~> 3.11'
 gem 'sass-rails', '~> 5.0'
