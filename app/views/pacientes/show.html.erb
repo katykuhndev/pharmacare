@@ -1,0 +1,59 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Nombres:</strong>
+  <%= @paciente.nombres %>
+</p>
+
+<p>
+  <strong>Primer apellido:</strong>
+  <%= @paciente.primer_apellido %>
+</p>
+
+<p>
+  <strong>Segundo apellido:</strong>
+  <%= @paciente.segundo_apellido %>
+</p>
+
+<p>
+  <strong>Rut:</strong>
+  <%= @paciente.rut %>
+</p>
+
+<p>
+  <strong>Genero:</strong>
+  <%= @paciente.genero %>
+</p>
+
+<p>
+  <strong>Fecha nacimiento:</strong>
+  <%= @paciente.fecha_nacimiento %>
+</p>
+
+<p>
+  <strong>Fono1:</strong>
+  <%= @paciente.fono1 %>
+</p>
+
+<p>
+  <strong>Fono2:</strong>
+  <%= @paciente.fono2 %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @paciente.email %>
+</p>
+
+<p>
+  <strong>Direccion:</strong>
+  <%= @paciente.direccion %>
+</p>
+
+<p>
+  <strong>Comuna:</strong>
+  <%= @paciente.comuna %>
+</p>
+
+<%= link_to (t :edit), edit_paciente_path(@paciente) %> |
+<%= link_to (t :back), pacientes_path %>

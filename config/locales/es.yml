@@ -1,6 +1,8 @@
 es:
-  new: 'Nuevo'
+  edit: 'Editar'
   back: 'Volver'
+  show: 'Mostrar'
+  destroy: 'Eliminar'
   activerecord:
     errors:
       messages:

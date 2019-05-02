@@ -1,0 +1,72 @@
+<%= form_with(model: paciente, local: true) do |form| %>
+  <% if paciente.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(paciente.errors.count, "error") %> prohibited this paciente from being saved:</h2>
+
+      <ul>
+      <% paciente.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :nombres %>
+    <%= form.text_field :nombres %>
+  </div>
+
+  <div class="field">
+    <%= form.label :primer_apellido %>
+    <%= form.text_field :primer_apellido %>
+  </div>
+
+  <div class="field">
+    <%= form.label :segundo_apellido %>
+    <%= form.text_field :segundo_apellido %>
+  </div>
+
+  <div class="field">
+    <%= form.label :rut %>
+    <%= form.text_field :rut %>
+  </div>
+
+  <div class="field">
+    <%= form.label :genero %>
+    <%= form.select :genero, Paciente.generos.keys %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fecha_nacimiento %>
+    <%= form.text_field :fecha_nacimiento, data:{ provide:'datepicker' } %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fono1 %>
+    <%= form.text_field :fono1 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :fono2 %>
+    <%= form.text_field :fono2 %>
+  </div>
+
+  <div class="field">
+    <%= form.label :email %>
+    <%= form.text_field :email %>
+  </div>
+
+  <div class="field">
+    <%= form.label :direccion %>
+    <%= form.text_area :direccion %>
+  </div>
+
+  <div class="field">
+    <%= form.label :comuna_id %>
+    <%= form.collection_select(:comuna_id, Comuna.all, :id, :nombre) %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>
