@@ -1,0 +1,47 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Medicos</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Nombres</th>
+      <th>Primer apellido</th>
+      <th>Segundo apellido</th>
+      <th>Rut</th>
+      <th>Genero</th>
+      <th>Fecha nacimiento</th>
+      <th>Fono1</th>
+      <th>Fono2</th>
+      <th>Email</th>
+      <th>Direccion</th>
+      <th>Comuna</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @medicos.each do |medico| %>
+      <tr>
+        <td><%= medico.nombres %></td>
+        <td><%= medico.primer_apellido %></td>
+        <td><%= medico.segundo_apellido %></td>
+        <td><%= medico.rut %></td>
+        <td><%= medico.genero %></td>
+        <td><%= medico.fecha_nacimiento %></td>
+        <td><%= medico.fono1 %></td>
+        <td><%= medico.fono2 %></td>
+        <td><%= medico.email %></td>
+        <td><%= medico.direccion %></td>
+        <td><%= medico.comuna.nombre %></td>
+        <td><%= link_to (t :show), medico %></td>
+        <td><%= link_to (t :edit), edit_medico_path(medico) %></td>
+        <td><%= link_to (t :back), medico, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'Nuevo Medico', new_medico_path %>

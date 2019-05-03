@@ -15,4 +15,16 @@
 //= require rails-ujs
 //= require bootstrap-sprockets
 //= require bootstrap-datepicker
+//= require bootstrap-datepicker/core
+//= require bootstrap-datepicker/locales/bootstrap-datepicker.es.js
 //= require_tree .
+
+
+$(document).ready(function(){
+  $('.datepicker').datepicker({
+  	autoclose: true,
+    todayHighlight: true, 
+    orientation: 'auto top', 
+    format: 'yyyy-mm-dd'
+  });
+});

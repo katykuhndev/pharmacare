@@ -2,58 +2,58 @@
 
 <p>
   <strong>Nombres:</strong>
-  <%= @paciente.nombres %>
+  <%= @medico.nombres %>
 </p>
 
 <p>
   <strong>Primer apellido:</strong>
-  <%= @paciente.primer_apellido %>
+  <%= @medico.primer_apellido %>
 </p>
 
 <p>
   <strong>Segundo apellido:</strong>
-  <%= @paciente.segundo_apellido %>
+  <%= @medico.segundo_apellido %>
 </p>
 
 <p>
   <strong>Rut:</strong>
-  <%= @paciente.rut %>
+  <%= @medico.rut %>
 </p>
 
 <p>
   <strong>Genero:</strong>
-  <%= @paciente.genero %>
+  <%= @medico.genero %>
 </p>
 
 <p>
   <strong>Fecha nacimiento:</strong>
-  <%= @paciente.fecha_nacimiento %>
+  <%= @medico.fecha_nacimiento %>
 </p>
 
 <p>
   <strong>Fono1:</strong>
-  <%= @paciente.fono1 %>
+  <%= @medico.fono1 %>
 </p>
 
 <p>
   <strong>Fono2:</strong>
-  <%= @paciente.fono2 %>
+  <%= @medico.fono2 %>
 </p>
 
 <p>
   <strong>Email:</strong>
-  <%= @paciente.email %>
+  <%= @medico.email %>
 </p>
 
 <p>
   <strong>Direccion:</strong>
-  <%= @paciente.direccion %>
+  <%= @medico.direccion %>
 </p>
 
 <p>
   <strong>Comuna:</strong>
-  <%= @paciente.comuna.nombre %>
+  <%= @medico.comuna.nombre %>
 </p>
 
-<%= link_to (t :edit), edit_paciente_path(@paciente) %> |
-<%= link_to (t :back), pacientes_path %>
+<%= link_to (t :edit), edit_medico_path(@medico) %> |
+<%= link_to (t :back), medicos_path %>

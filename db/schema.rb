@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_01_224237) do
+ActiveRecord::Schema.define(version: 2019_05_02_225207) do
 
   create_table "comunas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "nombre"
@@ -20,13 +20,30 @@ ActiveRecord::Schema.define(version: 2019_05_01_224237) do
     t.index ["region_id"], name: "index_comunas_on_region_id"
   end
 
+  create_table "medicos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "nombres"
+    t.string "primer_apellido"
+    t.string "segundo_apellido"
+    t.string "rut"
+    t.integer "genero"
+    t.date "fecha_nacimiento"
+    t.string "fono1"
+    t.string "fono2"
+    t.string "email"
+    t.text "direccion"
+    t.bigint "comuna_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comuna_id"], name: "index_medicos_on_comuna_id"
+  end
+
   create_table "pacientes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "nombres"
     t.string "primer_apellido"
     t.string "segundo_apellido"
     t.string "rut"
     t.integer "genero"
-    t.datetime "fecha_nacimiento"
+    t.date "fecha_nacimiento"
     t.string "fono1"
     t.string "fono2"
     t.string "email"
@@ -59,5 +76,6 @@ ActiveRecord::Schema.define(version: 2019_05_01_224237) do
   end
 
   add_foreign_key "comunas", "regiones"
+  add_foreign_key "medicos", "comunas"
   add_foreign_key "pacientes", "comunas"
 end
