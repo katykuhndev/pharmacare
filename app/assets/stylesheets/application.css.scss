@@ -15,6 +15,10 @@
  *= require bootstrap-datepicker
  */
 
+.navbar-toggler {
+  background-color: white;
+  border: 1px solid black;
+}
 
 ul.ui-autocomplete {
   position: absolute;
