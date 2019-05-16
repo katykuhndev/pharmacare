@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :pacientexes
   resources :medicos
   resources :pacientes
   root to: 'visitors#index'

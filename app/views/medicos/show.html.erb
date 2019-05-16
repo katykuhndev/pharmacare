@@ -1,59 +1,41 @@
-<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Nombres:</strong>
-  <%= @medico.nombres %>
-</p>
+<h2><%=(t :text_show) %> medico</h2>
 
-<p>
-  <strong>Primer apellido:</strong>
-  <%= @medico.primer_apellido %>
-</p>
+<dl class="dl-horizontal">
+  <dt>Nombres:</dt>
+  <dd><%= @medico.nombres %></dd>
 
-<p>
-  <strong>Segundo apellido:</strong>
-  <%= @medico.segundo_apellido %>
-</p>
+  <dt>Primer apellido:</dt>
+  <dd><%= @medico.primer_apellido %></dd>
 
-<p>
-  <strong>Rut:</strong>
-  <%= @medico.rut %>
-</p>
+  <dt>Segundo apellido:</dt>
+  <dd><%= @medico.segundo_apellido %></dd>
 
-<p>
-  <strong>Genero:</strong>
-  <%= @medico.genero %>
-</p>
+  <dt>Rut:</dt>
+  <dd><%= @medico.rut %></dd>
 
-<p>
-  <strong>Fecha nacimiento:</strong>
-  <%= @medico.fecha_nacimiento %>
-</p>
+  <dt>Genero:</dt>
+  <dd><%= @medico.genero %></dd>
 
-<p>
-  <strong>Fono1:</strong>
-  <%= @medico.fono1 %>
-</p>
+  <dt>Fecha nacimiento:</dt>
+  <dd><%= @medico.fecha_nacimiento %></dd>
 
-<p>
-  <strong>Fono2:</strong>
-  <%= @medico.fono2 %>
-</p>
+  <dt>Fono1:</dt>
+  <dd><%= @medico.fono1 %></dd>
 
-<p>
-  <strong>Email:</strong>
-  <%= @medico.email %>
-</p>
+  <dt>Fono2:</dt>
+  <dd><%= @medico.fono2 %></dd>
 
-<p>
-  <strong>Direccion:</strong>
-  <%= @medico.direccion %>
-</p>
+  <dt>Email:</dt>
+  <dd><%= @medico.email %></dd>
 
-<p>
-  <strong>Comuna:</strong>
-  <%= @medico.comuna.nombre %>
-</p>
+  <dt>Direccion:</dt>
+  <dd><%= @medico.direccion %></dd>
 
-<%= link_to (t :edit), edit_medico_path(@medico) %> |
-<%= link_to (t :back), medicos_path %>
+  <dt>Comuna:</dt>
+  <dd><%= @medico.comuna.nombre %></dd>
+
+</dl>
+
+<%= link_to (t :text_edit), edit_medico_path(@medico) %> |
+<%= link_to (t :text_back), medicos_path %>

@@ -4,7 +4,8 @@ class PacientesController < ApplicationController
   # GET /pacientes
   # GET /pacientes.json
   def index
-    @pacientes = Paciente.all
+    @query = Paciente.ransack(params[:q])
+    @pacientes = @query.result.includes(:comuna).page(params[:page])
   end
 
   # GET /pacientes/1
@@ -28,7 +29,7 @@ class PacientesController < ApplicationController
 
     respond_to do |format|
       if @paciente.save
-        format.html { redirect_to @paciente, notice: 'Paciente was successfully created.' }
+        format.html { redirect_to @paciente, notice: (t 'activerecord.messages.created',model: :paciente) }
         format.json { render :show, status: :created, location: @paciente }
       else
         format.html { render :new }
@@ -42,7 +43,7 @@ class PacientesController < ApplicationController
   def update
     respond_to do |format|
       if @paciente.update(paciente_params)
-        format.html { redirect_to @paciente, notice: 'Paciente was successfully updated.' }
+        format.html { redirect_to @paciente, notice: (t 'activerecord.messages.updated', model: :paciente) }
         format.json { render :show, status: :ok, location: @paciente }
       else
         format.html { render :edit }

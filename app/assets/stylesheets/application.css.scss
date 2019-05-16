@@ -12,12 +12,17 @@
  *
  *= require_tree .
  *= require_self
- *= require bootstrap-datepicker
  */
+
+@import "bootstrap";
 
 .navbar-toggler {
   background-color: white;
   border: 1px solid black;
+}
+
+main {
+  padding: 30px;
 }
 
 ul.ui-autocomplete {

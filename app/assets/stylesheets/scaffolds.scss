@@ -3,7 +3,7 @@ body {
   color: #333;
   font-family: verdana, arial, helvetica, sans-serif;
   font-size: 13px;
-  line-height: 18px; }
+  line-height: 18px;}
 
 p, ol, ul, td {
   font-family: verdana, arial, helvetica, sans-serif;
@@ -22,6 +22,16 @@ a {
   &:hover {
     color: #fff;
     background-color: #41375a; } }
+    
+
+a.sort_link {
+    text-decoration: none;
+    color: #fff;
+  &:visited {
+    color: #fff; }
+  &:hover {
+    color: #fff; } }
+
 
 div {
   &.field, &.actions {
@@ -54,3 +64,8 @@ div {
   ul li {
     font-size: 12px;
     list-style: square; } }
+
+.filtros {
+  padding: 10px;
+  background-color: #D3D3D3;
+}

@@ -4,7 +4,8 @@ class MedicosController < ApplicationController
   # GET /medicos
   # GET /medicos.json
   def index
-    @medicos = Medico.all
+    @query = Medico.ransack(params[:q])
+    @medicos = @query.result.includes(:comuna).page(params[:page])
   end
 
   # GET /medicos/1
