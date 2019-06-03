@@ -1,0 +1,61 @@
+<h2>Lista de Prestadores</h2>
+<div class="filtros">
+<h3>Filtros</h3>
+<%= search_form_for @query do |f| %>
+<div class="form-group w-50">
+  <div class="form-row">
+    <div class="col">
+      <%= f.label :nombre %>
+      <%= f.text_field :nombre_cont, class: 'form-control' %>
+      <%= f.label :comuna_nombre_cont, "Comuna" %>
+      <%= f.text_field :comuna_nombre_cont, class: 'form-control' %>
+    </div>
+    <div class="col">
+      <%= f.label :contacto %>
+      <%= f.text_field :contacto_cont, class: 'form-control' %>
+    </div>
+  </div>
+</div>
+<%= f.submit class: 'btn btn-default bg-secondary text-white' %>
+<div class="d-inline bg-success">
+  <%= link_to (t :button_clear), request.path, class: "btn btn-default bg-secondary text-white" %>
+</div>
+<% end %>
+</div>
+<%= will_paginate @prestadores, list_classes: %w(pagination justify-content-end) %>
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+  <thead class='bg-secondary text-white' >
+    <tr>
+      <th><%= sort_link(@query, :nombre) %></th>
+      <th><%= sort_link(@query, :contacto) %></th>
+      <th><%= sort_link(@query, :fono) %></th>
+      <th><%= sort_link(@query, :direccion) %></th>
+      <th><%= sort_link(@query, :comuna_id, Prestador.human_attribute_name(:comuna)) %></th>
+      <th colspan="3"><%=(t :text_actions)%></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @prestadores.each do |prestador| %>
+      <tr>
+        <td><%= prestador.nombre %></td>
+        <td><%= prestador.contacto %></td>
+        <td><%= prestador.fono %></td>
+        <td><%= prestador.direccion %></td>
+        <td><%= prestador.comuna.nombre %></td>
+        <td><%= link_to (t :text_show), prestador %></td>
+        <td><%= link_to (t :text_edit), edit_prestador_path(prestador) %></td>
+        <td><%= link_to (t :text_destroy), prestador, method: :delete, data: { confirm: (t :text_are_you_sure) } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+<%= will_paginate @prestadores, list_classes: %w(pagination justify-content-end) %>
+<div>
+  <%= link_to new_prestador_path, class: 'btn btn-default bg-secondary text-white' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Nuevo Prestador
+  <% end %>
+</div>

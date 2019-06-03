@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  contacto: MyString
+  fono: MyString
+  direccion: MyText
+  comuna: one
+
+two:
+  nombre: MyString
+  contacto: MyString
+  fono: MyString
+  direccion: MyText
+  comuna: two

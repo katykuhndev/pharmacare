@@ -1,0 +1,32 @@
+<%= form_with(model: [@programa.laboratorio, @programa], local: true, html: { class: "form-horizontal", role: "form" }) do |form| %>
+  <% if @programa.errors.any? %>
+    <div class="alert alert-danger alert-dismissable" role="alert">
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+      <ul>
+      <% @programa.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>  
+
+  <div class="field">
+    <%= form.label :nombre %><br />
+    <%= form.text_field :nombre %>
+  </div>
+  <div class="field">
+    <%= form.label :descripcion %><br />
+    <%= form.text_area :descripcion %>
+  </div>
+  <div class="field">
+    <%= form.label :fecha_creacion %><br />
+    <%= form.datetime_select :fecha_creacion %>
+  </div>
+  <div class="field">
+    <%= form.label :qf_soporte_id %><br />
+    <%= form.number_field :qf_soporte_id %>
+  </div>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

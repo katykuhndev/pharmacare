@@ -1,0 +1,25 @@
+
+<h2><%=(t :text_show) %> Laboratorio</h2>
+
+<dl class="dl-horizontal">
+  <dt>Nombre:</dt>
+  <dd><%= @laboratorio.nombre %></dd>
+
+  <dt>Contacto:</dt>
+  <dd><%= @laboratorio.contacto %></dd>
+
+  <dt>Fono:</dt>
+  <dd><%= @laboratorio.fono %></dd>
+
+  <dt>Direccion:</dt>
+  <dd><%= @laboratorio.direccion %></dd>
+
+  <dt>Comuna:</dt>
+  <dd><%= @laboratorio.comuna.nombre %></dd>
+
+</dl>
+
+<%= link_to (t :text_edit), edit_laboratorio_path(@laboratorio) %> |
+<%= link_to (t :text_back), laboratorios_path %>
+
+<%=render template: "programas/index"%>

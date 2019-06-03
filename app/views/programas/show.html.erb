@@ -1,0 +1,19 @@
+<h2><%=(t :text_show) %> Programa</h2>
+
+<dl class="dl-horizontal">
+  <dt>Nombre:</dt>
+  <dd><%= @programa.nombre %></dd>
+
+  <dt>Contacto:</dt>
+  <dd><%= @programa.descripcion %></dd>
+
+  <dt>Fono:</dt>
+  <dd><%= @programa.fecha_creacion %></dd>
+
+  <dt>Direccion:</dt>
+  <dd><%= @programa.qf_soporte.nombre %></dd>
+
+</dl>
+
+<%= link_to (t :text_edit), edit_laboratorio_programa_path(@programa.laboratorio, @programa) %> |
+<%= link_to (t :text_back), laboratorio_programas_path(@programa.laboratorio) %>

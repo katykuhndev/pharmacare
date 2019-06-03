@@ -11,7 +11,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'faker'
 gem 'ransack'
 gem 'will_paginate-bootstrap4'
-
+gem 'nested_scaffold'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end

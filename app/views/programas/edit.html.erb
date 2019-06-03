@@ -1,0 +1,6 @@
+<h2>Editar Programa</h2>
+
+<%= render 'form' %>
+
+<%= link_to (t :text_show), [@programa.laboratorio, @programa] %> |
+<%= link_to (t :text_back), laboratorio_programas_path(@programa.laboratorio) %>

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_02_225207) do
+ActiveRecord::Schema.define(version: 2019_05_23_013257) do
 
   create_table "comunas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "nombre"
@@ -18,6 +18,29 @@ ActiveRecord::Schema.define(version: 2019_05_02_225207) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["region_id"], name: "index_comunas_on_region_id"
+  end
+
+  create_table "farmacias", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "nombre"
+    t.string "contacto"
+    t.string "fono"
+    t.text "direccion"
+    t.bigint "comuna_id"
+    t.integer "tipo"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comuna_id"], name: "index_farmacias_on_comuna_id"
+  end
+
+  create_table "laboratorios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "nombre"
+    t.string "contacto"
+    t.string "fono"
+    t.text "direccion"
+    t.bigint "comuna_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comuna_id"], name: "index_laboratorios_on_comuna_id"
   end
 
   create_table "medicos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -54,6 +77,29 @@ ActiveRecord::Schema.define(version: 2019_05_02_225207) do
     t.index ["comuna_id"], name: "index_pacientes_on_comuna_id"
   end
 
+  create_table "prestadores", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "nombre"
+    t.string "contacto"
+    t.string "fono"
+    t.text "direccion"
+    t.bigint "comuna_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["comuna_id"], name: "index_prestadores_on_comuna_id"
+  end
+
+  create_table "programas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "laboratorio_id"
+    t.string "nombre"
+    t.text "descripcion"
+    t.datetime "fecha_creacion"
+    t.bigint "qf_soporte_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["laboratorio_id"], name: "index_programas_on_laboratorio_id"
+    t.index ["qf_soporte_id"], name: "index_programas_on_qf_soporte_id"
+  end
+
   create_table "regiones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "nombre"
     t.string "codigo"
@@ -76,6 +122,10 @@ ActiveRecord::Schema.define(version: 2019_05_02_225207) do
   end
 
   add_foreign_key "comunas", "regiones"
+  add_foreign_key "farmacias", "comunas"
+  add_foreign_key "laboratorios", "comunas"
   add_foreign_key "medicos", "comunas"
   add_foreign_key "pacientes", "comunas"
+  add_foreign_key "prestadores", "comunas"
+  add_foreign_key "programas", "laboratorios"
 end

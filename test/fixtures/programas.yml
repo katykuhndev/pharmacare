@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  laboratorio: one
+  nombre: MyString
+  descripcion: MyText
+  fecha_creacion: 2019-05-19 01:15:08
+  qf_soporte_id: 1
+
+two:
+  laboratorio: two
+  nombre: MyString
+  descripcion: MyText
+  fecha_creacion: 2019-05-19 01:15:08
+  qf_soporte_id: 1
