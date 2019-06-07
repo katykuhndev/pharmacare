@@ -1,0 +1,41 @@
+<%= form_with(model: [@alarma.medicion, @alarma]) do |f| %>
+  <% if @alarma.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(@alarma.errors.count, "error") %> prohibited this alarma from being saved:</h2>
+
+      <ul>
+      <% @alarma.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :nombre %><br />
+    <%= f.text_field :nombre %>
+  </div>
+  <div class="field">
+    <%= f.label :valor_minimo %><br />
+    <%= f.text_field :valor_minimo %>
+  </div>
+  <div class="field">
+    <%= f.label :valor_maximo %><br />
+    <%= f.text_field :valor_maximo %>
+  </div>
+  <div class="field">
+    <%= f.label :accion %><br />
+    <%= f.text_area :accion %>
+  </div>
+  <div class="field">
+    <%= f.label :resultado %><br />
+    <%= f.number_field :resultado %>
+  </div>
+  <div class="field">
+    <%= f.label :observaciones %><br />
+    <%= f.text_area :observaciones %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>

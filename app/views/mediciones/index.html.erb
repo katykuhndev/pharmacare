@@ -1,0 +1,37 @@
+<div class="page-header">
+  <%= link_to new_medicion_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Medicion
+  <% end %>
+  <h1>Listing mediciones</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Programa</th>
+            <th>Examen</th>
+            <th>Unidad medida</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @mediciones) do |medicion| %>
+            <td><%= medicion.nombre %></td>
+            <td><%= medicion.descripcion %></td>
+            <td><%= medicion.programa %></td>
+            <td><%= medicion.examen %></td>
+            <td><%= medicion.unidad_medida %></td>
+            <td><%= link_to 'Show', medicion %></td>
+        <td><%= link_to 'Edit', edit_medicion_path(medicion) %></td>
+        <td><%= link_to 'Destroy', medicion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

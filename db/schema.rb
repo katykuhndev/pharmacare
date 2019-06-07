@@ -10,7 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_23_013257) do
+ActiveRecord::Schema.define(version: 2019_06_05_025037) do
+
+  create_table "alarmas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "medicion_id"
+    t.string "nombre"
+    t.decimal "valor_minimo", precision: 6, scale: 2
+    t.decimal "valor_maximo", precision: 6, scale: 2
+    t.text "accion"
+    t.integer "resultado"
+    t.text "observaciones"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["medicion_id"], name: "index_alarmas_on_medicion_id"
+  end
 
   create_table "comunas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "nombre"
@@ -18,6 +31,33 @@ ActiveRecord::Schema.define(version: 2019_05_23_013257) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["region_id"], name: "index_comunas_on_region_id"
+  end
+
+  create_table "documento_programas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "nombre"
+    t.text "descripcion"
+    t.bigint "programa_id"
+    t.integer "dias_vencimiento"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["programa_id"], name: "index_documento_programas_on_programa_id"
+  end
+
+  create_table "examen_programas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "examen_id"
+    t.bigint "programa_id"
+    t.integer "dias_vencimiento"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["examen_id"], name: "index_examen_programas_on_examen_id"
+    t.index ["programa_id"], name: "index_examen_programas_on_programa_id"
+  end
+
+  create_table "examenes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "nombre"
+    t.text "descripcion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "farmacias", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -41,6 +81,30 @@ ActiveRecord::Schema.define(version: 2019_05_23_013257) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["comuna_id"], name: "index_laboratorios_on_comuna_id"
+  end
+
+  create_table "medicamento_programas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "programa_id"
+    t.string "nombre_comercial"
+    t.string "principio_activo"
+    t.decimal "dosis", precision: 6, scale: 2
+    t.string "unidad_medida"
+    t.integer "cantidad"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["programa_id"], name: "index_medicamento_programas_on_programa_id"
+  end
+
+  create_table "mediciones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "nombre"
+    t.text "descripcion"
+    t.bigint "programa_id"
+    t.bigint "examen_id"
+    t.string "unidad_medida"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["examen_id"], name: "index_mediciones_on_examen_id"
+    t.index ["programa_id"], name: "index_mediciones_on_programa_id"
   end
 
   create_table "medicos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -121,9 +185,16 @@ ActiveRecord::Schema.define(version: 2019_05_23_013257) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "alarmas", "mediciones"
   add_foreign_key "comunas", "regiones"
+  add_foreign_key "documento_programas", "programas"
+  add_foreign_key "examen_programas", "examenes"
+  add_foreign_key "examen_programas", "programas"
   add_foreign_key "farmacias", "comunas"
   add_foreign_key "laboratorios", "comunas"
+  add_foreign_key "medicamento_programas", "programas"
+  add_foreign_key "mediciones", "examenes"
+  add_foreign_key "mediciones", "programas"
   add_foreign_key "medicos", "comunas"
   add_foreign_key "pacientes", "comunas"
   add_foreign_key "prestadores", "comunas"

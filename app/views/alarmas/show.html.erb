@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Nombre:</b>
+  <%= @alarma.nombre %>
+</p>
+
+<p>
+  <b>Valor minimo:</b>
+  <%= @alarma.valor_minimo %>
+</p>
+
+<p>
+  <b>Valor maximo:</b>
+  <%= @alarma.valor_maximo %>
+</p>
+
+<p>
+  <b>Accion:</b>
+  <%= @alarma.accion %>
+</p>
+
+<p>
+  <b>Resultado:</b>
+  <%= @alarma.resultado %>
+</p>
+
+<p>
+  <b>Observaciones:</b>
+  <%= @alarma.observaciones %>
+</p>
+
+
+<%= link_to 'Edit', edit_medicion_alarma_path(@alarma.medicion, @alarma) %> |
+<%= link_to 'Back', medicion_alarmas_path(@alarma.medicion) %>

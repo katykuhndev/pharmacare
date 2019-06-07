@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  examen: one
+  programa: one
+  dias_vencimiento: 1
+
+two:
+  examen: two
+  programa: two
+  dias_vencimiento: 1

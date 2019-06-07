@@ -1,0 +1,31 @@
+<div class="page-header">
+  <%= link_to new_examen_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Examen
+  <% end %>
+  <h1>Listing examenes</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @examenes) do |examen| %>
+            <td><%= examen.nombre %></td>
+            <td><%= examen.descripcion %></td>
+            <td><%= link_to 'Show', examen %></td>
+        <td><%= link_to 'Edit', edit_examen_path(examen) %></td>
+        <td><%= link_to 'Destroy', examen, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -4,16 +4,148 @@
   <dt>Nombre:</dt>
   <dd><%= @programa.nombre %></dd>
 
-  <dt>Contacto:</dt>
+  <dt>Descripción:</dt>
   <dd><%= @programa.descripcion %></dd>
 
-  <dt>Fono:</dt>
+  <dt>Fecha Creacion:</dt>
   <dd><%= @programa.fecha_creacion %></dd>
 
-  <dt>Direccion:</dt>
-  <dd><%= @programa.qf_soporte.nombre %></dd>
+  <dt>Creador:</dt>
+  <dd><%= @programa.qf_soporte.name %></dd>
 
 </dl>
+
+<h3> Documentos Necesarios</h3>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+  <thead class='bg-secondary text-white' >
+    <tr>
+      <th>Nombre</th>
+      <th>Descripcion</th>
+      <th>Dias Vencimiento</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @documento.each do |documento| %>
+      <tr>
+        <td><%= documento.nombre %></td>
+        <td><%= documento.descripcion %></td>
+		    <td><%= documento.dias_vencimiento %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+<h3> Examenes Necesarios</h3>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+  <thead class='bg-secondary text-white' >
+    <tr>
+      <th>Examen</th>
+      <th>Descripcion</th>
+      <th>Dias Vencimiento</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @examen.each do |doc_examen| %>
+      <tr>
+        <td><%= doc_examen.examen.nombre %></td>
+        <td><%= doc_examen.examen.descripcion %></td>
+		    <td><%= doc_examen.dias_vencimiento %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+<h3> Presentaciones</h3>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+  <thead class='bg-secondary text-white' >
+    <tr>
+      <th>Nombre Comercial</th>
+      <th>Principio Activo</th>
+      <th>Dosis</th>
+      <th>Unidad Medida</th>
+      <th>Cantidad</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @medicamento.each do |medicamento| %>
+      <tr>
+        <td><%= medicamento.nombre_comercial %></td>
+        <td><%= medicamento.principio_activo %></td>
+		    <td><%= medicamento.dosis %></td>
+        <td><%= medicamento.unidad_medida %></td>
+		    <td><%= medicamento.cantidad %></td>		
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+<h3> Mediciones necesarias</h3>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+  <thead class='bg-secondary text-white' >
+    <tr>
+      <th>Nombre</th>
+      <th>Descripcion</th>
+      <th>Examen</th>
+      <th>Unidad Medida</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @mediciones.each do |medicion| %>
+      <tr>
+        <td><%= medicion.nombre %></td>
+        <td><%= medicion.descripcion %></td>
+        <td><%= medicion.examen.nombre %></td>
+        <td><%= medicion.unidad_medida %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
+
+<h3> Alarmas </h3>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+  <thead class='bg-secondary text-white' >
+    <tr>
+      <th>Nombre</th>
+      <th>Medicion</th>
+      <th>Valor Minimo</th>
+      <th>Valor Maximo</th>
+      <th>Accion</th>
+      <th>Resultado</th> 
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @alarmas.each do |alarma| %>
+      <tr>
+        <td><%= alarma.nombre %></td>
+        <td><%= alarma.medicion.nombre %></td>
+        <td><%= alarma.valor_minimo %></td>
+        <td><%= alarma.valor_maximo %></td>
+        <td><%= alarma.accion %></td>
+        <td><%= h(alarma.resultado) %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+</div>
 
 <%= link_to (t :text_edit), edit_laboratorio_programa_path(@programa.laboratorio, @programa) %> |
 <%= link_to (t :text_back), laboratorio_programas_path(@programa.laboratorio) %>

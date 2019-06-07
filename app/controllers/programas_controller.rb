@@ -9,6 +9,11 @@ class ProgramasController < ApplicationController
 
   # GET laboratorios/1/programas/1
   def show
+    @documento = @programa.documento_programas
+    @examen = @programa.examen_programas
+    @medicamento = @programa.medicamento_programas
+    @mediciones= @programa.mediciones
+    @alarmas = @programa.mediciones.first.alarmas
   end
 
   # GET laboratorios/1/programas/new

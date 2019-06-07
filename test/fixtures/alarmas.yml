@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  medicion: one
+  nombre: MyString
+  valor_minimo: 9.99
+  valor_maximo: 9.99
+  accion: MyText
+  resultado: 1
+  observaciones: MyText
+
+two:
+  medicion: two
+  nombre: MyString
+  valor_minimo: 9.99
+  valor_maximo: 9.99
+  accion: MyText
+  resultado: 1
+  observaciones: MyText

@@ -15,6 +15,12 @@
    inflect.irregular 'medico', 'medicos'
    inflect.irregular 'farmacia', 'farmacias'
    inflect.irregular 'programa', 'programas'
+   inflect.irregular 'examen', 'examenes'
+   inflect.irregular 'examen_programa', 'examen_programas'
+   inflect.irregular 'documento_programa', 'documento_programas'
+   inflect.irregular 'medicamento_programa', 'medicamento_programas'
+   inflect.irregular 'medicion', 'mediciones'
+   inflect.irregular 'alarma', 'alarmas'
    inflect.uncountable %w( fish sheep )
  end
 

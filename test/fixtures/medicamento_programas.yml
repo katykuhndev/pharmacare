@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  programa: one
+  nombre_comercial: MyString
+  principio_activo: MyString
+  dosis: 
+  dosis: 
+  unidad_medida: MyString
+  cantidad: 1
+
+two:
+  programa: two
+  nombre_comercial: MyString
+  principio_activo: MyString
+  dosis: 
+  dosis: 
+  unidad_medida: MyString
+  cantidad: 1

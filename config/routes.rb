@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :mediciones do
+    resources :alarmas
+  end
+  resources :examenes
   resources :farmacias
   resources :prestadores
   resources :laboratorios do

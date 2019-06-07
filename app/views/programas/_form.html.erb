@@ -18,13 +18,17 @@
     <%= form.label :descripcion %><br />
     <%= form.text_area :descripcion %>
   </div>
-  <div class="field">
-    <%= form.label :fecha_creacion %><br />
-    <%= form.datetime_select :fecha_creacion %>
+  <div class="form-group">
+    <%= form.label :fecha_creacion, class: "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+      <%= form.text_field :fecha_creacion, class: "datepicker" %>
+    </div>
   </div>
-  <div class="field">
-    <%= form.label :qf_soporte_id %><br />
-    <%= form.number_field :qf_soporte_id %>
+    <div class="form-group">
+    <%= form.label :qf_soporte_id, class: "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+      <%= form.collection_select(:qf_soporte_id, User.where(role: 2).order('name'), :id, :name) %>
+    </div>
   </div>
   <div class="actions">
     <%= form.submit %>

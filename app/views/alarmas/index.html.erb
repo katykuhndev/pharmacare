@@ -1,0 +1,33 @@
+<h1>Listing alarmas</h1>
+
+<table>
+  <tr>
+    <th>Nombre</th>
+    <th>Valor minimo</th>
+    <th>Valor maximo</th>
+    <th>Accion</th>
+    <th>Resultado</th>
+    <th>Observaciones</th>
+    <th></th>
+    <th></th>
+    <th></th>
+  </tr>
+
+<% @alarmas.each do |alarma| %>
+  <tr>
+    <td><%= alarma.nombre %></td>
+    <td><%= alarma.valor_minimo %></td>
+    <td><%= alarma.valor_maximo %></td>
+    <td><%= alarma.accion %></td>
+    <td><%= alarma.resultado %></td>
+    <td><%= alarma.observaciones %></td>
+    <td><%= link_to 'Show', [alarma.medicion, alarma] %></td>
+    <td><%= link_to 'Edit', edit_medicion_alarma_path(alarma.medicion, alarma) %></td>
+    <td><%= link_to 'Destroy', [alarma.medicion, alarma], method: :delete, data: { confirm: 'Are you sure?' } %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'New Alarma', new_medicion_alarma_path(params[:medicion_id]) %>

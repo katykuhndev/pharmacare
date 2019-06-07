@@ -18,8 +18,7 @@
         <td><%= programa.nombre %></td>
         <td><%= programa.descripcion %></td>
         <td><%= programa.fecha_creacion %></td>
-        <td><%= programa.direccion %></td>
-        <td><%= programa.qf_soporte.nombre %></td>
+        <td><%= programa.qf_soporte.name %></td>
         <td><%= link_to (t :text_show), [programa.laboratorio, programa] %></td>
         <td><%= link_to (t :text_edit), edit_laboratorio_programa_path(programa.laboratorio, programa) %></td>
         <td><%= link_to (t :text_destroy), [programa.laboratorio, programa], method: :delete, data: { confirm: (t :text_are_you_sure) } %></td>
