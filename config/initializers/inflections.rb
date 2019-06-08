@@ -21,6 +21,8 @@
    inflect.irregular 'medicamento_programa', 'medicamento_programas'
    inflect.irregular 'medicion', 'mediciones'
    inflect.irregular 'alarma', 'alarmas'
+   inflect.irregular 'caso', 'casos'
+   inflect.irregular 'recomendacion', 'recomendaciones'
    inflect.uncountable %w( fish sheep )
  end
 
