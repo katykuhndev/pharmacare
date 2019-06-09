@@ -1,0 +1,59 @@
+<div class="page-header">
+  <%= link_to new_recomendacion_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Recomendacion
+  <% end %>
+  <h1>Listing recomendaciones</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Id recomendacion</th>
+            <th>Estado</th>
+            <th>Resultado</th>
+            <th>Caso</th>
+            <th>Programa</th>
+            <th>Paciente</th>
+            <th>Medico</th>
+            <th>Prestador</th>
+            <th>Farmacia</th>
+            <th>Qf soporte</th>
+            <th>Ejecutivo</th>
+            <th>Fecha hora ingreso</th>
+            <th>Via ingreso</th>
+            <th>Fecha hora respuesta</th>
+            <th>Observaciones</th>
+            <th>Con alarma</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @recomendaciones) do |recomendacion| %>
+            <td><%= recomendacion.id_recomendacion %></td>
+            <td><%= recomendacion.estado %></td>
+            <td><%= recomendacion.resultado %></td>
+            <td><%= recomendacion.caso %></td>
+            <td><%= recomendacion.programa %></td>
+            <td><%= recomendacion.paciente %></td>
+            <td><%= recomendacion.medico %></td>
+            <td><%= recomendacion.prestador %></td>
+            <td><%= recomendacion.farmacia %></td>
+            <td><%= recomendacion.qf_soporte_id %></td>
+            <td><%= recomendacion.ejecutivo_id %></td>
+            <td><%= recomendacion.fecha_hora_ingreso %></td>
+            <td><%= recomendacion.via_ingreso %></td>
+            <td><%= recomendacion.fecha_hora_respuesta %></td>
+            <td><%= recomendacion.observaciones %></td>
+            <td><%= recomendacion.con_alarma %></td>
+            <td><%= link_to 'Show', recomendacion %></td>
+        <td><%= link_to 'Edit', edit_recomendacion_path(recomendacion) %></td>
+        <td><%= link_to 'Destroy', recomendacion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,35 @@
+<div class="page-header">
+  <%= link_to new_bloque_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Bloque
+  <% end %>
+  <h1>Listing bloques</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Nombre</th>
+            <th>Inicio</th>
+            <th>Fin</th>
+            <th>Observaciones</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @bloques) do |bloque| %>
+            <td><%= bloque.nombre %></td>
+            <td><%= bloque.inicio %></td>
+            <td><%= bloque.fin %></td>
+            <td><%= bloque.observaciones %></td>
+            <td><%= link_to 'Show', bloque %></td>
+        <td><%= link_to 'Edit', edit_bloque_path(bloque) %></td>
+        <td><%= link_to 'Destroy', bloque, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

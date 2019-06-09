@@ -1,0 +1,47 @@
+<div class="page-header">
+  <%= link_to new_caso_path, class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    New Caso
+  <% end %>
+  <h1>Listing casos</h1>
+</div>
+
+<div class="table-responsive">
+  <table class="table table-striped table-bordered table-hover">
+    <thead>
+      <tr>
+            <th>Codigo</th>
+            <th>Programa</th>
+            <th>Medico</th>
+            <th>Paciente</th>
+            <th>Qf soporte</th>
+            <th>Ejecutivo</th>
+            <th>Fecha hora ingreso</th>
+            <th>Via ingreso</th>
+            <th>Fecha hora cierre</th>
+            <th>Observaciones</th>
+            <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <%= content_tag_for(:tr, @casos) do |caso| %>
+            <td><%= caso.codigo %></td>
+            <td><%= caso.programa %></td>
+            <td><%= caso.medico %></td>
+            <td><%= caso.paciente %></td>
+            <td><%= caso.qf_soporte_id %></td>
+            <td><%= caso.ejecutivo_id %></td>
+            <td><%= caso.fecha_hora_ingreso %></td>
+            <td><%= caso.via_ingreso %></td>
+            <td><%= caso.fecha_hora_cierre %></td>
+            <td><%= caso.observaciones %></td>
+            <td><%= link_to 'Show', caso %></td>
+        <td><%= link_to 'Edit', edit_caso_path(caso) %></td>
+        <td><%= link_to 'Destroy', caso, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      <% end %>
+    </tbody>
+  </table>
+</div>

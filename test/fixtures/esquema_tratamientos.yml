@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  recomendacion: one
+  tratamiento: one
+  bloque: one
+  dosis: 9.99
+  unidad_medida: MyString
+  observaciones: MyText
+
+two:
+  recomendacion: two
+  tratamiento: two
+  bloque: two
+  dosis: 9.99
+  unidad_medida: MyString
+  observaciones: MyText

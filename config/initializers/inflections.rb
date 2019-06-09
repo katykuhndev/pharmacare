@@ -23,6 +23,12 @@
    inflect.irregular 'alarma', 'alarmas'
    inflect.irregular 'caso', 'casos'
    inflect.irregular 'recomendacion', 'recomendaciones'
+   inflect.irregular 'bloque', 'bloques'
+   inflect.irregular 'documento_recomendacion', 'documento_recomendaciones'
+   inflect.irregular 'examen_recomendacion', 'examen_recomendaciones'
+   inflect.irregular 'medicion_recomendacion', 'medicion_recomendaciones'
+   inflect.irregular 'tratamiento', 'tratamientos'
+   inflect.irregular 'esquema_tratamiento', 'esquema_tratamientos'
    inflect.uncountable %w( fish sheep )
  end
 

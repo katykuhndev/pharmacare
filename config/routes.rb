@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  resources :bloques
+  resources :recomendaciones
+  resources :casos
   resources :mediciones do
     resources :alarmas
   end

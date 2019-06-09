@@ -1,0 +1,44 @@
+<div class="page-header">
+  <%= link_to casos_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_caso_path(@caso), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show caso</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Codigo:</dt>
+  <dd><%= @caso.codigo %></dd>
+
+  <dt>Programa:</dt>
+  <dd><%= @caso.programa %></dd>
+
+  <dt>Medico:</dt>
+  <dd><%= @caso.medico %></dd>
+
+  <dt>Paciente:</dt>
+  <dd><%= @caso.paciente %></dd>
+
+  <dt>Qf soporte:</dt>
+  <dd><%= @caso.qf_soporte_id %></dd>
+
+  <dt>Ejecutivo:</dt>
+  <dd><%= @caso.ejecutivo_id %></dd>
+
+  <dt>Fecha hora ingreso:</dt>
+  <dd><%= @caso.fecha_hora_ingreso %></dd>
+
+  <dt>Via ingreso:</dt>
+  <dd><%= @caso.via_ingreso %></dd>
+
+  <dt>Fecha hora cierre:</dt>
+  <dd><%= @caso.fecha_hora_cierre %></dd>
+
+  <dt>Observaciones:</dt>
+  <dd><%= @caso.observaciones %></dd>
+
+</dl>

@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  recomendacion: one
+  documento_programa: one
+  ejecutivo_id: 1
+  fecha: 2019-06-09 08:39:48
+  observaciones: MyText
+
+two:
+  nombre: MyString
+  recomendacion: two
+  documento_programa: two
+  ejecutivo_id: 1
+  fecha: 2019-06-09 08:39:48
+  observaciones: MyText

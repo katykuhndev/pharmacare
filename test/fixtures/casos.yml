@@ -1,0 +1,25 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  codigo: MyString
+  programa: one
+  medico: one
+  paciente: one
+  qf_soporte_id: 1
+  ejecutivo_id: 1
+  fecha_hora_ingreso: 2019-06-08 13:56:50
+  via_ingreso: 1
+  fecha_hora_cierre: 2019-06-08 13:56:50
+  observaciones: MyText
+
+two:
+  codigo: MyString
+  programa: two
+  medico: two
+  paciente: two
+  qf_soporte_id: 1
+  ejecutivo_id: 1
+  fecha_hora_ingreso: 2019-06-08 13:56:50
+  via_ingreso: 1
+  fecha_hora_cierre: 2019-06-08 13:56:50
+  observaciones: MyText

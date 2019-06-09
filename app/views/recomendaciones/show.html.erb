@@ -1,0 +1,62 @@
+<div class="page-header">
+  <%= link_to recomendaciones_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_recomendacion_path(@recomendacion), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show recomendacion</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Id recomendacion:</dt>
+  <dd><%= @recomendacion.id_recomendacion %></dd>
+
+  <dt>Estado:</dt>
+  <dd><%= @recomendacion.estado %></dd>
+
+  <dt>Resultado:</dt>
+  <dd><%= @recomendacion.resultado %></dd>
+
+  <dt>Caso:</dt>
+  <dd><%= @recomendacion.caso %></dd>
+
+  <dt>Programa:</dt>
+  <dd><%= @recomendacion.programa %></dd>
+
+  <dt>Paciente:</dt>
+  <dd><%= @recomendacion.paciente %></dd>
+
+  <dt>Medico:</dt>
+  <dd><%= @recomendacion.medico %></dd>
+
+  <dt>Prestador:</dt>
+  <dd><%= @recomendacion.prestador %></dd>
+
+  <dt>Farmacia:</dt>
+  <dd><%= @recomendacion.farmacia %></dd>
+
+  <dt>Qf soporte:</dt>
+  <dd><%= @recomendacion.qf_soporte_id %></dd>
+
+  <dt>Ejecutivo:</dt>
+  <dd><%= @recomendacion.ejecutivo_id %></dd>
+
+  <dt>Fecha hora ingreso:</dt>
+  <dd><%= @recomendacion.fecha_hora_ingreso %></dd>
+
+  <dt>Via ingreso:</dt>
+  <dd><%= @recomendacion.via_ingreso %></dd>
+
+  <dt>Fecha hora respuesta:</dt>
+  <dd><%= @recomendacion.fecha_hora_respuesta %></dd>
+
+  <dt>Observaciones:</dt>
+  <dd><%= @recomendacion.observaciones %></dd>
+
+  <dt>Con alarma:</dt>
+  <dd><%= @recomendacion.con_alarma %></dd>
+
+</dl>

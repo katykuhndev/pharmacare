@@ -1,0 +1,26 @@
+<div class="page-header">
+  <%= link_to bloques_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Back
+  <% end %>
+  <%= link_to edit_bloque_path(@bloque), class: 'btn btn-primary' do %>
+    <span class="glyphicon glyphicon-pencil"></span>
+    Edit
+  <% end %>
+  <h1>Show bloque</h1>
+</div>
+
+<dl class="dl-horizontal">
+  <dt>Nombre:</dt>
+  <dd><%= @bloque.nombre %></dd>
+
+  <dt>Inicio:</dt>
+  <dd><%= @bloque.inicio %></dd>
+
+  <dt>Fin:</dt>
+  <dd><%= @bloque.fin %></dd>
+
+  <dt>Observaciones:</dt>
+  <dd><%= @bloque.observaciones %></dd>
+
+</dl>

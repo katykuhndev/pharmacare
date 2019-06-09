@@ -1,0 +1,13 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  recomendacion: one
+  medicion: one
+  valor: 9.99
+  unidad_medida: MyString
+
+two:
+  recomendacion: two
+  medicion: two
+  valor: 9.99
+  unidad_medida: MyString
