@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
-  resources :bloques
+  root to: 'visitors#index'
   resources :recomendaciones
+  resources :bloques
   resources :casos
   resources :mediciones do
     resources :alarmas
@@ -11,14 +12,8 @@ Rails.application.routes.draw do
   resources :laboratorios do
     resources :programas
   end
-  resources :laboratorios do
-    end
-  resources :laboratorios do
-    end
-  resources :pacientexes
   resources :medicos
   resources :pacientes
-  root to: 'visitors#index'
   devise_for :users
   resources :users
 end

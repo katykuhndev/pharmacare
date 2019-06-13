@@ -33,7 +33,8 @@
     </thead>
 
     <tbody>
-      <%= content_tag_for(:tr, @recomendaciones) do |recomendacion| %>
+      <%= @recomendaciones.each do |recomendacion| %>
+        <tr>
             <td><%= recomendacion.id_recomendacion %></td>
             <td><%= recomendacion.estado %></td>
             <td><%= recomendacion.resultado %></td>
@@ -51,8 +52,9 @@
             <td><%= recomendacion.observaciones %></td>
             <td><%= recomendacion.con_alarma %></td>
             <td><%= link_to 'Show', recomendacion %></td>
-        <td><%= link_to 'Edit', edit_recomendacion_path(recomendacion) %></td>
-        <td><%= link_to 'Destroy', recomendacion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <td><%= link_to 'Edit', edit_recomendacion_path(recomendacion) %></td>
+            <td><%= link_to 'Destroy', recomendacion, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>    
       <% end %>
     </tbody>
   </table>
