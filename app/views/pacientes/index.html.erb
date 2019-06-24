@@ -58,7 +58,7 @@
         <td><%= paciente.genero %></td>
         <td><%= paciente.fecha_nacimiento %></td>
         <td><%= paciente.fono1 %></td>
-        <td><%= paciente.comuna.nombre %></td>
+        <td><%= paciente.comuna ? paciente.comuna.nombre : ''%></td>
         <td><%= link_to (t :text_show), paciente %></td>
         <td><%= link_to (t :text_edit), edit_paciente_path(paciente) %></td>
         <td><%= link_to (t :text_destroy), paciente, method: :delete, data: { confirm: (t :text_are_you_sure) } %></td>

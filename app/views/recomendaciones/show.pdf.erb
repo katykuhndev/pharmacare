@@ -1,0 +1,40 @@
+
+<div style="float: right; "><%= localize(Date.today, :format => "%A, %d de %B de %Y") %></div>
+<br><br>
+<h3 align="center">RECOMENDACIÓN LODUX APROBADA <%= @iniciales_paciente %> <%=@recomendacion.id_recomendacion%> </h3>
+
+Estimado (a) <br>
+Químico Farmacéutico <br>
+
+<p>Gracias por contactar al soporte de farmacovigilancia. A continuación se presenta un resumen de los datos utilizados para autorizar o no el despacho del medicamento Lodux®.</p>
+
+<h3>Nombre Paciente: <%= @datos_paciente %><br>
+Rut : <%= @rut_paciente %></h3>
+
+<h3>Hemograma (status) : <%= @alarma ? @alarma.nombre : 'Sin Alarma' %> </h3> 
+<dl class="dl-horizontal">
+	<dt><b>R.A.N: <%= @ran %> mm3</b> </dt>
+	<dt><b>Fecha Hemograma : <%= @fecha_examen.strftime("%m/%d/%Y")%> </b> </dt>
+	<dt><b>Fecha Receta : <%= @fecha_receta.strftime("%m/%d/%Y") %> </b> </dt>
+	<dt><b>Prestador : <%= @datos_prestador %> </b> </dt>
+	<dt><b>Farmacia : <%= @datos_farmacia %> </b> </dt>
+	<dt><b>Médico solicitante : <%= @datos_medico %> </b> </dt>
+<dl>
+<h4 style="text-decoration: underline;">Posología: </h4>
+<dt><b>1. <%= @presentacion %>  <%= @dia %> Tarde: <%= @tarde %> Noche <%= @noche %></b> &nbsp; por <%= @dias %> días (<%= @cantidad %> comprimidos) </dt><br><br>
+
+Luego de analizar la información antes presentada, se ha determinado APROBAR la
+solicitud del <%@recomendacion.fecha_hora_ingreso.strftime("%m/%d/%Y")%> . Este documento es válido hasta el ...... inclusive. <br><br>
+Por lo tanto, se autoriza el despacho del medicamento Lodux®.<br><br>
+
+Motivo del rechazo: No aplica.<br><br>
+
+<%= @alarma ? @alarma.accion : 'Siga cuidadosamente las indicaciones de su médico. Paciente tomará ....
+comprimidos diarios de ... mg. (... mg. por día).' %>
+
+
+<br><br><br><br>Saludos cordiales, <br>
+QF. Fernando Sáez | Soporte Farmacovigilancia | Pharmaceutical Care®
++569 33752459 |
+farmacovigilancia@pharmacare.cl
+Santiago de Chile

@@ -18,6 +18,23 @@ class Recomendacion < ApplicationRecord
     self.fecha_hora_ingreso = Time.now()
   end
 
+  def get_alarma
+    #TODO
+    # cambiar medicion_id: 1 por algo mas generico
+    alarmas = Alarma.where(medicion_id: 1)
+    if self.medicion_recomendaciones.where(medicion_id: 1).first && alarmas.count > 0
+      valor = self.medicion_recomendaciones.where(medicion_id: 1).first.valor
+      for alarma in alarmas
+        if valor >= alarma.valor_minimo && valor <= alarma.valor_maximo
+          return alarma
+        end  
+      end  
+      return false  
+    else
+     return false 
+    end
+  end  
+
   belongs_to :caso, optional: true
   belongs_to :programa, optional: true
   belongs_to :paciente, optional: true

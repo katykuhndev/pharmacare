@@ -14,35 +14,52 @@ class RecomendacionesController < ApplicationController
   def show
     # TODO
     # Parametrizar correctamente todo 
-     @datos_paciente = @recomendacion.paciente ? "#{@recomendacion.paciente.nombres} #{@recomendacion.paciente.primer_apellido} #{@recomendacion.paciente.segundo_apellido}"  : '' 
-     @datos_medico = @recomendacion.medico ? "#{@recomendacion.medico.nombres} #{@recomendacion.medico.primer_apellido} #{@recomendacion.medico.segundo_apellido}"  : '' 
-     @datos_prestador = @recomendacion.prestador ? @recomendacion.prestador.nombre  : '' 
-     @datos_farmacia = @recomendacion.farmacia ? @recomendacion.farmacia.nombre  : ''
-     @qf_soporte = @recomendacion.qf_soporte ? @recomendacion.qf_soporte.name : ''
-     @ejecutivo = @recomendacion.ejecutivo ? @recomendacion.ejecutivo.name : ''
+    @datos_paciente = @recomendacion.paciente ? "#{@recomendacion.paciente.nombres} #{@recomendacion.paciente.primer_apellido} #{@recomendacion.paciente.segundo_apellido}"  : '' 
+    @iniciales_paciente = @recomendacion.paciente ? "#{@recomendacion.paciente.nombres[0]}#{@recomendacion.paciente.primer_apellido[0]}#{@recomendacion.paciente.primer_apellido[0]}" : ''
+    @rut_paciente = @recomendacion.paciente ? @recomendacion.paciente.rut : ''
+    @datos_medico = @recomendacion.medico ? "#{@recomendacion.medico.nombres} #{@recomendacion.medico.primer_apellido} #{@recomendacion.medico.segundo_apellido}"  : '' 
+    @datos_prestador = @recomendacion.prestador ? @recomendacion.prestador.nombre  : '' 
+    @datos_farmacia = @recomendacion.farmacia ? @recomendacion.farmacia.nombre  : ''
+    @qf_soporte = @recomendacion.qf_soporte ? @recomendacion.qf_soporte.name : ''
+    @ejecutivo = @recomendacion.ejecutivo ? @recomendacion.ejecutivo.name : ''
      #receta
-     @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
-     @fecha_receta = @documento_receta ? @documento_receta.fecha : ''
-     @tratamiento = @recomendacion.tratamientos.first
-     @medicamento_programa = @tratamiento ? @tratamiento.medicamento_programa : ''
-     @presentacion = @medicamento_programa ? @medicamento_programa.nombre_comercial : ''
-     @dias = @tratamiento ? @tratamiento.dias : ''
-     @cantidad = @tratamiento ?  @tratamiento.cantidad : ''
-     @esquema_tratamientos = @recomendacion.esquema_tratamientos
-     @dia = @esquema_tratamientos.where(bloque_id: 1).first ? @esquema_tratamientos.where(bloque_id: 1).first.dosis : ''
-     @tarde = @esquema_tratamientos.where(bloque_id: 2).first ? @esquema_tratamientos.where(bloque_id: 2).first.dosis : ''
-     @noche = @esquema_tratamientos.where(bloque_id: 3).first ? @esquema_tratamientos.where(bloque_id: 3).first.dosis : ''
+    @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
+    @fecha_receta = @documento_receta ? @documento_receta.fecha : ''
+    @tratamiento = @recomendacion.tratamientos.first
+    @medicamento_programa = @tratamiento ? @tratamiento.medicamento_programa : ''
+    @presentacion = @medicamento_programa ? @medicamento_programa.nombre_comercial : ''
+    @dias = @tratamiento ? @tratamiento.dias : ''
+    @cantidad = @tratamiento ?  @tratamiento.cantidad : ''
+    @esquema_tratamientos = @recomendacion.esquema_tratamientos
+    @dia = @esquema_tratamientos.where(bloque_id: 1).first ? @esquema_tratamientos.where(bloque_id: 1).first.dosis : ''
+    @tarde = @esquema_tratamientos.where(bloque_id: 2).first ? @esquema_tratamientos.where(bloque_id: 2).first.dosis : ''
+    @noche = @esquema_tratamientos.where(bloque_id: 3).first ? @esquema_tratamientos.where(bloque_id: 3).first.dosis : ''
      
-     @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
-     @fecha_receta = @documento_receta ? @documento_receta.fecha : ''
+    @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
+    @fecha_receta = @documento_receta ? @documento_receta.fecha : ''
      
-     @documento_examen = @recomendacion.examen_recomendaciones.where(examen_programa_id: 1).first
-     @fecha_examen = @documento_examen ? @documento_examen.fecha : ''
+    @documento_examen = @recomendacion.examen_recomendaciones.where(examen_programa_id: 1).first
+    @fecha_examen = @documento_examen ? @documento_examen.fecha : ''
      
-     @ran = @recomendacion.medicion_recomendaciones.where(medicion_id: 1).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 1).first.valor : ''
-     @leucocitos =@recomendacion.medicion_recomendaciones.where(medicion_id: 2).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 2).first.valor : ''
-     @baciliformes = @recomendacion.medicion_recomendaciones.where(medicion_id: 3).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 3).first.valor : ''
-     @segmentados = @recomendacion.medicion_recomendaciones.where(medicion_id: 4).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 4).first.valor : ''
+    @ran = @recomendacion.medicion_recomendaciones.where(medicion_id: 1).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 1).first.valor : ''
+    @leucocitos =@recomendacion.medicion_recomendaciones.where(medicion_id: 2).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 2).first.valor : ''
+    @baciliformes = @recomendacion.medicion_recomendaciones.where(medicion_id: 3).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 3).first.valor : ''
+    @segmentados = @recomendacion.medicion_recomendaciones.where(medicion_id: 4).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 4).first.valor : ''
+
+    @alarma = @recomendacion.get_alarma
+
+    respond_to do |format|
+      format.html
+      format.pdf do
+          render :pdf => 'solicitud_recomendacion',
+                 :layout => 'pdf.html',
+                 :template => "recomendaciones/show.pdf.erb",
+                 :disposition => 'inline',
+                 :page_size => 'A4',
+                 :encoding => 'UTF-8',
+                 :margin => {:top => 20, :left => 20, :right => 20, :bottom => 10}
+      end
+    end
 
   end
 
@@ -97,11 +114,12 @@ class RecomendacionesController < ApplicationController
     @documento_examen = @recomendacion.examen_recomendaciones.where(examen_programa_id: 1).first
     @fecha_examen = @documento_examen ? @documento_examen.fecha : ''
     
-     @ran = @recomendacion.medicion_recomendaciones.where(medicion_id: 1).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 1).first.valor : ''
-     @leucocitos =@recomendacion.medicion_recomendaciones.where(medicion_id: 2).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 2).first.valor : ''
-     @baciliformes = @recomendacion.medicion_recomendaciones.where(medicion_id: 3).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 3).first.valor : ''
-     @segmentados = @recomendacion.medicion_recomendaciones.where(medicion_id: 4).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 4).first.valor : ''
+    @ran = @recomendacion.medicion_recomendaciones.where(medicion_id: 1).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 1).first.valor : ''
+    @leucocitos =@recomendacion.medicion_recomendaciones.where(medicion_id: 2).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 2).first.valor : ''
+    @baciliformes = @recomendacion.medicion_recomendaciones.where(medicion_id: 3).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 3).first.valor : ''
+    @segmentados = @recomendacion.medicion_recomendaciones.where(medicion_id: 4).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 4).first.valor : ''
 
+    
     
   end
 
@@ -170,7 +188,9 @@ class RecomendacionesController < ApplicationController
          MedicionRecomendacion.create(recomendacion_id: @recomendacion.id, medicion_id: 3, valor: recomendacion_params["atributos_examen"]["baciliformes"])
          MedicionRecomendacion.create(recomendacion_id: @recomendacion.id, medicion_id: 4, valor: recomendacion_params["atributos_examen"]["segmentados"])
        end
-
+        if @recomendacion.get_alarma
+           @recomendacion.con_alarma = 1
+        end 
     respond_to do |format|
       if @recomendacion.update(recomendacion_params)
          format.html { redirect_to @recomendacion, notice: 'Recomendacion se actualizo correctamente.' }
@@ -193,6 +213,7 @@ class RecomendacionesController < ApplicationController
   end
 
   private
+
     # Use callbacks to share common  +  setup or constraints between actions.
     def set_recomendacion
       @recomendacion = Recomendacion.find(params[:id])

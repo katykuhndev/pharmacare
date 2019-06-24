@@ -12,6 +12,9 @@ gem 'faker'
 gem 'ransack'
 gem 'will_paginate-bootstrap4'
 gem 'nested_scaffold'
+gem 'prawn-rails'
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end

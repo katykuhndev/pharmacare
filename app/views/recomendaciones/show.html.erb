@@ -18,12 +18,20 @@
       <dt>Resultado: <%= @recomendacion.resultado.upcase %></dt>
   <% end %>
 
-  <h3>Alarma: <%= @recomendacion.con_alarma ? 'SI' : 'NO' %></h3>
+  <h3>Alarma: <%= @alarma ? @alarma.nombre : 'NO' %></h3>
 
   <h3>Paciente: <%= @datos_paciente %></h3>
 
   <h4>Ingreso: Via: <%= @recomendacion.via_ingreso %> Hora: <%= @recomendacion.fecha_hora_ingreso.strftime("%H:%M de %m/%d/%Y") %></h4>
+
+  <%= link_to 'Crear PDF de Recomendación', recomendacion_path(@recomendacion, :format => :pdf) %>
   
+  <%= link_to  recomendacion_path(@recomendacion, :format => :pdf), class: 'btn btn-default bg-secondary text-white' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    PDF de Recomendación
+  <% end %>
+
+
   <h3>Datos Receta</h3>
 
   <dt>Fecha Receta: <%= @fecha_receta.strftime("%m/%d/%Y") %> </dt>
