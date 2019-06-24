@@ -5,4 +5,5 @@ class Programa < ApplicationRecord
   has_many :medicamento_programas
   has_many :examen_programas
   has_many :mediciones, class_name: 'Medicion'
+  has_and_belongs_to_many :bloques
 end

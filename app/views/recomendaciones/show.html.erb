@@ -1,62 +1,73 @@
 <div class="page-header">
   <%= link_to recomendaciones_path, class: 'btn btn-default' do %>
     <span class="glyphicon glyphicon-list-alt"></span>
-    Back
+    Volver
   <% end %>
-  <%= link_to edit_recomendacion_path(@recomendacion), class: 'btn btn-primary' do %>
-    <span class="glyphicon glyphicon-pencil"></span>
-    Edit
+  <%= link_to edit_recomendacion_path(@recomendacion), class: 'btn btn-default bg-secondary text-white' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Editar
   <% end %>
-  <h1>Recomendacion @recomendacion.id_recomendacion</h1>
+  <h1>Recomendacion <%=@recomendacion.id_recomendacion%> Programa <%= @recomendacion.programa.nombre %> </h1>
 </div>
 
 <dl class="dl-horizontal">
-  <dt>Id recomendacion:</dt>
-  <dd><%= @recomendacion.id_recomendacion %></dd>
 
-  <dt>Estado:</dt>
-  <dd><%= @recomendacion.estado %></dd>
+  <h3>Estado: <%= @recomendacion.estado.upcase %></h3>
 
-  <dt>Resultado:</dt>
-  <dd><%= @recomendacion.resultado %></dd>
+  <% if @recomendacion.resultado %>
+      <dt>Resultado: <%= @recomendacion.resultado.upcase %></dt>
+  <% end %>
 
-  <dt>Caso:</dt>
-  <dd><%= @recomendacion.caso %></dd>
+  <h3>Alarma: <%= @recomendacion.con_alarma ? 'SI' : 'NO' %></h3>
 
-  <dt>Programa:</dt>
-  <dd><%= @recomendacion.programa %></dd>
+  <h3>Paciente: <%= @datos_paciente %></h3>
 
-  <dt>Paciente:</dt>
-  <dd><%= @recomendacion.paciente %></dd>
+  <h4>Ingreso: Via: <%= @recomendacion.via_ingreso %> Hora: <%= @recomendacion.fecha_hora_ingreso.strftime("%H:%M de %m/%d/%Y") %></h4>
+  
+  <h3>Datos Receta</h3>
 
-  <dt>Medico:</dt>
-  <dd><%= @recomendacion.medico %></dd>
+  <dt>Fecha Receta: <%= @fecha_receta.strftime("%m/%d/%Y") %> </dt>
 
-  <dt>Prestador:</dt>
-  <dd><%= @recomendacion.prestador %></dd>
+  <dt>Medico: <%= @datos_medico %> </dt>
 
-  <dt>Farmacia:</dt>
-  <dd><%= @recomendacion.farmacia %></dd>
+  <dt>Prestador: <%= @datos_prestador %> </dt>
 
-  <dt>Qf soporte:</dt>
-  <dd><%= @recomendacion.qf_soporte_id %></dd>
+  <dt>Farmacia: <%= @datos_farmacia %> </dt>
 
-  <dt>Ejecutivo:</dt>
-  <dd><%= @recomendacion.ejecutivo_id %></dd>
+  <h4>Tratamiento</h4>
 
-  <dt>Fecha hora ingreso:</dt>
-  <dd><%= @recomendacion.fecha_hora_ingreso %></dd>
+  <dt>Presentacion : <%= @presentacion %> </dt>
 
-  <dt>Via ingreso:</dt>
-  <dd><%= @recomendacion.via_ingreso %></dd>
+  <dt>Duracion: <%= @dias %> Dias</dt>
+
+  <dt>Comprimidos: <%= @cantidad %> Comprimidos</dt>
+
+  <h4>Esquema</h4>
+
+  <dt>Dia: <%= @dia %> Tarde: <%= @tarde %> Noche <%= @noche %></dt>
+
+  <h3>Datos Examen</h3>
+
+  <dt>Fecha Hemograma: <%= @fecha_examen.strftime("%m/%d/%Y") %> </dt>
+
+  <dt>RAN: <%= @ran %> mm3</dt>
+
+  <dt>Leucocitos: <%= @leucocitos %> mm3</dt>
+
+  <dt>Baciliformes: <%= @baciliformes %> %</dt>
+
+  <dt>Segmentados: <%= @segmentados %> %</dt>  
+
+  <br>
+
+  <dt>Autoriza : <%= @qf_soporte %> </dt>
+
+  <dt>Ejecutivo a cargo : <%= @ejecutivo %></dt>
 
   <dt>Fecha hora respuesta:</dt>
   <dd><%= @recomendacion.fecha_hora_respuesta %></dd>
 
   <dt>Observaciones:</dt>
   <dd><%= @recomendacion.observaciones %></dd>
-
-  <dt>Con alarma:</dt>
-  <dd><%= @recomendacion.con_alarma %></dd>
 
 </dl>

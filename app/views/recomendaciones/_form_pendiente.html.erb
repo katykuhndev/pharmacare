@@ -2,48 +2,137 @@
 
   <div class="form-group">
     <h2>Datos paciente</h2>
-      <%= form.fields :paciente do |paciente_form| %>
+      <%= form.fields :atributos_paciente do |paciente_form| %>
+        <div class="form-group">
+          <%= paciente_form.label :rut, class: "col-sm-2 control-label" %>
+          <div class="col-sm-4">
+            <%= paciente_form.text_field :rut, class: "form-control", value:@rut %>
+          </div>
+        </div>
         <div class="form-group">
           <%= paciente_form.label :nombres, class: "col-sm-2 control-label" %>
-          <div class="col-sm-6">
-            <%= paciente_form.text_field :nombres, class: "form-control" %>
+          <div class="col-sm-4">
+            <%= paciente_form.text_field :nombres, class: "form-control", value:@nombres %>
           </div>
         </div>
         <div class="form-group">
           <%= paciente_form.label :primer_apellido, class: "col-sm-2 control-label" %>
-          <div class="col-sm-6">
-            <%= paciente_form.text_field :primer_apellido, class: "form-control" %>
+          <div class="col-sm-4">
+            <%= paciente_form.text_field :primer_apellido, class: "form-control", value:@primer_apellido %>
           </div>
         </div>
         <div class="form-group">
           <%= paciente_form.label :segundo_apellido, class: "col-sm-2 control-label" %>
-          <div class="col-sm-6">
-            <%= paciente_form.text_field :segundo_apellido, class: "form-control" %>
-          </div>
-        </div>
-        <div class="form-group">
-          <%= paciente_form.label :rut, class: "col-sm-2 control-label" %>
-          <div class="col-sm-6">
-            <%= paciente_form.text_field :rut, class: "form-control" %>
+          <div class="col-sm-4">
+            <%= paciente_form.text_field :segundo_apellido, class: "form-control", value:@segundo_apellido %>
           </div>
         </div>
       <% end %>
   </div>
-  <div class="form-group">
-    <%= form.label :fecha_hora_respuesta, class: "col-sm-2 control-label" %>
-    <div class="col-sm-4">
-      <%= form.datetime_select :fecha_hora_respuesta, class: "form-control" %>
+
+  <h2>Datos Examen</h2>
+      <%= form.fields :atributos_examen do |examen_form| %>
+        <div class="form-group">
+          <%= examen_form.label :fecha_examen,'Fecha Hemograma', class: "col-sm-2 control-label" %>
+          <div class="col-sm-4">
+            <%= examen_form.text_field :fecha_examen, class: "datepicker", value:@fecha_examen %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= examen_form.label :ran, class: "col-sm-2 control-label" %>
+          <div class="col-sm-2">
+            <%= examen_form.number_field :ran, class: "form-control", step: 0.1 , value:@ran %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= examen_form.label :leucocitos, class: "col-sm-2 control-label" %>
+          <div class="col-sm-2">
+            <%= examen_form.number_field :leucocitos, class: "form-control", step: 0.1 , value:@leucocitos %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= examen_form.label :baciliformes, 'Baciliformes %', class: "col-sm-2 control-label" %>
+          <div class="col-sm-2">
+            <%= examen_form.number_field :baciliformes, class: "form-control", step: 0.01 , value:@baciliformes %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= examen_form.label :segmentados, 'Segmentados %', class: "col-sm-2 control-label" %>
+          <div class="col-sm-2">
+            <%= examen_form.number_field :segmentados, class: "form-control", step: 0.01 , value:@segmentados %>
+          </div>
+        </div>
+      <% end %>
+
+  <h2>Datos Receta</h2>
+    <%= form.fields :atributos_receta do |receta_form| %>
+      <div class="form-group">
+        <%= receta_form.label :fecha_receta, class: "col-sm-2 control-label" %>
+        <div class="col-sm-4">
+          <%= receta_form.text_field :fecha_receta, class: "datepicker", value:@fecha_receta %>
+        </div>
+      </div>    
+      <div class="form-group">
+        <%= receta_form.label :prestador, class: "col-sm-2 control-label" %>
+        <div class="col-sm-4">
+          <%= receta_form.text_field :prestador, class: "form-control", value:@nombre_prestador %>
+        </div>
+      </div>
+      <div class="form-group">
+        <%= receta_form.label :farmacia, class: "col-sm-2 control-label" %>
+        <div class="col-sm-4">
+          <%= receta_form.text_field :farmacia, class: "form-control", value:@nombre_farmacia %>
+        </div>
+      </div> 
+      <div class="form-group">
+        <%= receta_form.label :medico_solicitante, 'Medico Solicitante (Nombres apellido1 apellido2)',class: "col-sm-6 control-label" %>
+        <div class="col-sm-4">
+          <%= receta_form.text_field :medico_solicitante, class: "form-control", value:"#{@nombre_medico} #{@apellido1_medico} #{@apellido2_medico}" %>
+        </div>
+      </div>     
+      <div class="form-group">
+        <h3>Posología</h3>
+        <div class="col-sm-2">
+          <%= receta_form.label :medicamento_programa_id, 'Presentacion' %>
+          <%= receta_form.collection_select(:medicamento_programa_id, @presentaciones.order('nombre_comercial'), :id, :nombre_comercial, {selected: @medicamento_programa_id}) %>
+        </div>
+        <div class="col-sm-2">
+          <%= receta_form.label :dia %>
+          <%= receta_form.number_field :dia, class: "form-control", step: 0.1, value:@dia %>
+        </div>
+        <div class="col-sm-2">
+          <%= receta_form.label :tarde %>
+          <%= receta_form.number_field :tarde, class: "form-control", step: 0.1, value:@tarde %>
+        </div>
+        <div class="col-sm-2">
+          <%= receta_form.label :noche %>
+          <%= receta_form.number_field :noche, class: "form-control", step: 0.1, value:@noche %>
+        </div>
+        <div class="col-sm-2">
+          <%= receta_form.label :dias, 'Duracion (Dias)' %>
+          <%= receta_form.number_field :dias, class: "form-control", value:@dias  %>
+        </div>
+        <div class="col-sm-2">
+          <%= receta_form.label :cantidad, 'Comprimidos' %>
+          <%= receta_form.number_field :cantidad, class: "form-control", value:@cantidad %>
+        </div>
+      </div>    
+    <% end %>    
+    <div class="form-group">
+      <%= form.label :fecha_hora_respuesta, class: "col-sm-6 control-label" %>
+        <div class="col-sm-4">
+         <%= form.text_field :fecha_hora_respuesta, class: "datepicker" %>
+        </div>
     </div>
-  </div>
-  <div class="form-group">
-    <%= form.label :observaciones, class: "col-sm-2 control-label" %>
-    <div class="col-sm-4">
-      <%= form.text_area :observaciones, class: "form-control" %>
+    <div class="form-group">
+       <%= form.label :observaciones, class: "col-sm-2 control-label" %>
+        <div class="col-sm-4">
+          <%= form.text_area :observaciones, class: "form-control" %>
+        </div>
     </div>
-  </div>
-  <div class="form-group">
+    <div class="form-group">
     <%= form.label :qf_soporte_id, class: "col-sm-2 control-label" %>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
       <%= form.collection_select(:qf_soporte_id, User.where(role: 2).order('name'), :id, :name) %>
     </div>
   </div>

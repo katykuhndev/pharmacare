@@ -28,7 +28,6 @@
    inflect.irregular 'examen_recomendacion', 'examen_recomendaciones'
    inflect.irregular 'medicion_recomendacion', 'medicion_recomendaciones'
    inflect.irregular 'tratamiento', 'tratamientos'
-   inflect.irregular 'esquema_tratamiento', 'esquema_tratamientos'
    inflect.uncountable %w( fish sheep )
  end
 

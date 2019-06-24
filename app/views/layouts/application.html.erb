@@ -27,6 +27,7 @@
       <% if user_signed_in? %>  
       <div class="list-group list-group-flush">
        <%= link_to 'Ingreso Solicitud', new_recomendacion_path, class: "list-group-item list-group-item-action bg-secondary text-white"  %>
+       <%= link_to 'Recomendaciones', recomendaciones_path, class: "list-group-item list-group-item-action bg-secondary text-white"  %>
        <%= link_to 'Pacientes', pacientes_path, class: "list-group-item list-group-item-action bg-secondary text-white"  %>
        <%= link_to 'Medicos', medicos_path, class: "list-group-item list-group-item-action bg-secondary text-white"  %>
        <%= link_to 'Laboratorios', laboratorios_path, class: "list-group-item list-group-item-action bg-secondary text-white"  %>

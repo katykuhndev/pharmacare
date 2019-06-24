@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_08_180132) do
+ActiveRecord::Schema.define(version: 2019_06_23_035229) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "name", null: false
@@ -44,6 +44,20 @@ ActiveRecord::Schema.define(version: 2019_06_08_180132) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["medicion_id"], name: "index_alarmas_on_medicion_id"
+  end
+
+  create_table "bloques", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "nombre"
+    t.time "inicio"
+    t.time "fin"
+    t.text "observaciones"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "bloques_programas", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "bloque_id", null: false
+    t.bigint "programa_id", null: false
   end
 
   create_table "casos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -82,6 +96,33 @@ ActiveRecord::Schema.define(version: 2019_06_08_180132) do
     t.index ["programa_id"], name: "index_documento_programas_on_programa_id"
   end
 
+  create_table "documento_recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "nombre"
+    t.bigint "recomendacion_id"
+    t.bigint "documento_programa_id"
+    t.integer "ejecutivo_id"
+    t.datetime "fecha"
+    t.text "observaciones"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["documento_programa_id"], name: "index_documento_recomendaciones_on_documento_programa_id"
+    t.index ["recomendacion_id"], name: "index_documento_recomendaciones_on_recomendacion_id"
+  end
+
+  create_table "esquema_tratamientos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "recomendacion_id"
+    t.bigint "tratamiento_id"
+    t.bigint "bloque_id"
+    t.decimal "dosis", precision: 6, scale: 2
+    t.string "unidad_medida"
+    t.text "observaciones"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bloque_id"], name: "index_esquema_tratamientos_on_bloque_id"
+    t.index ["recomendacion_id"], name: "index_esquema_tratamientos_on_recomendacion_id"
+    t.index ["tratamiento_id"], name: "index_esquema_tratamientos_on_tratamiento_id"
+  end
+
   create_table "examen_programas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.bigint "examen_id"
     t.bigint "programa_id"
@@ -90,6 +131,19 @@ ActiveRecord::Schema.define(version: 2019_06_08_180132) do
     t.datetime "updated_at", null: false
     t.index ["examen_id"], name: "index_examen_programas_on_examen_id"
     t.index ["programa_id"], name: "index_examen_programas_on_programa_id"
+  end
+
+  create_table "examen_recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "nombre"
+    t.bigint "recomendacion_id"
+    t.bigint "examen_programa_id"
+    t.integer "ejecutivo_id"
+    t.datetime "fecha"
+    t.text "observaciones"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["examen_programa_id"], name: "index_examen_recomendaciones_on_examen_programa_id"
+    t.index ["recomendacion_id"], name: "index_examen_recomendaciones_on_recomendacion_id"
   end
 
   create_table "examenes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -132,6 +186,17 @@ ActiveRecord::Schema.define(version: 2019_06_08_180132) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["programa_id"], name: "index_medicamento_programas_on_programa_id"
+  end
+
+  create_table "medicion_recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "recomendacion_id"
+    t.bigint "medicion_id"
+    t.decimal "valor", precision: 10
+    t.string "unidad_medida"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["medicion_id"], name: "index_medicion_recomendaciones_on_medicion_id"
+    t.index ["recomendacion_id"], name: "index_medicion_recomendaciones_on_recomendacion_id"
   end
 
   create_table "mediciones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
@@ -237,6 +302,17 @@ ActiveRecord::Schema.define(version: 2019_06_08_180132) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "tratamientos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.bigint "recomendacion_id"
+    t.integer "dias"
+    t.integer "cantidad"
+    t.text "observaciones"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "medicamento_programa_id"
+    t.index ["recomendacion_id"], name: "index_tratamientos_on_recomendacion_id"
+  end
+
   create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -258,11 +334,20 @@ ActiveRecord::Schema.define(version: 2019_06_08_180132) do
   add_foreign_key "casos", "programas"
   add_foreign_key "comunas", "regiones"
   add_foreign_key "documento_programas", "programas"
+  add_foreign_key "documento_recomendaciones", "documento_programas"
+  add_foreign_key "documento_recomendaciones", "recomendaciones"
+  add_foreign_key "esquema_tratamientos", "bloques"
+  add_foreign_key "esquema_tratamientos", "recomendaciones"
+  add_foreign_key "esquema_tratamientos", "tratamientos"
   add_foreign_key "examen_programas", "examenes"
   add_foreign_key "examen_programas", "programas"
+  add_foreign_key "examen_recomendaciones", "examen_programas"
+  add_foreign_key "examen_recomendaciones", "recomendaciones"
   add_foreign_key "farmacias", "comunas"
   add_foreign_key "laboratorios", "comunas"
   add_foreign_key "medicamento_programas", "programas"
+  add_foreign_key "medicion_recomendaciones", "mediciones"
+  add_foreign_key "medicion_recomendaciones", "recomendaciones"
   add_foreign_key "mediciones", "examenes"
   add_foreign_key "mediciones", "programas"
   add_foreign_key "medicos", "comunas"
@@ -275,4 +360,5 @@ ActiveRecord::Schema.define(version: 2019_06_08_180132) do
   add_foreign_key "recomendaciones", "pacientes"
   add_foreign_key "recomendaciones", "prestadores"
   add_foreign_key "recomendaciones", "programas"
+  add_foreign_key "tratamientos", "recomendaciones"
 end
