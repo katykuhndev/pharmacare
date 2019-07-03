@@ -1,9 +1,6 @@
-<div class="page-header">
-  <%= link_to prestadores_path, class: 'btn btn-default' do %>
-    <span class="glyphicon glyphicon-list-alt"></span>
-    Back
-  <% end %>
-  <h1>New prestador</h1>
-</div>
+
+<h2>Nuevo Prestador</h2>
 
 <%= render 'form' %>
+
+<%= link_to (t :button_back), prestadores_path %>

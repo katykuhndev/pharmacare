@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_23_035229) do
+ActiveRecord::Schema.define(version: 2019_06_30_022335) do
 
-  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -33,7 +33,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "alarmas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "alarmas", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "medicion_id"
     t.string "nombre"
     t.decimal "valor_minimo", precision: 6, scale: 2
@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["medicion_id"], name: "index_alarmas_on_medicion_id"
   end
 
-  create_table "bloques", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "bloques", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.time "inicio"
     t.time "fin"
@@ -55,12 +55,12 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "bloques_programas", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "bloques_programas", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "bloque_id", null: false
     t.bigint "programa_id", null: false
   end
 
-  create_table "casos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "casos", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "codigo"
     t.bigint "programa_id"
     t.bigint "medico_id"
@@ -78,7 +78,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["programa_id"], name: "index_casos_on_programa_id"
   end
 
-  create_table "comunas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "comunas", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.bigint "region_id"
     t.datetime "created_at", null: false
@@ -86,7 +86,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["region_id"], name: "index_comunas_on_region_id"
   end
 
-  create_table "documento_programas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "documento_programas", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.text "descripcion"
     t.bigint "programa_id"
@@ -96,7 +96,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["programa_id"], name: "index_documento_programas_on_programa_id"
   end
 
-  create_table "documento_recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "documento_recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.bigint "recomendacion_id"
     t.bigint "documento_programa_id"
@@ -109,7 +109,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["recomendacion_id"], name: "index_documento_recomendaciones_on_recomendacion_id"
   end
 
-  create_table "esquema_tratamientos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "esquema_tratamientos", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "recomendacion_id"
     t.bigint "tratamiento_id"
     t.bigint "bloque_id"
@@ -123,7 +123,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["tratamiento_id"], name: "index_esquema_tratamientos_on_tratamiento_id"
   end
 
-  create_table "examen_programas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "examen_programas", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "examen_id"
     t.bigint "programa_id"
     t.integer "dias_vencimiento"
@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["programa_id"], name: "index_examen_programas_on_programa_id"
   end
 
-  create_table "examen_recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "examen_recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.bigint "recomendacion_id"
     t.bigint "examen_programa_id"
@@ -146,14 +146,14 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["recomendacion_id"], name: "index_examen_recomendaciones_on_recomendacion_id"
   end
 
-  create_table "examenes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "examenes", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.text "descripcion"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "farmacias", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "farmacias", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.string "contacto"
     t.string "fono"
@@ -165,7 +165,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["comuna_id"], name: "index_farmacias_on_comuna_id"
   end
 
-  create_table "laboratorios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "laboratorios", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.string "contacto"
     t.string "fono"
@@ -176,7 +176,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["comuna_id"], name: "index_laboratorios_on_comuna_id"
   end
 
-  create_table "medicamento_programas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "medicamento_programas", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "programa_id"
     t.string "nombre_comercial"
     t.string "principio_activo"
@@ -188,7 +188,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["programa_id"], name: "index_medicamento_programas_on_programa_id"
   end
 
-  create_table "medicion_recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "medicion_recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "recomendacion_id"
     t.bigint "medicion_id"
     t.decimal "valor", precision: 10
@@ -199,7 +199,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["recomendacion_id"], name: "index_medicion_recomendaciones_on_recomendacion_id"
   end
 
-  create_table "mediciones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "mediciones", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.text "descripcion"
     t.bigint "programa_id"
@@ -211,7 +211,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["programa_id"], name: "index_mediciones_on_programa_id"
   end
 
-  create_table "medicos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "medicos", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombres"
     t.string "primer_apellido"
     t.string "segundo_apellido"
@@ -228,7 +228,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["comuna_id"], name: "index_medicos_on_comuna_id"
   end
 
-  create_table "pacientes", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "pacientes", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombres"
     t.string "primer_apellido"
     t.string "segundo_apellido"
@@ -245,7 +245,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["comuna_id"], name: "index_pacientes_on_comuna_id"
   end
 
-  create_table "prestadores", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "prestadores", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.string "contacto"
     t.string "fono"
@@ -256,7 +256,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["comuna_id"], name: "index_prestadores_on_comuna_id"
   end
 
-  create_table "programas", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "programas", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "laboratorio_id"
     t.string "nombre"
     t.text "descripcion"
@@ -268,7 +268,7 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["qf_soporte_id"], name: "index_programas_on_qf_soporte_id"
   end
 
-  create_table "recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "id_recomendacion"
     t.integer "estado"
     t.integer "resultado"
@@ -295,14 +295,14 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.index ["programa_id"], name: "index_recomendaciones_on_programa_id"
   end
 
-  create_table "regiones", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "regiones", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.string "codigo"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "tratamientos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "tratamientos", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "recomendacion_id"
     t.integer "dias"
     t.integer "cantidad"
@@ -310,10 +310,11 @@ ActiveRecord::Schema.define(version: 2019_06_23_035229) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "medicamento_programa_id"
+    t.integer "documento_recomendacion_id"
     t.index ["recomendacion_id"], name: "index_tratamientos_on_recomendacion_id"
   end
 
-  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"

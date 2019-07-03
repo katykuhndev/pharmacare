@@ -21,11 +21,12 @@ class Recomendacion < ApplicationRecord
   def get_alarma
     #TODO
     # cambiar medicion_id: 1 por algo mas generico
+    # medicion 1 es RAN
     alarmas = Alarma.where(medicion_id: 1)
-    if self.medicion_recomendaciones.where(medicion_id: 1).first && alarmas.count > 0
+    if self.medicion_recomendaciones && self.medicion_recomendaciones.where(medicion_id: 1).first && alarmas.count > 0
       valor = self.medicion_recomendaciones.where(medicion_id: 1).first.valor
       for alarma in alarmas
-        if valor >= alarma.valor_minimo && valor <= alarma.valor_maximo
+        if valor && valor >= alarma.valor_minimo && valor <= alarma.valor_maximo
           return alarma
         end  
       end  

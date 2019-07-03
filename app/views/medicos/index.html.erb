@@ -58,7 +58,7 @@
         <td><%= medico.genero %></td>
         <td><%= medico.fecha_nacimiento %></td>
         <td><%= medico.fono1 %></td>
-        <td><%= medico.comuna.nombre %></td>
+        <td><%= medico.comuna ? medico.comuna.nombre : '' %></td>
         <td><%= link_to (t :text_show), medico %></td>
         <td><%= link_to (t :text_edit), edit_medico_path(medico) %></td>
         <td><%= link_to (t :text_destroy), medico, method: :delete, data: { confirm: (t :text_are_you_sure) } %></td>

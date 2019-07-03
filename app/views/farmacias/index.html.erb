@@ -44,7 +44,7 @@
         <td><%= farmacia.contacto %></td>
         <td><%= farmacia.fono %></td>
         <td><%= farmacia.direccion %></td>
-        <td><%= farmacia.comuna.nombre %></td>
+        <td><%= farmacia.comuna ? farmacia.comuna.nombre : '' %></td>
         <td><%= farmacia.tipo %></td>
         <td><%= link_to (t :text_show), farmacia %></td>
         <td><%= link_to (t :text_edit), edit_farmacia_path(farmacia) %></td>

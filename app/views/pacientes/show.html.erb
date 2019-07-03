@@ -1,5 +1,14 @@
-
-<h2><%=(t :text_show) %> paciente</h2>
+<div class="page-header">
+  <%= link_to pacientes_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Volver
+  <% end %>
+  <%= link_to edit_paciente_path(@paciente), class: 'btn btn-default bg-secondary text-white' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Editar
+  <% end %>
+  <h1>Paciente</h1>
+</div>
 
 <dl class="dl-horizontal">
   <dt>Nombres:</dt>
@@ -33,9 +42,6 @@
   <dd><%= @paciente.direccion %></dd>
 
   <dt>Comuna:</dt>
-  <dd><%= @paciente.comuna.nombre %></dd>
+  <dd><%= @paciente.comuna ? @paciente.comuna.nombre : '' %></dd>
 
 </dl>
-
-<%= link_to (t :text_edit), edit_paciente_path(@paciente) %> |
-<%= link_to (t :text_back), pacientes_path %>

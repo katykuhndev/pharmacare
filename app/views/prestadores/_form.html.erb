@@ -1,50 +1,50 @@
-<%= form_for(@prestador, html: { class: "form-horizontal", role: "form" }) do |f| %>
+
+<%= form_with(model: @prestador, local: true, html: { class: "form-horizontal", role: "form" }) do |form| %>
   <% if @prestador.errors.any? %>
     <div class="alert alert-danger alert-dismissable" role="alert">
-      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      <h4><%= pluralize(@prestador.errors.count, "error") %> prohibited this prestador from being saved:</h4>
-
+      <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
       <ul>
       <% @prestador.errors.full_messages.each do |msg| %>
         <li><%= msg %></li>
       <% end %>
       </ul>
     </div>
-  <% end %>
+  <% end %>  
+
 
   <div class="form-group">
-    <%= f.label :nombre, class: "col-sm-2 control-label" %>
-    <div class="col-sm-10">
-      <%= f.text_field :nombre, class: "form-control" %>
+    <%= form.label :nombre, class: "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+      <%= form.text_field :nombre, class: "form-control" %>
     </div>
   </div>
   <div class="form-group">
-    <%= f.label :contacto, class: "col-sm-2 control-label" %>
-    <div class="col-sm-10">
-      <%= f.text_field :contacto, class: "form-control" %>
+    <%= form.label :contacto, class: "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+      <%= form.text_field :contacto, class: "form-control" %>
     </div>
   </div>
   <div class="form-group">
-    <%= f.label :fono, class: "col-sm-2 control-label" %>
-    <div class="col-sm-10">
-      <%= f.text_field :fono, class: "form-control" %>
+    <%= form.label :fono, class: "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+      <%= form.text_field :fono, class: "form-control" %>
     </div>
   </div>
   <div class="form-group">
-    <%= f.label :direccion, class: "col-sm-2 control-label" %>
-    <div class="col-sm-10">
-      <%= f.text_area :direccion, class: "form-control" %>
+    <%= form.label :direccion, class: "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+      <%= form.text_area :direccion, class: "form-control" %>
     </div>
   </div>
   <div class="form-group">
-    <%= f.label :comuna, class: "col-sm-2 control-label" %>
-    <div class="col-sm-10">
-      <%= f.text_field :comuna, class: "form-control" %>
+    <%= form.label :comuna_id, class: "col-sm-2 control-label" %>
+    <div class="col-sm-6">
+      <%= form.collection_select(:comuna_id, Comuna.all.order('nombre'), :id, :nombre) %>
     </div>
   </div>
   <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
-      <%= f.submit class: "btn btn-primary" %>
+    <div class="actions">
+      <%= form.submit class: 'btn btn-default bg-secondary text-white' %>
     </div>
   </div>
 <% end %>

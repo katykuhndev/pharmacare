@@ -1,13 +1,13 @@
 <div class="page-header">
   <%= link_to farmacias_path, class: 'btn btn-default' do %>
     <span class="glyphicon glyphicon-list-alt"></span>
-    Back
+    Volver
   <% end %>
-  <%= link_to edit_farmacia_path(@farmacia), class: 'btn btn-primary' do %>
-    <span class="glyphicon glyphicon-pencil"></span>
-    Edit
+  <%= link_to edit_farmacia_path(@farmacia), class: 'btn btn-default bg-secondary text-white' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Editar
   <% end %>
-  <h1>Show farmacia</h1>
+  <h1>Farmacia</h1>
 </div>
 
 <dl class="dl-horizontal">
@@ -24,7 +24,7 @@
   <dd><%= @farmacia.direccion %></dd>
 
   <dt>Comuna:</dt>
-  <dd><%= @farmacia.comuna %></dd>
+  <dd><%= @farmacia.comuna ? @farmacia.comuna.nombre : ''%></dd>
 
   <dt>Tipo:</dt>
   <dd><%= @farmacia.tipo %></dd>

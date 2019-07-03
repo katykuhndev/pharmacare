@@ -38,7 +38,7 @@
   <div class="form-group">
     <%= form.label :genero, class: "col-sm-2 control-label" %>
     <div class="col-sm-6">
-      <%= form.select :genero, medico.generos.keys %>
+      <%= form.select :genero, Medico.generos.keys %>
     </div>
   </div>
   <div class="form-group">

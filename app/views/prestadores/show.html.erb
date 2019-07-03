@@ -1,13 +1,13 @@
 <div class="page-header">
   <%= link_to prestadores_path, class: 'btn btn-default' do %>
     <span class="glyphicon glyphicon-list-alt"></span>
-    Back
+    Volver
   <% end %>
-  <%= link_to edit_prestador_path(@prestador), class: 'btn btn-primary' do %>
-    <span class="glyphicon glyphicon-pencil"></span>
-    Edit
+  <%= link_to edit_prestador_path(@prestador), class: 'btn btn-default bg-secondary text-white' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Editar
   <% end %>
-  <h1>Show prestador</h1>
+  <h1>Prestador</h1>
 </div>
 
 <dl class="dl-horizontal">
@@ -24,6 +24,6 @@
   <dd><%= @prestador.direccion %></dd>
 
   <dt>Comuna:</dt>
-  <dd><%= @prestador.comuna %></dd>
+  <dd><%= @prestador.comuna ? @prestador.comuna.nombre : '' %></dd>
 
 </dl>
