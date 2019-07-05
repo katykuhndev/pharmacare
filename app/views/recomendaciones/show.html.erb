@@ -14,17 +14,14 @@
 
   <h3>Estado: <%= @recomendacion.estado.upcase %></h3>
 
-  <% if @recomendacion.resultado %>
-      <dt>Resultado: <%= @recomendacion.resultado.upcase %></dt>
+  <% if !@recomendacion.pendiente? %>
+  <h3>Resultado: <%= @recomendacion.resultado.upcase %></h3>
   <% end %>
-
-  <h3>Alarma: <%= @alarma ? @alarma.nombre : 'NO' %></h3>
+  <h3><%= @alarma ? @alarma.nombre : 'SIN ALARMA' %></h3>
 
   <h3>Paciente: <%= @datos_paciente %></h3>
 
-  <h4>Ingreso: Via: <%= @recomendacion.via_ingreso %> Hora: <%= @recomendacion.fecha_hora_ingreso.strftime("%H:%M de %m/%d/%Y") %></h4>
-
-  <%= link_to 'Crear PDF de Recomendación', recomendacion_path(@recomendacion, :format => :pdf) %>
+  <h4>Ingreso Via: <%= @recomendacion.via_ingreso %> Hora: <%= @recomendacion.fecha_hora_ingreso.strftime("%H:%M de %m/%d/%Y") %></h4>
   
   <%= link_to  recomendacion_path(@recomendacion, :format => :pdf), class: 'btn btn-default bg-secondary text-white' do %>
     <span class="glyphicon glyphicon-plus"></span>
@@ -32,9 +29,9 @@
   <% end %>
 
 
-  <h3>Datos Receta</h3>
+  <h3>Datos Receta</h3><dt>Medico: <%= @datos_medico %> </dt>
 
-  <dt>Fecha Receta: <%= @fecha_receta%> </dt>
+  <dt>Fecha Receta: <%= @fecha_receta%> Vencimiento : <%= @fecha_vencimiento_receta%> </dt>
 
   <dt>Medico: <%= @datos_medico %> </dt>
 
@@ -56,7 +53,7 @@
 
   <h3>Datos Examen</h3>
 
-  <dt>Fecha Hemograma: <%= @fecha_examen %> </dt>
+  <dt>Fecha Hemograma: <%= @fecha_examen %> Vencimiento : <%= @fecha_vencimiento_examen %> </dt>
 
   <dt>RAN: <%= @ran %> mm3</dt>
 

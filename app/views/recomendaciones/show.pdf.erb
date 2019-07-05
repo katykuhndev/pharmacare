@@ -1,7 +1,7 @@
 
-<div style="float: right; "><%= localize(Date.today, :format => "%A, %d de %B de %Y") %></div>
+<div style=" margin-left: 550px; "><%= (localize(Date.today, :format => "%A, %e de %B de %Y")).capitalize %></div>
 <br><br>
-<h3 align="center">RECOMENDACIÓN LODUX APROBADA <%= @iniciales_paciente %> <%=@recomendacion.id_recomendacion%> </h3>
+<h3 align="center">RECOMENDACIÓN LODUX <%= @titulo %> <%= @iniciales_paciente %> <%=@recomendacion.id_recomendacion%> </h3>
 
 Estimado (a) <br>
 Químico Farmacéutico <br>
@@ -20,21 +20,23 @@ Rut : <%= @rut_paciente %></h3>
 	<dt><b>Farmacia : <%= @datos_farmacia %> </b> </dt>
 	<dt><b>Médico solicitante : <%= @datos_medico %> </b> </dt>
 <dl>
-<h4 style="text-decoration: underline;">Posología: </h4>
-<dt><b>1. <%= @presentacion %>  <%= @dia %> Tarde: <%= @tarde %> Noche <%= @noche %></b> &nbsp; por <%= @dias %> días (<%= @cantidad %> comprimidos) </dt><br><br>
-
-Luego de analizar la información antes presentada, se ha determinado APROBAR la
-solicitud del <%@recomendacion.fecha_hora_ingreso.strftime("%m/%d/%Y")%> . Este documento es válido hasta el ...... inclusive. <br><br>
-Por lo tanto, se autoriza el despacho del medicamento Lodux®.<br><br>
+<%if @accion=='APROBAR'%>	
+	<h4 style="text-decoration: underline;">Posología: </h4>
+	<dt><b>1. <%= @presentacion %> &nbsp;&nbsp; <%= @dia_fraccional %> &nbsp;-&nbsp; <%= @tarde_fraccional %> &nbsp;-&nbsp; <%= @noche_fraccional %></b> &nbsp;&nbsp; por <%= @dias %> días (<%= @cantidad %> comprimidos) </dt><br><br>
+<%end%>
+Luego de analizar la información antes presentada, se ha determinado <%= @accion%> la solicitud del <%=@recomendacion.fecha_hora_ingreso.strftime("%d/%m/%Y")%>. Este documento es válido hasta el <%=@fecha_vencimiento_examen%> inclusive. <br><br>
+Por lo tanto, <% @accion=='RECHAZAR' ? 'NO ': ''%>se autoriza el despacho del medicamento Lodux®.<br><br>
 
 Motivo del rechazo: No aplica.<br><br>
 
-<%= @alarma ? @alarma.accion : 'Siga cuidadosamente las indicaciones de su médico. Paciente tomará ....
-comprimidos diarios de ... mg. (... mg. por día).' %>
+<p style="text-align:justify;"><%= @alarma ? @alarma.accion : "Siga cuidadosamente las indicaciones de su médico. Paciente tomará #{@dosis_diaria} 
+comprimidos diarios de #{@dosis_medicamento} #{@un_medicamento}. (#{@dosis_medicamento*@dosis_diaria} #{@un_medicamento}  por día)." %></p>
 
-
-<br><br><br><br>Saludos cordiales, <br>
-QF. Fernando Sáez | Soporte Farmacovigilancia | Pharmaceutical Care®
+<br><br><br><br>
+<div style="display: inline;"><%= wicked_pdf_image_tag('logo_pharma_care.png' ,:width => "200",  :height=>"85" ) %></div>
+<div style="width: 70%; float: right;">Saludos cordiales, <br>
+QF. Fernando Sáez | Soporte Farmacovigilancia | Pharmaceutical Care®<br>
 +569 33752459 |
-farmacovigilancia@pharmacare.cl
+farmacovigilancia@pharmacare.cl<br>
 Santiago de Chile
+</div>

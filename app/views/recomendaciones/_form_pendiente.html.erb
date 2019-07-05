@@ -39,7 +39,7 @@
         <div class="form-group">
           <%= examen_form.label :fecha_examen,'Fecha Hemograma', class: "col-sm-2 control-label" %>
           <div class="col-sm-4">
-            <%= examen_form.text_field :fecha_examen, class: "datepicker", value:@fecha_examen %>
+            <%= examen_form.text_field :fecha_examen, class: "datepicker", value: @fecha_examen ? @fecha_examen : ''%>
           </div>
         </div>
         <div class="form-group">
@@ -73,7 +73,7 @@
       <div class="form-group">
         <%= receta_form.label :fecha_receta, class: "col-sm-2 control-label" %>
         <div class="col-sm-4">
-          <%= receta_form.text_field :fecha_receta, class: "datepicker", value:@fecha_receta %>
+          <%= receta_form.text_field :fecha_receta, class: "datepicker", value:@fecha_receta ? @fecha_receta : ''%>
         </div>
       </div>    
       <div class="form-group">

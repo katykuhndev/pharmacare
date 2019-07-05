@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_30_022335) do
+ActiveRecord::Schema.define(version: 2019_07_04_224747) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", null: false
@@ -43,6 +43,7 @@ ActiveRecord::Schema.define(version: 2019_06_30_022335) do
     t.text "observaciones"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "color"
     t.index ["medicion_id"], name: "index_alarmas_on_medicion_id"
   end
 
@@ -287,6 +288,8 @@ ActiveRecord::Schema.define(version: 2019_06_30_022335) do
     t.boolean "con_alarma"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "alarma_id"
+    t.index ["alarma_id"], name: "index_recomendaciones_on_alarma_id"
     t.index ["caso_id"], name: "index_recomendaciones_on_caso_id"
     t.index ["farmacia_id"], name: "index_recomendaciones_on_farmacia_id"
     t.index ["medico_id"], name: "index_recomendaciones_on_medico_id"
@@ -355,6 +358,7 @@ ActiveRecord::Schema.define(version: 2019_06_30_022335) do
   add_foreign_key "pacientes", "comunas"
   add_foreign_key "prestadores", "comunas"
   add_foreign_key "programas", "laboratorios"
+  add_foreign_key "recomendaciones", "alarmas"
   add_foreign_key "recomendaciones", "casos"
   add_foreign_key "recomendaciones", "farmacias"
   add_foreign_key "recomendaciones", "medicos"
