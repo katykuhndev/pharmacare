@@ -87,3 +87,7 @@ pickle-email-*.html
 .elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+
+# Ignore uploaded files in development
+/storage/*
+!/storage/.keep
