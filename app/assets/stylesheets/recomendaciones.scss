@@ -1,3 +1,43 @@
 // Place all the styles related to the Recomendaciones controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+input[type="file"] {
+  border: 1px solid #D3D3D3;
+  box-sizing: border-box;
+  display: inline-block;
+  font-size: 14px;
+  margin: 0;
+  padding: 8px;
+  position: relative;
+  background-color: #fff;
+  overflow: hidden;
+  width: 99%;
+  -webkit-appearance: none;
+  -webkit-box-sizing: border-box;
+  z-index: 1;
+}
+input[type="file"]:after { /* Mask the no file chosen label */
+  background-color: #fff;
+  content: '';
+  display: block;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+}
+
+input[type="file"]::-webkit-file-upload-button { /* Style the button */
+  background: #fff;
+  color: #555;
+  font: inherit;
+  padding: 0;
+  position: relative;
+  border: none;
+  text-align: left;
+  position: relative;
+  z-index: 100;
+  -webkit-appearance: none;
+}

@@ -1,13 +1,16 @@
 --- 
 amazon: 
   access_key_id: "<%= ENV['AWS_ACCESS_KEY_ID'] %>"
-  bucket: lodux
+  bucket: synthon-lodux
   region: us-east-2
   secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
   service: S3
 local: 
-  root: <%= Rails.root.join("storage") %>
-  service: Disk
+  access_key_id: "<%= ENV['AWS_ACCESS_KEY_ID'] %>"
+  bucket: lodux-prueba
+  region: us-east-2
+  secret_access_key: <%= ENV['AWS_SECRET_ACCESS_KEY'] %>
+  service: S3
 test: 
   root: <%= Rails.root.join("tmp/storage") %>
   service: Disk

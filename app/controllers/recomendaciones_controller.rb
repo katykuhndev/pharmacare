@@ -38,9 +38,9 @@ class RecomendacionesController < ApplicationController
     @tarde = @esquema_tratamientos.where(bloque_id: 2).first ? @esquema_tratamientos.where(bloque_id: 2).first.dosis : ''
     @noche = @esquema_tratamientos.where(bloque_id: 3).first ? @esquema_tratamientos.where(bloque_id: 3).first.dosis : ''
 
-    @dia_fraccional =  "#{@dia.floor} #{(@dia%1==0.0) ? '' : Rational(@dia%1)}"
-    @tarde_fraccional =  "#{@tarde.floor} #{(@tarde%1==0.0) ? '' : Rational(@tarde%1)}"
-    @noche_fraccional =  "#{@noche.floor} #{(@noche%1==0.0) ? '' : Rational(@noche%1)}"
+    @dia_fraccional =  "#{@dia.floor} #{(@dia%1==0.0) ? '' : Rational(@dia%1)}" if @dia
+    @tarde_fraccional =  "#{@tarde.floor} #{(@tarde%1==0.0) ? '' : Rational(@tarde%1)}" if @tarde
+    @noche_fraccional =  "#{@noche.floor} #{(@noche%1==0.0) ? '' : Rational(@noche%1)}" if @noche
   
     @dosis_diaria = @dia.to_f + @tarde.to_f + @noche.to_f
 
@@ -50,6 +50,9 @@ class RecomendacionesController < ApplicationController
     @segmentados = @recomendacion.medicion_recomendaciones.where(medicion_id: 4).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 4).first.valor : ''
 
     @alarma = @recomendacion.alarma
+    
+    @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
+    @documento_examen = @recomendacion.examen_recomendaciones.where(examen_programa_id: 1).first
 
     fecha_examen = @recomendacion.get_fecha_examen
     @fecha_examen = fecha_examen ? fecha_examen.strftime("%d/%m/%Y") : ''
@@ -60,7 +63,7 @@ class RecomendacionesController < ApplicationController
     fecha_vencimiento_examen = @recomendacion.get_fecha_vencimiento_examen
     @fecha_vencimiento_examen = fecha_vencimiento_examen ? fecha_vencimiento_examen.strftime("%d/%m/%Y") : ''
 
-    @rechazo_por_vencimiento = (@recomendacion.get_fecha_vencimiento_examen < Time.now) ? true : false
+    @rechazo_por_vencimiento = (@recomendacion.get_fecha_vencimiento_examen < Time.now) ? true : false if fecha_vencimiento_examen
     @titulo = (@recomendacion.aprobacion? || @recomendacion.aprobacion_con_reparos?) ? 'APROBADA' : 'RECHAZADA' 
     @accion = (@recomendacion.aprobacion? || @recomendacion.aprobacion_con_reparos?) ? 'APROBAR' : 'RECHAZAR' 
     
@@ -121,7 +124,9 @@ class RecomendacionesController < ApplicationController
     @nombre_prestador = @recomendacion.prestador ? @recomendacion.prestador.nombre : ''
     @farmacia = @recomendacion.farmacia
     @nombre_farmacia = @recomendacion.farmacia ? @recomendacion.farmacia.nombre : ''
-
+    
+    @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
+    @documento_examen = @recomendacion.examen_recomendaciones.where(examen_programa_id: 1).first
     @fecha_examen = @recomendacion.get_fecha_examen
     @fecha_receta = @recomendacion.get_fecha_receta
     
@@ -175,6 +180,10 @@ class RecomendacionesController < ApplicationController
          @documento_receta.update(fecha: recomendacion_params["atributos_receta"]["fecha_receta"])
        end
        
+       #@documento_receta.receta.purge
+       if @documento_receta
+         @documento_receta.receta.attach(recomendacion_params["atributos_receta"]["receta"])
+       end 
        @tratamientos = @recomendacion.tratamientos
        if @tratamientos.empty?
           @tratamiento = Tratamiento.create(recomendacion_id: @recomendacion.id, medicamento_programa_id: recomendacion_params["atributos_receta"]["medicamento_programa_id"], dias: recomendacion_params["atributos_receta"]["dias"], cantidad: recomendacion_params["atributos_receta"]["cantidad"], documento_recomendacion_id: @documento_receta.id)
@@ -216,7 +225,11 @@ class RecomendacionesController < ApplicationController
        else
          @documento_examen.update(fecha: recomendacion_params["atributos_examen"]["fecha_examen"])
        end
-
+       
+       #@documento_examen.examen.purge
+       if @documento_examen 
+         @documento_examen.examen.attach(recomendacion_params["atributos_examen"]["examen"])
+       end 
 
        @medicion_recomendaciones_ran = @recomendacion.medicion_recomendaciones.where(recomendacion_id: @recomendacion.id, medicion_id: 1)
        @medicion_recomendaciones_leucocitos = @recomendacion.medicion_recomendaciones.where(recomendacion_id: @recomendacion.id, medicion_id: 2)
@@ -274,6 +287,6 @@ class RecomendacionesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recomendacion_params
-      params.require(:recomendacion).permit({atributos_examen: [:fecha_examen, :ran, :leucocitos, :baciliformes, :segmentados]}, {atributos_receta: [:fecha_receta, :prestador, :farmacia, :medico_solicitante, :medicamento_programa_id, :dia, :tarde, :noche, :dias, :cantidad]}, {atributos_paciente: [:rut, :nombres, :primer_apellido, :segundo_apellido]}, :id_recomendacion, :estado, :resultado, :caso_id, :programa_id, :paciente_id, :medico_id, :prestador_id, :farmacia_id, :qf_soporte_id, :ejecutivo_id, :fecha_hora_ingreso, :via_ingreso, :fecha_hora_respuesta, :observaciones, :con_alarma)
+      params.require(:recomendacion).permit({atributos_examen: [:fecha_examen, :examen, :ran, :leucocitos, :baciliformes, :segmentados]}, {atributos_receta: [:fecha_receta, :receta, :prestador, :farmacia, :medico_solicitante, :medicamento_programa_id, :dia, :tarde, :noche, :dias, :cantidad]}, {atributos_paciente: [:rut, :nombres, :primer_apellido, :segundo_apellido]}, :id_recomendacion, :estado, :resultado, :caso_id, :programa_id, :paciente_id, :medico_id, :prestador_id, :farmacia_id, :qf_soporte_id, :ejecutivo_id, :fecha_hora_ingreso, :via_ingreso, :fecha_hora_respuesta, :observaciones, :con_alarma)
     end
 end
