@@ -64,7 +64,30 @@ class Recomendacion < ApplicationRecord
     else
       return false
     end
-  end  
+  end 
+
+    def procesar_alarma
+    #TODO
+    # cambiar medicion_id: 1 por algo mas generico
+    # medicion 1 es RAN
+    alarmas = Alarma.where(medicion_id: 1)
+    if alarmas.count > 0 && self.medicion_recomendaciones.where(medicion_id: 1).exists?
+      valor = self.medicion_recomendaciones.where(medicion_id: 1).first.valor
+      puts 'holaholahilaaaaaa'
+      puts valor
+      for alarma in alarmas
+        if valor && valor >= alarma.valor_minimo && valor <= alarma.valor_maximo
+          self.resultado = alarma.resultado
+          self.alarma_id = alarma.id
+          self.con_alarma = 1
+          return alarma
+        end  
+      end  
+      return false  
+    else
+     return false 
+    end
+  end   
 
   def get_fecha_receta
     documento_receta = self.documento_recomendaciones.where(documento_programa_id: 1).first
@@ -89,27 +112,6 @@ class Recomendacion < ApplicationRecord
     fecha_examen = self.get_fecha_examen
     @fecha_vencimiento_examen = fecha_examen ? (fecha_examen + dias_vencimiento_examen.days) : false
   end 
- 
-  def procesar_alarma
-    #TODO
-    # cambiar medicion_id: 1 por algo mas generico
-    # medicion 1 es RAN
-    alarmas = Alarma.where(medicion_id: 1)
-    if alarmas.count > 0 && self.medicion_recomendaciones.where(medicion_id: 1).exists?
-      valor = self.medicion_recomendaciones.where(medicion_id: 1).first.valor
-      for alarma in alarmas
-        if valor && valor >= alarma.valor_minimo && valor <= alarma.valor_maximo
-          self.resultado = alarma.resultado
-          self.alarma_id = alarma.id
-          self.con_alarma = 1
-          return alarma
-        end  
-      end  
-      return false  
-    else
-     return false 
-    end
-  end  
 
   def informacion_completa?
     return false if self.paciente.nil?

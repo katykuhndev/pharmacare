@@ -66,7 +66,12 @@ class RecomendacionesController < ApplicationController
     @rechazo_por_vencimiento = (@recomendacion.get_fecha_vencimiento_examen < Time.now) ? true : false if fecha_vencimiento_examen
     @titulo = (@recomendacion.aprobacion? || @recomendacion.aprobacion_con_reparos?) ? 'APROBADA' : 'RECHAZADA' 
     @accion = (@recomendacion.aprobacion? || @recomendacion.aprobacion_con_reparos?) ? 'APROBAR' : 'RECHAZAR' 
-    
+    puts 'ssssssssssssssseeeeeeeeeeeeeeeeees'
+    puts @accion
+    puts @accion=='RECHAZAR'
+    puts @alarma.color
+    @autorizador = @recomendacion.qf_soporte.name
+
     respond_to do |format|
       format.html
       format.pdf do

@@ -11,7 +11,7 @@ Químico Farmacéutico <br>
 <h3>Nombre Paciente: <%= @datos_paciente %><br>
 Rut : <%= @rut_paciente %></h3>
 
-<h3>Hemograma (status) : <%= @alarma ? @alarma.nombre : 'Sin Alarma' %> </h3> 
+<h3>Hemograma (status) :  <%= @alarma ? @alarma.nombre : 'Sin Alarma' %> </h3> 
 <dl class="dl-horizontal">
 	<dt><b>R.A.N: <%= @ran %> mm3</b> </dt>
 	<dt><b>Fecha Hemograma : <%= @fecha_examen%> </b> </dt>
@@ -25,18 +25,20 @@ Rut : <%= @rut_paciente %></h3>
 	<dt><b>1. <%= @presentacion %> &nbsp;&nbsp; <%= @dia_fraccional %> &nbsp;-&nbsp; <%= @tarde_fraccional %> &nbsp;-&nbsp; <%= @noche_fraccional %></b> &nbsp;&nbsp; por <%= @dias %> días (<%= @cantidad %> comprimidos) </dt><br><br>
 <%end%>
 Luego de analizar la información antes presentada, se ha determinado <%= @accion%> la solicitud del <%=@recomendacion.fecha_hora_ingreso.strftime("%d/%m/%Y")%>. Este documento es válido hasta el <%=@fecha_vencimiento_examen%> inclusive. <br><br>
-Por lo tanto, <% @accion=='RECHAZAR' ? 'NO ': ''%>se autoriza el despacho del medicamento Lodux®.<br><br>
+Por lo tanto, <%= @accion=='RECHAZAR' ? 'NO ' : ''%>se autoriza el despacho del medicamento Lodux®.<br><br>
 
 Motivo del rechazo: No aplica.<br><br>
 
 <p style="text-align:justify;"><%= @alarma ? @alarma.accion : "Siga cuidadosamente las indicaciones de su médico. Paciente tomará #{@dosis_diaria} 
 comprimidos diarios de #{@dosis_medicamento} #{@un_medicamento}. (#{@dosis_medicamento*@dosis_diaria} #{@un_medicamento}  por día)." %></p>
 
-<br><br><br><br>
-<div style="display: inline;"><%= wicked_pdf_image_tag('logo_pharma_care.png' ,:width => "200",  :height=>"85" ) %></div>
-<div style="width: 70%; float: right;">Saludos cordiales, <br>
-QF. Fernando Sáez | Soporte Farmacovigilancia | Pharmaceutical Care®<br>
-+569 33752459 |
-farmacovigilancia@pharmacare.cl<br>
-Santiago de Chile
+<div style="position: relative; top:200px;">
+	Saludos cordiales, <br><br>
+	<div style="display: inline;"><%= wicked_pdf_image_tag('logo_pharma_carta.png') %></div>
+	<div style="width: 80%; float: right;">
+	<%= @autorizador %>  | Soporte Farmacovigilancia | Pharmaceutical Care®<br>
+	<%= wicked_pdf_image_tag('wazap_logo.png') %> +569 33752459 |<%= wicked_pdf_image_tag('email_logo.png') %>
+	<font style='text-decoration: underline; color: blue;'>farmacovigilancia@pharmacare.cl</font><br>
+	Santiago de Chile
+	</div>
 </div>
