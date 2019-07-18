@@ -69,7 +69,7 @@ class RecomendacionesController < ApplicationController
     puts 'ssssssssssssssseeeeeeeeeeeeeeeeees'
     puts @accion
     puts @accion=='RECHAZAR'
-    puts @alarma.color
+    #puts @alarma.color
     @autorizador = @recomendacion.qf_soporte.name
 
     respond_to do |format|

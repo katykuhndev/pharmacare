@@ -56,9 +56,9 @@ class Recomendacion < ApplicationRecord
     # cambiar documento_programa_id: 1 por algo mas generico
     # cambiar ExamenPrograma.find(2) por algo mas generico
     self.resultado = :aprobacion
+    self.procesar_alarma
     if self.informacion_completa?
       self.resultado = :aprobacion_con_reparos if self.get_fecha_vencimiento_receta < Time.now
-      self.procesar_alarma
       self.resultado = :rechazo_tecnico if self.get_fecha_vencimiento_examen < Time.now
       self.estado = :por_resolver 
     else

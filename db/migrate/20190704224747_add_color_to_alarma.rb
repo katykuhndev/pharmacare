@@ -1,5 +1,5 @@
 class AddColorToAlarma < ActiveRecord::Migration[5.2]
-  def change
+  def self.up
   	add_column :alarmas, :color, :string
   end
 end

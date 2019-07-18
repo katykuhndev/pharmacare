@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_04_224747) do
+ActiveRecord::Schema.define(version: 2019_07_18_043325) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", null: false
@@ -192,7 +192,7 @@ ActiveRecord::Schema.define(version: 2019_07_04_224747) do
   create_table "medicion_recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "recomendacion_id"
     t.bigint "medicion_id"
-    t.decimal "valor", precision: 10
+    t.decimal "valor", precision: 6, scale: 2
     t.string "unidad_medida"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

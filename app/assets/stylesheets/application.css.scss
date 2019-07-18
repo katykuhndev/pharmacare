@@ -47,3 +47,16 @@ ul.ui-autocomplete {
     }
   }
 }
+
+a.sort_link {
+  color: #fff;
+
+  &:visited {
+    color: #fff;
+  }
+
+  &:hover {
+    color: #fff;
+    background-color: #000;
+  }
+}

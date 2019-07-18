@@ -117,13 +117,25 @@
         </div>
       </div>     
       <div class="form-group">
-        <h3>Posología</h3>
+        <h3>Tratamientos</h3>
         <div class="col-sm-2">
           <%= receta_form.label :medicamento_programa_id, 'Presentacion' %>
           <%= receta_form.collection_select(:medicamento_programa_id, @presentaciones.order('nombre_comercial'), :id, :nombre_comercial, {selected: @medicamento_programa_id}) %>
         </div>
         <div class="col-sm-2">
-          <%= receta_form.label :dia %>
+          <%= receta_form.label :dias, 'Duracion (Dias)' %>
+          <%= receta_form.number_field :dias, class: "form-control", value:@dias  %>
+        </div>
+        <div class="col-sm-2">
+          <%= receta_form.label :cantidad, 'Comprimidos' %>
+          <%= receta_form.number_field :cantidad, class: "form-control", value:@cantidad %>
+        </div>
+        <h4>Esquema Posología</h4>
+        <div class="col-sm-2">
+        <%= select_tag "Escoja tipo esquema", options_for_select([ "3 x Dia", "2 x Dia" , "1 x Dia" ], "3 x Dia")  %>
+        </div>
+        <div class="col-sm-2">
+          <%= receta_form.label :dia, 'Mañana' %>
           <%= receta_form.number_field :dia, class: "form-control", step: 0.1, value:@dia %>
         </div>
         <div class="col-sm-2">
@@ -133,14 +145,6 @@
         <div class="col-sm-2">
           <%= receta_form.label :noche %>
           <%= receta_form.number_field :noche, class: "form-control", step: 0.1, value:@noche %>
-        </div>
-        <div class="col-sm-2">
-          <%= receta_form.label :dias, 'Duracion (Dias)' %>
-          <%= receta_form.number_field :dias, class: "form-control", value:@dias  %>
-        </div>
-        <div class="col-sm-2">
-          <%= receta_form.label :cantidad, 'Comprimidos' %>
-          <%= receta_form.number_field :cantidad, class: "form-control", value:@cantidad %>
         </div>
       </div>    
     <% end %>    

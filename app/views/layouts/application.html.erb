@@ -30,7 +30,8 @@
        <%= link_to 'Recomendaciones', recomendaciones_path, class: "list-group-item list-group-item-action bg-secondary text-white"  %>
        <%= link_to 'Pacientes', pacientes_path, class: "list-group-item list-group-item-action bg-secondary text-white"  %>
        <%= link_to 'Medicos', medicos_path, class: "list-group-item list-group-item-action bg-secondary text-white"  %>
-       <%= link_to 'Laboratorios', laboratorios_path, class: "list-group-item list-group-item-action bg-secondary text-white"  %>
+       <%@laboratorio = Laboratorio.find(1)%>
+       <%= link_to 'Programas', @laboratorio, class: "list-group-item list-group-item-action bg-secondary text-white"  %>
        <%= link_to 'Farmacias', farmacias_path, class: "list-group-item list-group-item-action bg-secondary text-white"  %>
        <%= link_to 'Prestadores', prestadores_path, class: "list-group-item list-group-item-action bg-secondary text-white"  %>
       </div>
@@ -50,7 +51,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
             <div class="container-fluid">
-             <h1 class="text-white text-center">Farmaco & Tecno Vigilancia </h1>      
+             <h1 class="text-white text-center">Farmacovigilancia y Tecnovigilancia </h1>      
             </div>
           
           <ul class="navbar-nav ">
