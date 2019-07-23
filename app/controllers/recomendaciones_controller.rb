@@ -38,9 +38,9 @@ class RecomendacionesController < ApplicationController
     @tarde = @esquema_tratamientos.where(bloque_id: 2).first ? @esquema_tratamientos.where(bloque_id: 2).first.dosis : ''
     @noche = @esquema_tratamientos.where(bloque_id: 3).first ? @esquema_tratamientos.where(bloque_id: 3).first.dosis : ''
 
-    @dia_fraccional =  "#{@dia.floor} #{(@dia%1==0.0) ? '' : Rational(@dia%1)}" if @dia
-    @tarde_fraccional =  "#{@tarde.floor} #{(@tarde%1==0.0) ? '' : Rational(@tarde%1)}" if @tarde
-    @noche_fraccional =  "#{@noche.floor} #{(@noche%1==0.0) ? '' : Rational(@noche%1)}" if @noche
+    @dia_fraccional =  (@dia%1 != 0.0 ? ("#{(@dia.floor == 0 ? '' : @dia.floor)} #{Rational(@dia%1)}") :  @dia.floor) if @dia
+    @tarde_fraccional =  (@tarde%1 != 0.0 ? ("#{(@tarde.floor == 0 ? '' : @tarde.floor)} #{Rational(@tarde%1)}") :  @tarde.floor) if @tarde
+    @noche_fraccional =  (@noche%1 != 0.0 ? ("#{(@noche.floor == 0 ? '' : @noche.floor)} #{Rational(@noche%1)}") :  @noche.floor) if @noche
   
     @dosis_diaria = @dia.to_f + @tarde.to_f + @noche.to_f
 
