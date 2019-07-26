@@ -13,13 +13,13 @@
   <div class="form-group">
     <%= form.label :programa_id, class: "col-sm-2 control-label" %>
     <div class="col-sm-4">
-      <%= form.collection_select(:programa_id, @programas.order('nombre'), :id, :nombre) %>
+      <%= form.collection_select(:programa_id, Laboratorio.find(1).programas.order('nombre'), :id, :nombre) %>
     </div>
   </div>
   <div class="form-group">
     <%= form.label :id_recomendacion, class: "col-sm-2 control-label" %>
     <div class="col-sm-4">
-      <%= form.text_field :id_recomendacion, class: "form-control" %>
+      <%= form.text_field :id_recomendacion, class: "form-control", value: @recomendacion.get_proximo_id_recomendacion %>
     </div>
   </div>
   <div class="form-group">

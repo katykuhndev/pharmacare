@@ -25,7 +25,7 @@ class RecomendacionesController < ApplicationController
     
     #tratamimento 
     @tratamiento = @recomendacion.tratamientos.first
-    @medicamento_programa = @tratamiento.medicamento_programa 
+    @medicamento_programa = @tratamiento ? @tratamiento.medicamento_programa : nil 
     @presentacion = @tratamiento ? (@medicamento_programa ? @medicamento_programa.nombre_comercial : '') : ''
     @dosis_medicamento = @tratamiento ? (@medicamento_programa ? @medicamento_programa.dosis : '') : ''
     @un_medicamento = @tratamiento ? (@medicamento_programa ? @medicamento_programa.unidad_medida : '') : ''
@@ -34,9 +34,9 @@ class RecomendacionesController < ApplicationController
     @cantidad = @tratamiento ?  @tratamiento.cantidad : ''
     @esquema_tratamientos = @recomendacion.esquema_tratamientos
 
-    @dia = @esquema_tratamientos.where(bloque_id: 1).first ? @esquema_tratamientos.where(bloque_id: 1).first.dosis : ''
-    @tarde = @esquema_tratamientos.where(bloque_id: 2).first ? @esquema_tratamientos.where(bloque_id: 2).first.dosis : ''
-    @noche = @esquema_tratamientos.where(bloque_id: 3).first ? @esquema_tratamientos.where(bloque_id: 3).first.dosis : ''
+    @dia = @esquema_tratamientos.where(bloque_id: 1).first ? @esquema_tratamientos.where(bloque_id: 1).first.dosis : nil
+    @tarde = @esquema_tratamientos.where(bloque_id: 2).first ? @esquema_tratamientos.where(bloque_id: 2).first.dosis : nil
+    @noche = @esquema_tratamientos.where(bloque_id: 3).first ? @esquema_tratamientos.where(bloque_id: 3).first.dosis : nil
 
     @dia_fraccional =  (@dia%1 != 0.0 ? ("#{(@dia.floor == 0 ? '' : @dia.floor)} #{Rational(@dia%1)}") :  @dia.floor) if @dia
     @tarde_fraccional =  (@tarde%1 != 0.0 ? ("#{(@tarde.floor == 0 ? '' : @tarde.floor)} #{Rational(@tarde%1)}") :  @tarde.floor) if @tarde
@@ -66,11 +66,8 @@ class RecomendacionesController < ApplicationController
     @rechazo_por_vencimiento = (@recomendacion.get_fecha_vencimiento_examen < Time.now) ? true : false if fecha_vencimiento_examen
     @titulo = (@recomendacion.aprobacion? || @recomendacion.aprobacion_con_reparos?) ? 'APROBADA' : 'RECHAZADA' 
     @accion = (@recomendacion.aprobacion? || @recomendacion.aprobacion_con_reparos?) ? 'APROBAR' : 'RECHAZAR' 
-    puts 'ssssssssssssssseeeeeeeeeeeeeeeeees'
-    puts @accion
-    puts @accion=='RECHAZAR'
-    #puts @alarma.color
-    @autorizador = @recomendacion.qf_soporte.name
+
+    @autorizador = @recomendacion.qf_soporte ? @recomendacion.qf_soporte.name : ''
 
     respond_to do |format|
       format.html
@@ -116,6 +113,7 @@ class RecomendacionesController < ApplicationController
     @dias = @tratamiento ? @tratamiento.dias : ''
     @cantidad = @tratamiento ?  @tratamiento.cantidad : ''
     @esquema_tratamientos = @recomendacion.esquema_tratamientos
+
     @dia = @esquema_tratamientos.where(bloque_id: 1).first ? @esquema_tratamientos.where(bloque_id: 1).first.dosis : ''
     @tarde = @esquema_tratamientos.where(bloque_id: 2).first ? @esquema_tratamientos.where(bloque_id: 2).first.dosis : ''
     @noche = @esquema_tratamientos.where(bloque_id: 3).first ? @esquema_tratamientos.where(bloque_id: 3).first.dosis : ''
@@ -152,7 +150,7 @@ class RecomendacionesController < ApplicationController
         format.html { redirect_to edit_recomendacion_path(@recomendacion), notice: 'La solicitud se creo exitosamente' }
         format.json { render :show, status: :ok, location: @recomendacion }
       else
-        format.html { render :edit }
+        format.html { render :new }
         format.json { render json: @recomendacion.errors, status: :unprocessable_entity }
       end
     end
@@ -178,17 +176,15 @@ class RecomendacionesController < ApplicationController
        @recomendacion.prestador_id = @prestador.id
        @recomendacion.farmacia_id = @farmacia.id
        
-       @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
-       if @documento_receta.nil?
-         @documento_receta = DocumentoRecomendacion.create(recomendacion_id: @recomendacion.id, documento_programa_id: 1, fecha: recomendacion_params["atributos_receta"]["fecha_receta"])
-       else
-         @documento_receta.update(fecha: recomendacion_params["atributos_receta"]["fecha_receta"])
-       end
-       
-       #@documento_receta.receta.purge
-       if @documento_receta
-         @documento_receta.receta.attach(recomendacion_params["atributos_receta"]["receta"])
-       end 
+      @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
+      if @documento_receta.nil?
+        @documento_receta = DocumentoRecomendacion.create(recomendacion_id: @recomendacion.id, documento_programa_id: 1, fecha: recomendacion_params["atributos_receta"]["fecha_receta"])
+      else
+        @documento_receta.update(fecha: recomendacion_params["atributos_receta"]["fecha_receta"])
+      end
+      
+      @documento_receta.receta.attach(recomendacion_params["atributos_receta"]["receta"])
+
        @tratamientos = @recomendacion.tratamientos
        if @tratamientos.empty?
           @tratamiento = Tratamiento.create(recomendacion_id: @recomendacion.id, medicamento_programa_id: recomendacion_params["atributos_receta"]["medicamento_programa_id"], dias: recomendacion_params["atributos_receta"]["dias"], cantidad: recomendacion_params["atributos_receta"]["cantidad"], documento_recomendacion_id: @documento_receta.id)
@@ -224,17 +220,14 @@ class RecomendacionesController < ApplicationController
 
 
 
-       @documento_examen = @recomendacion.examen_recomendaciones.where(examen_programa_id: 1).first
-       if @documento_examen.nil?
-         ExamenRecomendacion.create(recomendacion_id: @recomendacion.id, examen_programa_id: 1, fecha: recomendacion_params["atributos_examen"]["fecha_examen"])
-       else
-         @documento_examen.update(fecha: recomendacion_params["atributos_examen"]["fecha_examen"])
-       end
-       
-       #@documento_examen.examen.purge
-       if @documento_examen 
-         @documento_examen.examen.attach(recomendacion_params["atributos_examen"]["examen"])
-       end 
+      @documento_examen = @recomendacion.examen_recomendaciones.where(examen_programa_id: 1).first
+      if @documento_examen.nil?
+       @documento_examen = ExamenRecomendacion.create(recomendacion_id: @recomendacion.id, examen_programa_id: 1, fecha: recomendacion_params["atributos_examen"]["fecha_examen"])
+      else
+        @documento_examen.update(fecha: recomendacion_params["atributos_examen"]["fecha_examen"])
+      end
+      
+      @documento_examen.examen.attach(recomendacion_params["atributos_examen"]["examen"])
 
        @medicion_recomendaciones_ran = @recomendacion.medicion_recomendaciones.where(recomendacion_id: @recomendacion.id, medicion_id: 1)
        @medicion_recomendaciones_leucocitos = @recomendacion.medicion_recomendaciones.where(recomendacion_id: @recomendacion.id, medicion_id: 2)

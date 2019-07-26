@@ -55,15 +55,15 @@
           </div>
         </div>  
         <div class="form-group">
-          <%= examen_form.label :ran, class: "col-sm-2 control-label" %>
-          <div class="col-sm-2">
-            <%= examen_form.number_field :ran, class: "form-control", step: 0.1 , value:@ran %>
-          </div>
-        </div>
-        <div class="form-group">
           <%= examen_form.label :leucocitos, class: "col-sm-2 control-label" %>
           <div class="col-sm-2">
             <%= examen_form.number_field :leucocitos, class: "form-control", step: 0.1 , value:@leucocitos %>
+          </div>
+        </div>
+        <div class="form-group">
+          <%= examen_form.label :segmentados, 'Segmentados %', class: "col-sm-2 control-label" %>
+          <div class="col-sm-2">
+            <%= examen_form.number_field :segmentados, class: "form-control", step: 0.01 , value:@segmentados %>
           </div>
         </div>
         <div class="form-group">
@@ -73,11 +73,11 @@
           </div>
         </div>
         <div class="form-group">
-          <%= examen_form.label :segmentados, 'Segmentados %', class: "col-sm-2 control-label" %>
+          <%= examen_form.label :ran, class: "col-sm-2 control-label" %>
           <div class="col-sm-2">
-            <%= examen_form.number_field :segmentados, class: "form-control", step: 0.01 , value:@segmentados %>
+            <%= examen_form.number_field :ran, class: "form-control", step: 0.1 , value:@ran %>
           </div>
-        </div>
+        </div>        
       <% end %>
 
   <h2>Datos Receta</h2>
@@ -127,7 +127,7 @@
           <%= receta_form.number_field :dias, class: "form-control", value:@dias  %>
         </div>
         <div class="col-sm-2">
-          <%= receta_form.label :cantidad, 'Comprimidos' %>
+          <%= receta_form.label :cantidad, 'Total Comprimidos' %>
           <%= receta_form.number_field :cantidad, class: "form-control", value:@cantidad %>
         </div>
         <h4>Esquema Posología</h4>

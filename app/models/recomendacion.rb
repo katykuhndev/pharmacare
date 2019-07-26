@@ -1,5 +1,32 @@
 class Recomendacion < ApplicationRecord
 
+validate :id_recomendacion_valido, on: :create
+ 
+def id_recomendacion_valido
+  if self.id_recomendacion.size != 11
+    errors.add(:id_recomendacion, "Debe ser de 11 caracteres de largo")
+  end
+end
+
+def get_proximo_id_recomendacion
+  ultima_id_recomendacion = self.get_ultima_solicitud.id_recomendacion
+  fecha_hoy = Date.today.strftime("%d%m%Y")
+  proximo_numero_string = 1.to_s.rjust(3, "0")
+  proximo_id_recomendacion = proximo_numero_string + fecha_hoy
+  ultima_fecha = ultima_id_recomendacion[3..11]
+  if ultima_fecha == fecha_hoy
+   # ya hubo casos antes en el mismo dia
+    proximo_numero = ultima_id_recomendacion[0..2].sub!(/^0*/, '').to_i + 1
+    proximo_numero_string = proximo_numero.to_s.rjust(3, "0")
+    proximo_id_recomendacion = proximo_numero_string + fecha_hoy
+  end  
+  return proximo_id_recomendacion
+end
+
+def get_ultima_solicitud
+  recomendacion = Recomendacion.order("id").last
+end
+
   belongs_to :caso, optional: true
   belongs_to :programa, optional: true
   belongs_to :paciente, optional: true
@@ -25,7 +52,7 @@ class Recomendacion < ApplicationRecord
   has_many :medicion_recomendaciones
   
 
-  enum estado: [:pendiente, :por_resolver, :cerrada]
+  enum estado: [:abierta, :cerrada]
   enum resultado: [:aprobacion, :aprobacion_con_reparos, :rechazo_administrativo, :rechazo_tecnico]
   enum via_ingreso: [:whatsapp, :email, :fono]
 
@@ -40,7 +67,7 @@ class Recomendacion < ApplicationRecord
   end
 
   def set_default_estado
-    self.estado ||= :pendiente
+    self.estado ||= :abierta
   end
 
   def set_default_con_alarma
@@ -52,18 +79,10 @@ class Recomendacion < ApplicationRecord
   end 
 
   def resolucion_recomendacion
-    #TODO
-    # cambiar documento_programa_id: 1 por algo mas generico
-    # cambiar ExamenPrograma.find(2) por algo mas generico
     self.resultado = :aprobacion
     self.procesar_alarma
-    if self.informacion_completa?
-      self.resultado = :aprobacion_con_reparos if self.get_fecha_vencimiento_receta < Time.now
-      self.resultado = :rechazo_tecnico if self.get_fecha_vencimiento_examen < Time.now
-      self.estado = :por_resolver 
-    else
-      return false
-    end
+    self.resultado = :aprobacion_con_reparos if self.get_fecha_vencimiento_receta < Time.now
+    self.resultado = :rechazo_tecnico if self.get_fecha_vencimiento_examen < Time.now
   end 
 
     def procesar_alarma
@@ -73,8 +92,6 @@ class Recomendacion < ApplicationRecord
     alarmas = Alarma.where(medicion_id: 1)
     if alarmas.count > 0 && self.medicion_recomendaciones.where(medicion_id: 1).exists?
       valor = self.medicion_recomendaciones.where(medicion_id: 1).first.valor
-      puts 'holaholahilaaaaaa'
-      puts valor
       for alarma in alarmas
         if valor && valor >= alarma.valor_minimo && valor <= alarma.valor_maximo
           self.resultado = alarma.resultado
