@@ -2,6 +2,13 @@ class Recomendacion < ApplicationRecord
 
 validate :id_recomendacion_valido, on: :create
  
+#scope :historicas, -> { joins(:documento_recomendaciones).where(paciente: paciente) }
+
+scope :historicas, -> (recomendacion){ left_outer_joins(:documento_recomendaciones).left_outer_joins(:examen_recomendaciones)
+  .select('recomendaciones.id, recomendaciones.resultado, recomendaciones.id_recomendacion, recomendaciones.fecha_hora_ingreso, documento_recomendaciones.id as id_receta, examen_recomendaciones.id as id_examen')
+  .where("recomendaciones.paciente_id = ? ", recomendacion.paciente_id )
+  .order("id")}
+
 def id_recomendacion_valido
   if self.id_recomendacion.size != 11
     errors.add(:id_recomendacion, "Debe ser de 11 caracteres de largo")

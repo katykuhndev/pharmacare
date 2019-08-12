@@ -27,6 +27,9 @@ $(document).ready(function(){
     orientation: 'auto top', 
     format: 'yyyy-mm-dd'
   });
+  $('#show').click(function() {
+      $('.menu').toggle("slide");
+    });
 });
 
 $(function() {
@@ -60,3 +63,5 @@ $(function() {
   $(this).find('input[data-selects-visibility][type="checkbox"]').each(selectVisibility);
   $(this).find('input[data-selects-visibility][type="radio"]:checked').each(selectVisibility);
 });
+
+

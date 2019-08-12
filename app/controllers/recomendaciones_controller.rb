@@ -26,7 +26,8 @@ class RecomendacionesController < ApplicationController
     #tratamimento 
 
     @tratamientos = @recomendacion.tratamientos
-          
+    
+    @historicas = Recomendacion.historicas(@recomendacion)   
 
     @ran = @recomendacion.medicion_recomendaciones.where(medicion_id: 1).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 1).first.valor : ''
     @leucocitos =@recomendacion.medicion_recomendaciones.where(medicion_id: 2).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 2).first.valor : ''
