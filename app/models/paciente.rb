@@ -13,5 +13,13 @@ class Paciente < ApplicationRecord
   def name
    self.nombre
   end
+
+  def nombre_completo
+    "#{self.nombres} #{self.primer_apellido} #{self.segundo_apellido}" 
+  end  
+
+  def iniciales
+    "#{self.nombres[0]}#{self.primer_apellido[0]}#{self.segundo_apellido[0]}"
+  end
   	
 end

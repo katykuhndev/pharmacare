@@ -14,8 +14,8 @@ class RecomendacionesController < ApplicationController
   def show
     # TODO
     # Parametrizar correctamente todo 
-    @datos_paciente = @recomendacion.paciente ? "#{@recomendacion.paciente.nombres} #{@recomendacion.paciente.primer_apellido} #{@recomendacion.paciente.segundo_apellido}"  : '' 
-    @iniciales_paciente = @recomendacion.paciente ? "#{@recomendacion.paciente.nombres[0]}#{@recomendacion.paciente.primer_apellido[0]}#{@recomendacion.paciente.primer_apellido[0]}" : ''
+    @datos_paciente = @recomendacion.paciente ? @recomendacion.paciente.nombre_completo  : '' 
+    @iniciales_paciente = @recomendacion.paciente ? @recomendacion.paciente.iniciales : ''
     @rut_paciente = @recomendacion.paciente ? @recomendacion.paciente.rut : ''
     @datos_medico = @recomendacion.medico ? "#{@recomendacion.medico.nombres} #{@recomendacion.medico.primer_apellido} #{@recomendacion.medico.segundo_apellido}"  : '' 
     @datos_prestador = @recomendacion.prestador ? @recomendacion.prestador.nombre  : '' 
@@ -161,6 +161,7 @@ class RecomendacionesController < ApplicationController
       end
       
       @documento_receta.receta.attach(recomendacion_params["atributos_receta"]["receta"])
+      @documento_receta.nombrar_archivo_receta
 
       if recomendacion_params["atributos_tratamiento"]["medicamento_programa_id"].to_i > 0 && recomendacion_params["atributos_tratamiento"]["esquema_horario_id"].to_i > 0 && recomendacion_params["atributos_tratamiento"]["dias"].to_i > 0 && recomendacion_params["atributos_tratamiento"]["cantidad"].to_i > 0
        @tratamiento = Tratamiento.create(recomendacion_id: @recomendacion.id, esquema_horario_id: recomendacion_params["atributos_tratamiento"]["esquema_horario_id"], medicamento_programa_id: recomendacion_params["atributos_tratamiento"]["medicamento_programa_id"], dias: recomendacion_params["atributos_tratamiento"]["dias"], cantidad: recomendacion_params["atributos_tratamiento"]["cantidad"], documento_recomendacion_id: @documento_receta.id)
@@ -178,7 +179,8 @@ class RecomendacionesController < ApplicationController
       end
       
       @documento_examen.examen.attach(recomendacion_params["atributos_examen"]["examen"])
-
+      @documento_examen.nombrar_archivo_examen
+       
        @medicion_recomendaciones_ran = @recomendacion.medicion_recomendaciones.where(recomendacion_id: @recomendacion.id, medicion_id: 1)
        @medicion_recomendaciones_leucocitos = @recomendacion.medicion_recomendaciones.where(recomendacion_id: @recomendacion.id, medicion_id: 2)
        @medicion_recomendaciones_baciliformes = @recomendacion.medicion_recomendaciones.where(recomendacion_id: @recomendacion.id, medicion_id: 3)
