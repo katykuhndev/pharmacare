@@ -116,35 +116,65 @@
           <%= receta_form.text_field :medico_solicitante, class: "form-control", value:"#{@nombre_medico} #{@apellido1_medico} #{@apellido2_medico}" %>
         </div>
       </div>     
+      <% end %>
+
+      <%= render 'tratamientos/list_edit' %>
+
+      <%= form.fields :atributos_tratamiento do |tratamiento_form| %>  
       <div class="form-group">
-        <h3>Tratamientos</h3>
         <div class="col-sm-2">
-          <%= receta_form.label :medicamento_programa_id, 'Presentacion' %>
-          <%= receta_form.collection_select(:medicamento_programa_id, @presentaciones.order('nombre_comercial'), :id, :nombre_comercial, {selected: @medicamento_programa_id}) %>
+          <%= tratamiento_form.label :medicamento_programa_id, 'Presentacion' %>
+          <%= tratamiento_form.collection_select(:medicamento_programa_id, @presentaciones.order('nombre_comercial'), :id, :nombre_comercial, {include_blank: 'Seleccione una presentacion'}) %>
         </div>
         <div class="col-sm-2">
-          <%= receta_form.label :dias, 'Duracion (Dias)' %>
-          <%= receta_form.number_field :dias, class: "form-control", value:@dias  %>
+          <%= tratamiento_form.label :dias, 'Duracion (Dias)' %>
+          <%= tratamiento_form.number_field :dias, class: "form-control" %>
         </div>
-        <div class="col-sm-2">
-          <%= receta_form.label :cantidad, 'Total Comprimidos' %>
-          <%= receta_form.number_field :cantidad, class: "form-control", value:@cantidad %>
-        </div>
+        <br>
         <h4>Esquema Posología</h4>
+        
         <div class="col-sm-2">
-        <%= select_tag "Escoja tipo esquema", options_for_select([ "3 x Dia", "2 x Dia" , "1 x Dia" ], "3 x Dia")  %>
+        <%= tratamiento_form.collection_select(:esquema_horario_id, EsquemaHorario.order(:id), :id, :nombre, {include_blank: 'Seleccione un tipo de horario'}, :"data-selects-visibility" => ".col" )  %>
         </div>
-        <div class="col-sm-2">
-          <%= receta_form.label :dia, 'Mañana' %>
-          <%= receta_form.number_field :dia, class: "form-control", step: 0.1, value:@dia %>
+
+        <div class="form-group w-75">
+          <div class="form-row">
+            <div class="col" data-show-for="1">
+                <div class="col-sm-2">
+                  <%= tratamiento_form.label :dia, 'Mañana' %>
+                  <%= tratamiento_form.number_field :dia, class: "form-control", step: 0.1 %>
+                </div>
+                <div class="col-sm-2">
+                  <%= tratamiento_form.label :tarde %>
+                  <%= tratamiento_form.number_field :tarde, class: "form-control", step: 0.1 %>
+                </div>
+                <div class="col-sm-2">
+                  <%= tratamiento_form.label :noche %>
+                  <%= tratamiento_form.number_field :noche, class: "form-control", step: 0.1 %>
+                </div>
+            </div>
+            <div class="col" data-show-for="2">
+                <div class="col-sm-2">
+                  <%= tratamiento_form.label :am %>
+                  <%= tratamiento_form.number_field :am, class: "form-control", step: 0.1 %>
+                </div>
+                <div class="col-sm-2">
+                  <%= tratamiento_form.label :pm %>
+                  <%= tratamiento_form.number_field :pm, class: "form-control", step: 0.1 %>
+                </div>
+            </div>
+            <div class="col" data-show-for="3">
+                <div class="col-sm-2">
+                  <%= tratamiento_form.label :dia_entero %>
+                  <%= tratamiento_form.number_field :dia_entero, class: "form-control", step: 0.1 %>
+                </div>
+            </div>
+          </div>
         </div>
+        
         <div class="col-sm-2">
-          <%= receta_form.label :tarde %>
-          <%= receta_form.number_field :tarde, class: "form-control", step: 0.1, value:@tarde %>
-        </div>
-        <div class="col-sm-2">
-          <%= receta_form.label :noche %>
-          <%= receta_form.number_field :noche, class: "form-control", step: 0.1, value:@noche %>
+          <%= tratamiento_form.label :cantidad, 'Total Comprimidos' %>
+          <%= tratamiento_form.number_field :cantidad, class: "form-control" %>
         </div>
       </div>    
     <% end %>    
@@ -168,7 +198,9 @@
   </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-4">
-      <%= form.submit class: "btn btn-primary" %>
+      <%= form.submit class: "btn btn-default bg-secondary text-white" %>
+      <%= link_to 'Mostrar Datos', @recomendacion, class: 'btn btn-default' %>
     </div>
   </div>
 <% end %>
+

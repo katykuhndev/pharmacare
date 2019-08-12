@@ -9,11 +9,11 @@ def id_recomendacion_valido
 end
 
 def get_proximo_id_recomendacion
-  ultima_id_recomendacion = self.get_ultima_solicitud.id_recomendacion
+  ultima_id_recomendacion = self.get_ultima_solicitud ? self.get_ultima_solicitud.id_recomendacion : nil
   fecha_hoy = Date.today.strftime("%d%m%Y")
   proximo_numero_string = 1.to_s.rjust(3, "0")
   proximo_id_recomendacion = proximo_numero_string + fecha_hoy
-  ultima_fecha = ultima_id_recomendacion[3..11]
+  ultima_fecha = ultima_id_recomendacion ? ultima_id_recomendacion[3..11] : nil
   if ultima_fecha == fecha_hoy
    # ya hubo casos antes en el mismo dia
     proximo_numero = ultima_id_recomendacion[0..2].sub!(/^0*/, '').to_i + 1
@@ -40,6 +40,7 @@ end
   attr_accessor :atributos_paciente
   attr_accessor :atributos_examen
   attr_accessor :atributos_receta
+  attr_accessor :atributos_tratamiento
   attr_accessor :fecha_receta
   attr_accessor :fecha_examen
   attr_accessor :fecha_vencimiento_receta
@@ -52,7 +53,7 @@ end
   has_many :medicion_recomendaciones
   
 
-  enum estado: [:abierta, :cerrada]
+  enum estado: [:abierta, :preinforme, :cerrada]
   enum resultado: [:aprobacion, :aprobacion_con_reparos, :rechazo_administrativo, :rechazo_tecnico]
   enum via_ingreso: [:whatsapp, :email, :fono]
 
@@ -81,8 +82,8 @@ end
   def resolucion_recomendacion
     self.resultado = :aprobacion
     self.procesar_alarma
-    self.resultado = :aprobacion_con_reparos if self.get_fecha_vencimiento_receta < Time.now
-    self.resultado = :rechazo_tecnico if self.get_fecha_vencimiento_examen < Time.now
+    self.resultado = :aprobacion_con_reparos if self.get_fecha_vencimiento_receta && self.get_fecha_vencimiento_receta < Time.now
+    self.resultado = :rechazo_tecnico if self.get_fecha_vencimiento_examen && self.get_fecha_vencimiento_examen < Time.now
   end 
 
     def procesar_alarma

@@ -1,0 +1,31 @@
+<% if !@tratamientos.empty? %>
+<h3>Tratamiento</h3>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+    <thead class='bg-secondary text-white' >
+      <tr>
+        <th>Medicamento Programa</th>
+        <th>Total Dias</th>
+        <th>Posología</th>
+        <th>Total Comprimidos</th>
+        <th colspan="3"><%=(t :text_actions)%></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @tratamientos.each do |tratamiento| %>
+        <tr>
+          <td><%= tratamiento.medicamento_programa.nombre_comercial %></td>
+          <td><%= tratamiento.dias %></td>
+          <td><%= tratamiento.posologias[3] %></td>
+          <td><%= tratamiento.cantidad %></td>
+          <td><%= link_to (t :text_show), [tratamiento.recomendacion, tratamiento] %></td>
+          <td><%= link_to (t :text_edit), edit_recomendacion_tratamiento_path(tratamiento.recomendacion, tratamiento) %></td>
+          <td><%= link_to (t :text_destroy), [tratamiento.recomendacion, tratamiento], method: :delete, data: { confirm: (t :text_are_you_sure) } %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  </div>
+<% end %>
+<br>

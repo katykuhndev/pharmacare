@@ -19,49 +19,29 @@
     PDF de Recomendación
   <% end %>
 
-  <h3>Datos Examen</h3>
+<div class="form-group w-100">
+  <div class="form-row">
+    <div class="col">
+    <h3>Datos Examen</h3>
+      <dt><%= link_to 'ARCHIVO EXAMEN', rails_blob_url(@documento_examen.examen, disposition: "attachment") if @documento_examen && @documento_examen.examen.attached? %> </dt>
+      <dt>Fecha Hemograma: <%= @fecha_examen %> Vencimiento : <%= @fecha_vencimiento_examen %> </dt>
+      <dt>RAN: <%= @ran %> mm3</dt>
+      <dt>Leucocitos: <%= @leucocitos %> mm3</dt>
+      <dt>Baciliformes: <%= @baciliformes %> %</dt>
+      <dt>Segmentados: <%= @segmentados %> %</dt>  
+    </div>
+    <div class="col">
+      <h3>Datos Receta</h3>
+      <dt><%= link_to 'ARCHIVO RECETA', rails_blob_url(@documento_receta.receta, disposition: "attachment") if @documento_receta && @documento_receta.receta.attached? %> </dt>
+      <dt>Fecha Receta: <%= @fecha_receta%> Vencimiento : <%= @fecha_vencimiento_receta%> </dt>
+      <dt>Medico: <%= @datos_medico %> </dt>
+      <dt>Prestador: <%= @datos_prestador %> </dt>
+      <dt>Farmacia: <%= @datos_farmacia %> </dt>
+    </div>
+  </div>
+</div>  
 
-  <dt><%= link_to 'ARCHIVO EXAMEN', rails_blob_url(@documento_examen.examen, disposition: "attachment") if @documento_examen && @documento_examen.examen.attached? %> </dt>
-
-  <dt>Fecha Hemograma: <%= @fecha_examen %> Vencimiento : <%= @fecha_vencimiento_examen %> </dt>
-
-  <dt>RAN: <%= @ran %> mm3</dt>
-
-  <dt>Leucocitos: <%= @leucocitos %> mm3</dt>
-
-  <dt>Baciliformes: <%= @baciliformes %> %</dt>
-
-  <dt>Segmentados: <%= @segmentados %> %</dt>  
-
-  <br>
-
-  <h3>Datos Receta</h3>
-
-  <dt><%= link_to 'ARCHIVO RECETA', rails_blob_url(@documento_receta.receta, disposition: "attachment") if @documento_receta && @documento_receta.receta.attached? %> </dt>
-
-  <dt>Fecha Receta: <%= @fecha_receta%> Vencimiento : <%= @fecha_vencimiento_receta%> </dt>
-
-  <dt>Medico: <%= @datos_medico %> </dt>
-
-  <dt>Prestador: <%= @datos_prestador %> </dt>
-
-  <dt>Farmacia: <%= @datos_farmacia %> </dt>
-
-  <br>
-
-  <h3>Tratamiento</h3>
-
-  <dt>Presentacion : <%= @presentacion %> </dt>
-
-  <dt>Duracion: <%= @dias %> Dias</dt>
-
-  <dt>Comprimidos: <%= @cantidad %></dt>
-
-  <h4>Esquema</h4>
-
-  <dt>Mañana: <%= @dia %> Tarde: <%= @tarde %> Noche <%= @noche %></dt>
-
-  <br>
+  <%= render 'tratamientos/list_show' %>
 
   <dt>Autoriza : <%= @qf_soporte %> </dt>
 

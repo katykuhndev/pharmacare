@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   root to: 'visitors#index'
-  resources :recomendaciones
+  resources :recomendaciones do
+    resources :tratamientos
+  end
   get 'recomendaciones/show/:id' => 'recomendaciones#show', :format => 'pdf', :as => 'show'
   resources :bloques
   resources :casos

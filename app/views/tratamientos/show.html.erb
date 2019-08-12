@@ -1,0 +1,22 @@
+<h2><%=(t :text_show) %> tratamiento para <%= @tratamiento.recomendacion.id_recomendacion %></h2>
+
+<dl class="dl-horizontal">
+  <dt>Presentación:</dt>
+  <dd><%= @tratamiento.medicamento_programa.nombre_comercial %></dd>
+
+  <dt>Total Dias:</dt>
+  <dd><%= @tratamiento.dias %></dd>
+
+  <dt>Total Comprimidos:</dt>
+  <dd><%= @tratamiento.cantidad %></dd>
+
+  <dt>Posología:</dt>
+  <dd><%= @tratamiento.posologias[3] %></dd>
+
+  <dt>Observaciones:</dt>
+  <dd><%= @tratamiento.observaciones %></dd>
+
+</dl>
+
+<%= link_to (t :text_edit), edit_recomendacion_tratamiento_path(@tratamiento.recomendacion, @tratamiento) %> |
+<%= link_to (t :text_back), recomendacion_path(@tratamiento.recomendacion) %>

@@ -1,0 +1,10 @@
+<h2>Listado de tratamientos</h2>
+
+<%= render 'list_edit' %>
+
+<div>
+  <%= link_to new_laboratorio_tratamiento_path(@laboratorio), class: 'btn btn-default bg-secondary text-white' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Nuevo tratamiento
+  <% end %>
+</div>

@@ -22,15 +22,31 @@ Rut : <%= @rut_paciente %></h3>
 <dl>
 <%if @accion=='APROBAR'%>	
 	<h4 style="text-decoration: underline;">Posología: </h4>
-	<dt><b>1. <%= @presentacion %> &nbsp;&nbsp; <%= @dia_fraccional %> &nbsp;-&nbsp; <%= @tarde_fraccional %> &nbsp;-&nbsp; <%= @noche_fraccional %></b> &nbsp;&nbsp; por <%= @dias %> días (<%= @cantidad %> comprimidos) </dt><br><br>
-<%end%>
+    <% tratamiento_completo = '' 
+       count = 0
+    %>
+
+	<% @tratamientos.each do |tratamiento| %>
+	  <% 
+	    medicamento_programa = tratamiento.medicamento_programa 
+       	presentacion = medicamento_programa.nombre_comercial
+    	dias = tratamiento.dias
+    	cantidad = tratamiento.cantidad
+    	esquema, esquema_fraccional, texto_tratamiento = tratamiento.posologias
+    	tratamiento_completo = "#{tratamiento_completo} #{texto_tratamiento}."
+    	count += 1
+	   %>
+	   <dt><b><%=count%>. &nbsp;&nbsp;<%= esquema_fraccional %></b> &nbsp;&nbsp; por <%= dias %> días (<%= cantidad %> comprimidos de <%= presentacion %>) </dt>
+	<%end%>
+<%end%>	
+<br><br>
 Luego de analizar la información antes presentada, se ha determinado <%= @accion%> la solicitud del <%=@recomendacion.fecha_hora_ingreso.strftime("%d/%m/%Y")%>. Este documento es válido hasta el <%=@fecha_vencimiento_examen%> inclusive. <br><br>
 Por lo tanto, <%= @accion=='RECHAZAR' ? 'NO ' : ''%>se autoriza el despacho del medicamento Lodux®.<br><br>
+<% if @recomendacion.observaciones != ''%>
+  Observaciones: <%=@recomendacion.observaciones%>.<br><br>
+<% end %>
 
-Motivo del rechazo: No aplica.<br><br>
-
-<p style="text-align:justify;"><%= @alarma ? @alarma.accion : "Siga cuidadosamente las indicaciones de su médico. Paciente tomará #{@dosis_diaria} 
-comprimidos diarios de #{@dosis_medicamento} #{@un_medicamento}. (#{@dosis_medicamento*@dosis_diaria} #{@un_medicamento}  por día)." %></p>
+<p style="text-align:justify;"><%= @alarma ? @alarma.accion : "Siga cuidadosamente las indicaciones de su médico. #{tratamiento_completo} " %></p>
 
 <div style="position: relative; top:200px;">
 	Saludos cordiales, <br><br>

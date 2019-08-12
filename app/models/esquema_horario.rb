@@ -1,0 +1,2 @@
+class EsquemaHorario < ApplicationRecord
+end

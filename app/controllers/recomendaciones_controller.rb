@@ -24,25 +24,9 @@ class RecomendacionesController < ApplicationController
     @ejecutivo = @recomendacion.ejecutivo ? @recomendacion.ejecutivo.name : ''
     
     #tratamimento 
-    @tratamiento = @recomendacion.tratamientos.first
-    @medicamento_programa = @tratamiento ? @tratamiento.medicamento_programa : nil 
-    @presentacion = @tratamiento ? (@medicamento_programa ? @medicamento_programa.nombre_comercial : '') : ''
-    @dosis_medicamento = @tratamiento ? (@medicamento_programa ? @medicamento_programa.dosis : '') : ''
-    @un_medicamento = @tratamiento ? (@medicamento_programa ? @medicamento_programa.unidad_medida : '') : ''
-    
-    @dias = @tratamiento ? @tratamiento.dias : ''
-    @cantidad = @tratamiento ?  @tratamiento.cantidad : ''
-    @esquema_tratamientos = @recomendacion.esquema_tratamientos
 
-    @dia = @esquema_tratamientos.where(bloque_id: 1).first ? @esquema_tratamientos.where(bloque_id: 1).first.dosis : nil
-    @tarde = @esquema_tratamientos.where(bloque_id: 2).first ? @esquema_tratamientos.where(bloque_id: 2).first.dosis : nil
-    @noche = @esquema_tratamientos.where(bloque_id: 3).first ? @esquema_tratamientos.where(bloque_id: 3).first.dosis : nil
-
-    @dia_fraccional =  (@dia%1 != 0.0 ? ("#{(@dia.floor == 0 ? '' : @dia.floor)} #{Rational(@dia%1)}") :  @dia.floor) if @dia
-    @tarde_fraccional =  (@tarde%1 != 0.0 ? ("#{(@tarde.floor == 0 ? '' : @tarde.floor)} #{Rational(@tarde%1)}") :  @tarde.floor) if @tarde
-    @noche_fraccional =  (@noche%1 != 0.0 ? ("#{(@noche.floor == 0 ? '' : @noche.floor)} #{Rational(@noche%1)}") :  @noche.floor) if @noche
-  
-    @dosis_diaria = @dia.to_f + @tarde.to_f + @noche.to_f
+    @tratamientos = @recomendacion.tratamientos
+          
 
     @ran = @recomendacion.medicion_recomendaciones.where(medicion_id: 1).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 1).first.valor : ''
     @leucocitos =@recomendacion.medicion_recomendaciones.where(medicion_id: 2).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 2).first.valor : ''
@@ -108,15 +92,7 @@ class RecomendacionesController < ApplicationController
     
     @presentaciones = @recomendacion.programa.medicamento_programas
 
-    @tratamiento = @recomendacion.tratamientos.first
-    @medicamento_programa_id = @tratamiento ? @tratamiento.medicamento_programa_id : ''
-    @dias = @tratamiento ? @tratamiento.dias : ''
-    @cantidad = @tratamiento ?  @tratamiento.cantidad : ''
-    @esquema_tratamientos = @recomendacion.esquema_tratamientos
-
-    @dia = @esquema_tratamientos.where(bloque_id: 1).first ? @esquema_tratamientos.where(bloque_id: 1).first.dosis : ''
-    @tarde = @esquema_tratamientos.where(bloque_id: 2).first ? @esquema_tratamientos.where(bloque_id: 2).first.dosis : ''
-    @noche = @esquema_tratamientos.where(bloque_id: 3).first ? @esquema_tratamientos.where(bloque_id: 3).first.dosis : ''
+    @tratamientos = @recomendacion.tratamientos
 
     @medico = @recomendacion.medico
     @nombre_medico = @medico ? @medico.nombres : ''
@@ -185,40 +161,13 @@ class RecomendacionesController < ApplicationController
       
       @documento_receta.receta.attach(recomendacion_params["atributos_receta"]["receta"])
 
-       @tratamientos = @recomendacion.tratamientos
-       if @tratamientos.empty?
-          @tratamiento = Tratamiento.create(recomendacion_id: @recomendacion.id, medicamento_programa_id: recomendacion_params["atributos_receta"]["medicamento_programa_id"], dias: recomendacion_params["atributos_receta"]["dias"], cantidad: recomendacion_params["atributos_receta"]["cantidad"], documento_recomendacion_id: @documento_receta.id)
-          @bloques = @recomendacion.programa.bloques
-          @esquema_tratamientos = @tratamiento.esquema_tratamientos
-          if @esquema_tratamientos.empty?
-            for bloque in @bloques
-             EsquemaTratamiento.create(recomendacion_id: @recomendacion.id, tratamiento_id: @tratamiento.id, bloque_id: bloque.id, dosis: recomendacion_params["atributos_receta"]["#{bloque.nombre}"]) if recomendacion_params["atributos_receta"]["#{bloque.nombre}"]
-            end 
-          end
-       else
-         @tratamiento = @recomendacion.tratamientos.first
-         @tratamiento.update(dias: recomendacion_params["atributos_receta"]["dias"], cantidad: recomendacion_params["atributos_receta"]["cantidad"])
-         @esquema_tratamientos = @tratamiento.esquema_tratamientos
-         if @esquema_tratamientos.empty?
-           @bloques = @recomendacion.programa.bloques
-           for bloque in @bloques
-            EsquemaTratamiento.create(recomendacion_id: @recomendacion.id, tratamiento_id: @tratamiento.id, bloque_id: bloque.id, dosis: recomendacion_params["atributos_receta"]["#{bloque.nombre}"]) if recomendacion_params["atributos_receta"]["#{bloque.nombre}"]
-           end 
-         else
-           for esquema in @esquema_tratamientos
-             case esquema.bloque.nombre
-             when 'dia'
-               esquema.update(dosis: recomendacion_params["atributos_receta"]["dia"])
-             when 'tarde'
-               esquema.update(dosis: recomendacion_params["atributos_receta"]["tarde"])   
-             when 'noche'
-               esquema.update(dosis: recomendacion_params["atributos_receta"]["noche"])
-             end    
-           end
-         end
-       end
-
-
+      if recomendacion_params["atributos_tratamiento"]["medicamento_programa_id"].to_i > 0 && recomendacion_params["atributos_tratamiento"]["esquema_horario_id"].to_i > 0 && recomendacion_params["atributos_tratamiento"]["dias"].to_i > 0 && recomendacion_params["atributos_tratamiento"]["cantidad"].to_i > 0
+       @tratamiento = Tratamiento.create(recomendacion_id: @recomendacion.id, esquema_horario_id: recomendacion_params["atributos_tratamiento"]["esquema_horario_id"], medicamento_programa_id: recomendacion_params["atributos_tratamiento"]["medicamento_programa_id"], dias: recomendacion_params["atributos_tratamiento"]["dias"], cantidad: recomendacion_params["atributos_tratamiento"]["cantidad"], documento_recomendacion_id: @documento_receta.id)
+       @bloques = @recomendacion.programa.bloques
+       for bloque in @bloques
+        EsquemaTratamiento.create(recomendacion_id: @recomendacion.id, tratamiento_id: @tratamiento.id, bloque_id: bloque.id, dosis: recomendacion_params["atributos_tratamiento"]["#{bloque.nombre}"]) if recomendacion_params["atributos_tratamiento"]["#{bloque.nombre}"].to_i > 0
+       end 
+      end     
 
       @documento_examen = @recomendacion.examen_recomendaciones.where(examen_programa_id: 1).first
       if @documento_examen.nil?
@@ -285,6 +234,6 @@ class RecomendacionesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recomendacion_params
-      params.require(:recomendacion).permit({atributos_examen: [:fecha_examen, :examen, :ran, :leucocitos, :baciliformes, :segmentados]}, {atributos_receta: [:fecha_receta, :receta, :prestador, :farmacia, :medico_solicitante, :medicamento_programa_id, :dia, :tarde, :noche, :dias, :cantidad]}, {atributos_paciente: [:rut, :nombres, :primer_apellido, :segundo_apellido]}, :id_recomendacion, :estado, :resultado, :caso_id, :programa_id, :paciente_id, :medico_id, :prestador_id, :farmacia_id, :qf_soporte_id, :ejecutivo_id, :fecha_hora_ingreso, :via_ingreso, :fecha_hora_respuesta, :observaciones, :con_alarma)
+      params.require(:recomendacion).permit({atributos_examen: [:fecha_examen, :examen, :ran, :leucocitos, :baciliformes, :segmentados]}, {atributos_receta: [:fecha_receta, :receta, :prestador, :farmacia, :medico_solicitante]}, {atributos_tratamiento: [:esquema_horario_id, :dia, :tarde, :noche, :am, :pm, :dia_entero, :dias, :cantidad,  :medicamento_programa_id]}, {atributos_paciente: [:rut, :nombres, :primer_apellido, :segundo_apellido]}, :id_recomendacion, :estado, :resultado, :caso_id, :programa_id, :paciente_id, :medico_id, :prestador_id, :farmacia_id, :qf_soporte_id, :ejecutivo_id, :fecha_hora_ingreso, :via_ingreso, :fecha_hora_respuesta, :observaciones, :con_alarma)
     end
 end

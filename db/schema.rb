@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_18_043325) do
+ActiveRecord::Schema.define(version: 2019_08_12_001429) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", null: false
@@ -54,6 +54,8 @@ ActiveRecord::Schema.define(version: 2019_07_18_043325) do
     t.text "observaciones"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "esquema_horario_id"
+    t.index ["esquema_horario_id"], name: "index_bloques_on_esquema_horario_id"
   end
 
   create_table "bloques_programas", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -108,6 +110,13 @@ ActiveRecord::Schema.define(version: 2019_07_18_043325) do
     t.datetime "updated_at", null: false
     t.index ["documento_programa_id"], name: "index_documento_recomendaciones_on_documento_programa_id"
     t.index ["recomendacion_id"], name: "index_documento_recomendaciones_on_recomendacion_id"
+  end
+
+  create_table "esquema_horarios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "nombre"
+    t.text "observaciones"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "esquema_tratamientos", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -314,6 +323,8 @@ ActiveRecord::Schema.define(version: 2019_07_18_043325) do
     t.datetime "updated_at", null: false
     t.integer "medicamento_programa_id"
     t.integer "documento_recomendacion_id"
+    t.bigint "esquema_horario_id"
+    t.index ["esquema_horario_id"], name: "index_tratamientos_on_esquema_horario_id"
     t.index ["recomendacion_id"], name: "index_tratamientos_on_recomendacion_id"
   end
 
@@ -333,6 +344,7 @@ ActiveRecord::Schema.define(version: 2019_07_18_043325) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "alarmas", "mediciones"
+  add_foreign_key "bloques", "esquema_horarios"
   add_foreign_key "casos", "medicos"
   add_foreign_key "casos", "pacientes"
   add_foreign_key "casos", "programas"
@@ -365,5 +377,6 @@ ActiveRecord::Schema.define(version: 2019_07_18_043325) do
   add_foreign_key "recomendaciones", "pacientes"
   add_foreign_key "recomendaciones", "prestadores"
   add_foreign_key "recomendaciones", "programas"
+  add_foreign_key "tratamientos", "esquema_horarios"
   add_foreign_key "tratamientos", "recomendaciones"
 end
