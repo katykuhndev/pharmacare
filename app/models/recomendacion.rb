@@ -4,36 +4,6 @@ validate :id_recomendacion_valido, on: :create
  
 #scope :historicas, -> { joins(:documento_recomendaciones).where(paciente: paciente) }
 
-scope :historicas, -> (recomendacion){ left_outer_joins(:documento_recomendaciones).left_outer_joins(:examen_recomendaciones)
-  .select('recomendaciones.id, recomendaciones.resultado, recomendaciones.id_recomendacion, recomendaciones.fecha_hora_ingreso, documento_recomendaciones.id as id_receta, examen_recomendaciones.id as id_examen')
-  .where("recomendaciones.paciente_id = ? ", recomendacion.paciente_id )
-  .order("id")}
-
-def id_recomendacion_valido
-  if self.id_recomendacion.size != 11
-    errors.add(:id_recomendacion, "Debe ser de 11 caracteres de largo")
-  end
-end
-
-def get_proximo_id_recomendacion
-  ultima_id_recomendacion = self.get_ultima_solicitud ? self.get_ultima_solicitud.id_recomendacion : nil
-  fecha_hoy = Date.today.strftime("%d%m%Y")
-  proximo_numero_string = 1.to_s.rjust(3, "0")
-  proximo_id_recomendacion = proximo_numero_string + fecha_hoy
-  ultima_fecha = ultima_id_recomendacion ? ultima_id_recomendacion[3..11] : nil
-  if ultima_fecha == fecha_hoy
-   # ya hubo casos antes en el mismo dia
-    proximo_numero = ultima_id_recomendacion[0..2].sub!(/^0*/, '').to_i + 1
-    proximo_numero_string = proximo_numero.to_s.rjust(3, "0")
-    proximo_id_recomendacion = proximo_numero_string + fecha_hoy
-  end  
-  return proximo_id_recomendacion
-end
-
-def get_ultima_solicitud
-  recomendacion = Recomendacion.order("id").last
-end
-
   belongs_to :caso, optional: true
   belongs_to :programa, optional: true
   belongs_to :paciente, optional: true
@@ -69,6 +39,36 @@ end
   after_initialize :set_default_con_alarma, :if => :new_record?
   after_initialize :set_default_resultado, :if => :new_record?
 
+scope :historicas, -> (recomendacion){ left_outer_joins(:documento_recomendaciones).left_outer_joins(:examen_recomendaciones)
+  .select('recomendaciones.id, recomendaciones.resultado, recomendaciones.id_recomendacion, recomendaciones.fecha_hora_ingreso, documento_recomendaciones.id as id_receta, examen_recomendaciones.id as id_examen')
+  .where("recomendaciones.paciente_id = ? ", recomendacion.paciente_id )
+  .order("id")}
+
+
+def id_recomendacion_valido
+  if self.id_recomendacion.size != 11
+    errors.add(:id_recomendacion, "Debe ser de 11 caracteres de largo")
+  end
+end
+
+def get_proximo_id_recomendacion
+  ultima_id_recomendacion = self.get_ultima_solicitud ? self.get_ultima_solicitud.id_recomendacion : nil
+  fecha_hoy = Date.today.strftime("%d%m%Y")
+  proximo_numero_string = 1.to_s.rjust(3, "0")
+  proximo_id_recomendacion = proximo_numero_string + fecha_hoy
+  ultima_fecha = ultima_id_recomendacion ? ultima_id_recomendacion[3..11] : nil
+  if ultima_fecha == fecha_hoy
+   # ya hubo casos antes en el mismo dia
+    proximo_numero = ultima_id_recomendacion[0..2].sub!(/^0*/, '').to_i + 1
+    proximo_numero_string = proximo_numero.to_s.rjust(3, "0")
+    proximo_id_recomendacion = proximo_numero_string + fecha_hoy
+  end  
+  return proximo_id_recomendacion
+end
+
+  def get_ultima_solicitud
+    recomendacion = Recomendacion.order("id").last
+  end
 
   def set_default_resultado
     self.resultado ||= :aprobacion
@@ -152,6 +152,31 @@ end
     return false if self.tratamientos.empty?
     return false if self.esquema_tratamientos.empty?
     return true
+  end
+
+  def farmacia_nombre
+    farmacia.try(:nombre)
+  end
+
+  def farmacia_nombre=(nombre)
+    self.farmacia = Farmacia.find_or_create_by(nombre: nombre) if nombre.present?
+  end
+
+  def prestador_nombre
+    prestador.try(:nombre)
+  end
+
+  def prestador_nombre=(nombre)
+    self.prestador = Prestador.find_or_create_by(nombre: nombre) if nombre.present?
+  end
+
+  def medico_nombre
+    medico.try(:nombre_completo)
+  end
+
+  def medico_nombre=(nombre)
+    nombre_split =  nombre.split
+    self.medico = Medico.find_or_create_by(nombres: nombre_split[0].strip, primer_apellido: nombre_split[1].strip, segundo_apellido: nombre_split[2].strip) if nombre.present?
   end
 
 end

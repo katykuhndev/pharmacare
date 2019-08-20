@@ -16,6 +16,8 @@ gem 'prawn-rails'
 gem 'wicked_pdf'
 gem 'wkhtmltopdf-binary'
 gem "aws-sdk-s3", require: false
+gem 'rails-jquery-autocomplete'
+gem 'jquery-ui-rails'
 group :development, :test do
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
 end

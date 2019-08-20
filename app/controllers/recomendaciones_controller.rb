@@ -1,5 +1,11 @@
 class RecomendacionesController < ApplicationController
   before_action :set_recomendacion, only: [:show, :edit, :update, :destroy]
+  
+  autocomplete :paciente, :rut, :extra_data => [:nombres, :primer_apellido, :segundo_apellido]
+  
+  autocomplete :prestador, :nombre, :full => true
+
+  autocomplete :farmacia, :nombre, :full => true
 
   # GET /recomendaciones
   # GET /recomendaciones.json
@@ -140,18 +146,20 @@ class RecomendacionesController < ApplicationController
        # Parametrizar correctamente todo 
        # mejorar el codigo
        # este codigo solo se hizo para ael piloto
-
-       @paciente = Paciente.find_or_create_by(recomendacion_params["atributos_paciente"])
+       atributos_paciente = recomendacion_params["atributos_paciente"]
+       rut = atributos_paciente.delete(:paciente_rut)
+       atributos_paciente[:rut] = rut
+       @paciente = Paciente.find_or_create_by(atributos_paciente)
        @recomendacion.paciente_id = @paciente.id
 
-       @prestador = Prestador.find_or_create_by(nombre: recomendacion_params["atributos_receta"]["prestador"])
-       @farmacia = Farmacia.find_or_create_by(nombre: recomendacion_params["atributos_receta"]["farmacia"])
+       #@prestador = Prestador.find_or_create_by(nombre: recomendacion_params["prestador_nombre"])
+       #@farmacia = Farmacia.find_or_create_by(nombre: recomendacion_params["atributos_receta"]["farmacia_nombre"])
        
-       nombre_medico = recomendacion_params["atributos_receta"]["medico_solicitante"].split
-       @medico = Medico.find_or_create_by(nombres: nombre_medico[0], primer_apellido: nombre_medico[1], segundo_apellido: nombre_medico[2])
-       @recomendacion.medico_id = @medico.id
-       @recomendacion.prestador_id = @prestador.id
-       @recomendacion.farmacia_id = @farmacia.id
+       #nombre_medico = recomendacion_params["atributos_receta"]["medico"].split if recomendacion_params["atributos_receta"]["medico"]
+       #@medico = Medico.find_or_create_by(nombres: nombre_medico[0], primer_apellido: nombre_medico[1], segundo_apellido: nombre_medico[2]) if nombre_medico
+      # @recomendacion.medico_id = @medico.id if @medico
+       #@recomendacion.prestador_id = @prestador.id
+       #@recomendacion.farmacia_id = @farmacia.id
        
       @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
       if @documento_receta.nil?
@@ -186,10 +194,10 @@ class RecomendacionesController < ApplicationController
        @medicion_recomendaciones_baciliformes = @recomendacion.medicion_recomendaciones.where(recomendacion_id: @recomendacion.id, medicion_id: 3)
        @medicion_recomendaciones_segmentados = @recomendacion.medicion_recomendaciones.where(recomendacion_id: @recomendacion.id, medicion_id: 4)
 
-       MedicionRecomendacion.create(recomendacion_id: @recomendacion.id, medicion_id: 1, valor: recomendacion_params["atributos_examen"]["ran"]) if @medicion_recomendaciones_ran.count == 0
-       MedicionRecomendacion.create(recomendacion_id: @recomendacion.id, medicion_id: 2, valor: recomendacion_params["atributos_examen"]["leucocitos"]) if @medicion_recomendaciones_leucocitos.count == 0
-       MedicionRecomendacion.create(recomendacion_id: @recomendacion.id, medicion_id: 3, valor: recomendacion_params["atributos_examen"]["baciliformes"]) if @medicion_recomendaciones_baciliformes.count == 0
-       MedicionRecomendacion.create(recomendacion_id: @recomendacion.id, medicion_id: 4, valor: recomendacion_params["atributos_examen"]["segmentados"]) if @medicion_recomendaciones_segmentados.count == 0
+       MedicionRecomendacion.create(recomendacion_id: @recomendacion.id, medicion_id: 1, valor: recomendacion_params["atributos_examen"]["ran"].to_f) if @medicion_recomendaciones_ran.count == 0
+       MedicionRecomendacion.create(recomendacion_id: @recomendacion.id, medicion_id: 2, valor: recomendacion_params["atributos_examen"]["leucocitos"].to_f) if @medicion_recomendaciones_leucocitos.count == 0
+       MedicionRecomendacion.create(recomendacion_id: @recomendacion.id, medicion_id: 3, valor: recomendacion_params["atributos_examen"]["baciliformes"].to_f) if @medicion_recomendaciones_baciliformes.count == 0
+       MedicionRecomendacion.create(recomendacion_id: @recomendacion.id, medicion_id: 4, valor: recomendacion_params["atributos_examen"]["segmentados"].to_f) if @medicion_recomendaciones_segmentados.count == 0
        
        @medicion_recomendaciones = @recomendacion.medicion_recomendaciones
         for medicion_recomendacion in @medicion_recomendaciones
@@ -237,6 +245,6 @@ class RecomendacionesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recomendacion_params
-      params.require(:recomendacion).permit({atributos_examen: [:fecha_examen, :examen, :ran, :leucocitos, :baciliformes, :segmentados]}, {atributos_receta: [:fecha_receta, :receta, :prestador, :farmacia, :medico_solicitante]}, {atributos_tratamiento: [:esquema_horario_id, :dia, :tarde, :noche, :am, :pm, :dia_entero, :dias, :cantidad,  :medicamento_programa_id]}, {atributos_paciente: [:rut, :nombres, :primer_apellido, :segundo_apellido]}, :id_recomendacion, :estado, :resultado, :caso_id, :programa_id, :paciente_id, :medico_id, :prestador_id, :farmacia_id, :qf_soporte_id, :ejecutivo_id, :fecha_hora_ingreso, :via_ingreso, :fecha_hora_respuesta, :observaciones, :con_alarma)
+      params.require(:recomendacion).permit(:prestador_nombre, :farmacia_nombre, :medico, :medico_nombre, { atributos_examen: [:fecha_examen, :examen, :ran, :leucocitos, :baciliformes, :segmentados]}, {atributos_receta: [:fecha_receta, :receta]}, {atributos_tratamiento: [:esquema_horario_id, :dia, :tarde, :noche, :am, :pm, :dia_entero, :dias, :cantidad,  :medicamento_programa_id]}, {atributos_paciente: [:paciente_rut, :nombres, :primer_apellido, :segundo_apellido]}, :id_recomendacion, :estado, :resultado, :caso_id, :programa_id, :paciente_id, :medico_id, :prestador_id, :farmacia_id, :qf_soporte_id, :ejecutivo_id, :fecha_hora_ingreso, :via_ingreso, :fecha_hora_respuesta, :observaciones, :con_alarma)
     end
 end

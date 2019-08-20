@@ -12,7 +12,9 @@
 //
 //= require jquery3
 //= require popper
-//= require rails-ujs
+//= require rails-ujs 
+//= require jquery-ui/widgets/autocomplete
+//= require autocomplete-rails
 //= require bootstrap-sprockets
 //= require bootstrap-datepicker
 //= require bootstrap-datepicker/core
@@ -64,4 +66,9 @@ $(function() {
   $(this).find('input[data-selects-visibility][type="radio"]:checked').each(selectVisibility);
 });
 
+$(function() {
+  return $('#recomendacion_medico_nombre').autocomplete({
+    source: $('#recomendacion_medico_nombre').data('autocomplete-source') 
+  });
+});
 

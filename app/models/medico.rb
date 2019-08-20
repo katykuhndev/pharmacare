@@ -7,4 +7,10 @@ class Medico < ApplicationRecord
   def name
    self.nombre
   end
+
+  def nombre_completo
+   "#{self.nombres} #{self.primer_apellido} #{self.segundo_apellido}" 
+  end
+
+  	
 end

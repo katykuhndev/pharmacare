@@ -12,7 +12,7 @@
         <div class="form-group">
           <%= paciente_form.label :rut, class: "col-sm-2 control-label" %>
           <div class="col-sm-4">
-            <%= paciente_form.text_field :rut, class: "form-control", value:@rut_paciente %>
+            <%= paciente_form.autocomplete_field :paciente_rut, autocomplete_paciente_rut_recomendaciones_path,  :update_elements => {:nombres => '#recomendacion_atributos_paciente_nombres', :primer_apellido => '#recomendacion_atributos_paciente_primer_apellido', :segundo_apellido => '#recomendacion_atributos_paciente_segundo_apellido'}, class: "form-control", value:@rut_paciente%>
           </div>
         </div>
         <div class="form-group">
@@ -97,26 +97,27 @@
           <% end %>  
             <%= receta_form.file_field :receta, accept: 'application/pdf,image/png,image/gif,image/jpeg' %>
         </div>
-      </div>        
+      </div> 
+      <% end %>       
       <div class="form-group">
-        <%= receta_form.label :prestador, class: "col-sm-2 control-label" %>
+        <%= form.label :prestador, class: "col-sm-2 control-label" %>
         <div class="col-sm-4">
-          <%= receta_form.text_field :prestador, class: "form-control", value:@nombre_prestador %>
+          <%= form.autocomplete_field :prestador_nombre, autocomplete_prestador_nombre_recomendaciones_path, class: "form-control" %>
         </div>
       </div>
       <div class="form-group">
-        <%= receta_form.label :farmacia, class: "col-sm-2 control-label" %>
+        <%= form.label :farmacia, class: "col-sm-2 control-label" %>
         <div class="col-sm-4">
-          <%= receta_form.text_field :farmacia, class: "form-control", value:@nombre_farmacia %>
+          <%= form.autocomplete_field :farmacia_nombre, autocomplete_farmacia_nombre_recomendaciones_path, class: "form-control" %>
         </div>
       </div> 
       <div class="form-group">
-        <%= receta_form.label :medico_solicitante, 'Medico Solicitante (Nombres apellido1 apellido2)',class: "col-sm-6 control-label" %>
+        <%= form.label :medico, 'Medico Solicitante (Nombre1 apellido1 apellido2)',class: "col-sm-6 control-label" %>
         <div class="col-sm-4">
-          <%= receta_form.text_field :medico_solicitante, class: "form-control", value:"#{@nombre_medico} #{@apellido1_medico} #{@apellido2_medico}" %>
+          <%= form.text_field :medico_nombre, data: { autocomplete_source: Medico.select("concat(coalesce(nombres,''),' ', coalesce(primer_apellido,'')) as nombre_apellido, nombres").order(:nombres).map(&:nombre_apellido)}, class: "form-control" %>
         </div>
       </div>     
-      <% end %>
+      
 
       <%= render 'tratamientos/list_edit' %>
 
@@ -203,4 +204,3 @@
     </div>
   </div>
 <% end %>
-
