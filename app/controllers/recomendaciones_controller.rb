@@ -175,7 +175,9 @@ class RecomendacionesController < ApplicationController
        @tratamiento = Tratamiento.create(recomendacion_id: @recomendacion.id, esquema_horario_id: recomendacion_params["atributos_tratamiento"]["esquema_horario_id"], medicamento_programa_id: recomendacion_params["atributos_tratamiento"]["medicamento_programa_id"], dias: recomendacion_params["atributos_tratamiento"]["dias"], cantidad: recomendacion_params["atributos_tratamiento"]["cantidad"], documento_recomendacion_id: @documento_receta.id)
        @bloques = @recomendacion.programa.bloques
        for bloque in @bloques
-        EsquemaTratamiento.create(recomendacion_id: @recomendacion.id, tratamiento_id: @tratamiento.id, bloque_id: bloque.id, dosis: recomendacion_params["atributos_tratamiento"]["#{bloque.nombre}"]) if recomendacion_params["atributos_tratamiento"]["#{bloque.nombre}"].to_i > 0
+        if recomendacion_params["atributos_tratamiento"]["#{bloque.nombre}"] != ''
+          EsquemaTratamiento.create(recomendacion_id: @recomendacion.id, tratamiento_id: @tratamiento.id, bloque_id: bloque.id, dosis: recomendacion_params["atributos_tratamiento"]["#{bloque.nombre}"].to_f) 
+        end
        end 
       end     
 
