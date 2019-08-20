@@ -44,14 +44,14 @@ class RecomendacionesController < ApplicationController
     
     @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
     @documento_examen = @recomendacion.examen_recomendaciones.where(examen_programa_id: 1).first
-
-    fecha_examen = @recomendacion.get_fecha_examen
+ 
+    fecha_examen = @documento_examen.fecha if @documento_examen
     @fecha_examen = fecha_examen ? fecha_examen.strftime("%d/%m/%Y") : ''
-    fecha_receta = @recomendacion.get_fecha_receta
+    fecha_receta = @documento_receta.fecha if @documento_receta
     @fecha_receta = fecha_receta ? fecha_receta.strftime("%d/%m/%Y") : ''
-    fecha_vencimiento_receta = @recomendacion.get_fecha_vencimiento_receta
+    fecha_vencimiento_receta = @documento_receta.fecha_vencimiento if @documento_receta
     @fecha_vencimiento_receta = fecha_vencimiento_receta ? fecha_vencimiento_receta.strftime("%d/%m/%Y") : ''
-    fecha_vencimiento_examen = @recomendacion.get_fecha_vencimiento_examen
+    fecha_vencimiento_examen = @documento_examen.fecha_vencimiento if @documento_examen
     @fecha_vencimiento_examen = fecha_vencimiento_examen ? fecha_vencimiento_examen.strftime("%d/%m/%Y") : ''
 
     @rechazo_por_vencimiento = (@recomendacion.get_fecha_vencimiento_examen < Time.now) ? true : false if fecha_vencimiento_examen
@@ -167,7 +167,14 @@ class RecomendacionesController < ApplicationController
       else
         @documento_receta.update(fecha: recomendacion_params["atributos_receta"]["fecha_receta"])
       end
-      
+
+      fecha_vencimiento = @recomendacion.get_fecha_vencimiento_receta
+      if fecha_vencimiento
+        @documento_receta.update(fecha_vencimiento: fecha_vencimiento)
+      end 
+
+
+
       @documento_receta.receta.attach(recomendacion_params["atributos_receta"]["receta"])
       @documento_receta.nombrar_archivo_receta
 
@@ -187,6 +194,12 @@ class RecomendacionesController < ApplicationController
       else
         @documento_examen.update(fecha: recomendacion_params["atributos_examen"]["fecha_examen"])
       end
+
+      fecha_vencimiento = @recomendacion.get_fecha_vencimiento_examen
+      if fecha_vencimiento
+        @documento_examen.update(fecha_vencimiento: fecha_vencimiento)
+      end 
+
       
       @documento_examen.examen.attach(recomendacion_params["atributos_examen"]["examen"])
       @documento_examen.nombrar_archivo_examen

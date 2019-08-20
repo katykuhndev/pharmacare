@@ -115,8 +115,8 @@ end
   end   
 
   def get_fecha_receta
-    documento_receta = self.documento_recomendaciones.where(documento_programa_id: 1).first
-    @fecha_receta = documento_receta ? documento_receta.fecha : false
+    documento_recomendacion = self.documento_recomendaciones.where(documento_programa_id: 1).first
+    @fecha_receta = documento_recomendacion ? documento_recomendacion.fecha : false
   end
 
   def get_fecha_examen
@@ -130,6 +130,7 @@ end
     fecha_receta = self.get_fecha_receta
     @fecha_vencimiento_receta = fecha_receta ? (fecha_receta + dias_vencimiento_receta.days) : false
   end
+
 
   def get_fecha_vencimiento_examen
     examen_programa = ExamenPrograma.find(2)

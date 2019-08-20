@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_12_001429) do
+ActiveRecord::Schema.define(version: 2019_08_20_064435) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", null: false
@@ -108,6 +108,7 @@ ActiveRecord::Schema.define(version: 2019_08_12_001429) do
     t.text "observaciones"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "fecha_vencimiento"
     t.index ["documento_programa_id"], name: "index_documento_recomendaciones_on_documento_programa_id"
     t.index ["recomendacion_id"], name: "index_documento_recomendaciones_on_recomendacion_id"
   end
@@ -152,6 +153,7 @@ ActiveRecord::Schema.define(version: 2019_08_12_001429) do
     t.text "observaciones"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.date "fecha_vencimiento"
     t.index ["examen_programa_id"], name: "index_examen_recomendaciones_on_examen_programa_id"
     t.index ["recomendacion_id"], name: "index_examen_recomendaciones_on_recomendacion_id"
   end
