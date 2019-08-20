@@ -159,7 +159,9 @@ end
   end
 
   def farmacia_nombre=(nombre)
-    self.farmacia = Farmacia.find_or_create_by(nombre: nombre) if nombre.present?
+    if !nombre.blank? 
+      self.farmacia = Farmacia.find_or_create_by(nombre: nombre)
+    end  
   end
 
   def prestador_nombre
@@ -167,7 +169,9 @@ end
   end
 
   def prestador_nombre=(nombre)
-    self.prestador = Prestador.find_or_create_by(nombre: nombre) if nombre.present?
+    if !nombre.blank? 
+      self.prestador = Prestador.find_or_create_by(nombre: nombre)
+    end
   end
 
   def medico_nombre
@@ -175,8 +179,11 @@ end
   end
 
   def medico_nombre=(nombre)
-    nombre_split =  nombre.split
-    self.medico = Medico.find_or_create_by(nombres: nombre_split[0].strip, primer_apellido: nombre_split[1].strip, segundo_apellido: nombre_split[2].strip) if nombre.present?
+    if !nombre.blank? 
+      nombre_split =  nombre.split 
+      self.medico = Medico.find_or_create_by(nombres: (nombre_split[0].strip if nombre_split[0]) , primer_apellido: (nombre_split[1].strip if nombre_split[1]), segundo_apellido: (nombre_split[2].strip if nombre_split[2]) ) 
+    end
   end
 
 end
+ 
