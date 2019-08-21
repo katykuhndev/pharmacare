@@ -33,11 +33,13 @@ validate :id_recomendacion_valido, on: :create
   enum estado: [:abierta, :preinforme, :cerrada]
   enum resultado: [:aprobacion, :aprobacion_con_reparos, :rechazo_administrativo, :rechazo_tecnico]
   enum via_ingreso: [:whatsapp, :email, :fono]
+  enum resolucion_qf: [:aprobada, :rechazada]
 
   after_initialize :set_default_estado, :if => :new_record?
   after_initialize :set_default_fecha_hora_ingreso, :if => :new_record?
   after_initialize :set_default_con_alarma, :if => :new_record?
   after_initialize :set_default_resultado, :if => :new_record?
+  after_initialize :set_default_resolucion_qf, :if => :new_record?
 
 scope :historicas, -> (recomendacion){ left_outer_joins(:documento_recomendaciones).left_outer_joins(:examen_recomendaciones)
   .select('recomendaciones.id, recomendaciones.resultado, recomendaciones.id_recomendacion, recomendaciones.fecha_hora_ingreso, documento_recomendaciones.id as id_receta, examen_recomendaciones.id as id_examen')
@@ -74,6 +76,10 @@ end
     self.resultado ||= :aprobacion
   end
 
+  def set_default_resolucion_qf
+    self.resolucion_qf ||= :aprobada
+  end
+
   def set_default_estado
     self.estado ||= :abierta
   end
@@ -87,10 +93,11 @@ end
   end 
 
   def resolucion_recomendacion
-    self.resultado = :aprobacion
     self.procesar_alarma
     self.resultado = :aprobacion_con_reparos if self.get_fecha_vencimiento_receta && self.get_fecha_vencimiento_receta < Time.now
     self.resultado = :rechazo_tecnico if self.get_fecha_vencimiento_examen && self.get_fecha_vencimiento_examen < Time.now
+    self.resolucion_qf = :rechazada if (self.rechazo_tecnico? || self.rechazo_administrativo?)
+    self.estado = :preinforme if self.informacion_completa?
   end 
 
     def procesar_alarma
@@ -144,11 +151,10 @@ end
     return false if self.medico.nil?
     return false if self.prestador.nil?
     return false if self.farmacia.nil? 
-    return false if self.farmacia.nil?
     return false if self.documento_recomendaciones.empty? 
-    self.documento_recomendaciones.map { |doc| return false if doc.fecha.nil? }
+    self.documento_recomendaciones.map { |doc| return false if (doc.fecha.nil? && doc.nombre.nil?) }
     return false if self.examen_recomendaciones.empty?
-    self.documento_recomendaciones.map { |doc| return false if doc.fecha.nil? }
+    self.documento_recomendaciones.map { |doc| return false if (doc.fecha.nil? && doc.nombre.nil?) }
     return false if self.medicion_recomendaciones.empty?
     return false if self.tratamientos.empty?
     return false if self.esquema_tratamientos.empty?

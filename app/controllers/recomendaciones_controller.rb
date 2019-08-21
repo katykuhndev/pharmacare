@@ -55,8 +55,8 @@ class RecomendacionesController < ApplicationController
     @fecha_vencimiento_examen = fecha_vencimiento_examen ? fecha_vencimiento_examen.strftime("%d/%m/%Y") : ''
 
     @rechazo_por_vencimiento = (@recomendacion.get_fecha_vencimiento_examen < Time.now) ? true : false if fecha_vencimiento_examen
-    @titulo = (@recomendacion.aprobacion? || @recomendacion.aprobacion_con_reparos?) ? 'APROBADA' : 'RECHAZADA' 
-    @accion = (@recomendacion.aprobacion? || @recomendacion.aprobacion_con_reparos?) ? 'APROBAR' : 'RECHAZAR' 
+    @titulo = @recomendacion.aprobada? ? 'APROBADA' : 'RECHAZADA' 
+    @accion = @recomendacion.aprobada? ? 'APROBAR' : 'RECHAZAR' 
 
     @autorizador = @recomendacion.qf_soporte ? @recomendacion.qf_soporte.name : ''
 
