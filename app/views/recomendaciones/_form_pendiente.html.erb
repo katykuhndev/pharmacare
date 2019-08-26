@@ -12,25 +12,25 @@
         <div class="form-group">
           <%= paciente_form.label :rut, class: "col-sm-2 control-label" %>
           <div class="col-sm-4">
-            <%= paciente_form.autocomplete_field :paciente_rut, autocomplete_paciente_rut_recomendaciones_path,  :update_elements => {:nombres => '#recomendacion_atributos_paciente_nombres', :primer_apellido => '#recomendacion_atributos_paciente_primer_apellido', :segundo_apellido => '#recomendacion_atributos_paciente_segundo_apellido'}, class: "form-control", value:@rut_paciente%>
+            <%= paciente_form.autocomplete_field :paciente_rut, autocomplete_paciente_rut_recomendaciones_path,  :update_elements => {:nombres => '#recomendacion_atributos_paciente_nombres', :primer_apellido => '#recomendacion_atributos_paciente_primer_apellido', :segundo_apellido => '#recomendacion_atributos_paciente_segundo_apellido'}, class: "form-control", value:@rut_paciente, disabled: @recomendacion.cerrada? %>
           </div>
         </div>
         <div class="form-group">
           <%= paciente_form.label :nombres, class: "col-sm-2 control-label" %>
           <div class="col-sm-4">
-            <%= paciente_form.text_field :nombres, class: "form-control", value:@nombres_paciente %>
+            <%= paciente_form.text_field :nombres, class: "form-control", value:@nombres_paciente, disabled: @recomendacion.cerrada? %>
           </div>
         </div>
         <div class="form-group">
           <%= paciente_form.label :primer_apellido, class: "col-sm-2 control-label" %>
           <div class="col-sm-4">
-            <%= paciente_form.text_field :primer_apellido, class: "form-control", value:@primer_apellido_paciente %>
+            <%= paciente_form.text_field :primer_apellido, class: "form-control", value:@primer_apellido_paciente, disabled: @recomendacion.cerrada? %>
           </div>
         </div>
         <div class="form-group">
           <%= paciente_form.label :segundo_apellido, class: "col-sm-2 control-label" %>
           <div class="col-sm-4">
-            <%= paciente_form.text_field :segundo_apellido, class: "form-control", value:@segundo_apellido_paciente %>
+            <%= paciente_form.text_field :segundo_apellido, class: "form-control", value:@segundo_apellido_paciente, disabled: @recomendacion.cerrada? %>
           </div>
         </div>
       <% end %>
@@ -57,25 +57,25 @@
         <div class="form-group">
           <%= examen_form.label :leucocitos, class: "col-sm-2 control-label" %>
           <div class="col-sm-2">
-            <%= examen_form.number_field :leucocitos, class: "form-control", step: 0.1 , value:@leucocitos %>
+            <%= examen_form.number_field :leucocitos, class: "form-control", step: 0.1 , value:@leucocitos, disabled: @recomendacion.cerrada? %>
           </div>
         </div>
         <div class="form-group">
           <%= examen_form.label :segmentados, 'Segmentados %', class: "col-sm-2 control-label" %>
           <div class="col-sm-2">
-            <%= examen_form.number_field :segmentados, class: "form-control", step: 0.01 , value:@segmentados %>
+            <%= examen_form.number_field :segmentados, class: "form-control", step: 0.01 , value:@segmentados, disabled: @recomendacion.cerrada? %>
           </div>
         </div>
         <div class="form-group">
           <%= examen_form.label :baciliformes, 'Baciliformes %', class: "col-sm-2 control-label" %>
           <div class="col-sm-2">
-            <%= examen_form.number_field :baciliformes, class: "form-control", step: 0.01 , value:@baciliformes %>
+            <%= examen_form.number_field :baciliformes, class: "form-control", step: 0.01 , value:@baciliformes, disabled: @recomendacion.cerrada? %>
           </div>
         </div>
         <div class="form-group">
           <%= examen_form.label :ran, class: "col-sm-2 control-label" %>
           <div class="col-sm-2">
-            <%= examen_form.number_field :ran, class: "form-control", step: 0.1 , value:@ran %>
+            <%= examen_form.number_field :ran, class: "form-control", step: 0.1 , value:@ran, disabled: @recomendacion.cerrada? %>
           </div>
         </div>        
       <% end %>
@@ -85,7 +85,7 @@
       <div class="form-group">
         <%= receta_form.label :fecha_receta,'Fecha Receta', class: "col-sm-2 control-label" %>
         <div class="col-sm-4">
-          <%= receta_form.text_field :fecha_receta, class: "datepicker", value: @fecha_receta ? @fecha_receta : ''%>
+          <%= receta_form.text_field :fecha_receta, class: "datepicker", value: @fecha_receta ? @fecha_receta : '' %>
         </div>
       </div>    
       <div class="form-group">
@@ -102,19 +102,19 @@
       <div class="form-group">
         <%= form.label :prestador, class: "col-sm-2 control-label" %>
         <div class="col-sm-4">
-          <%= form.autocomplete_field :prestador_nombre, autocomplete_prestador_nombre_recomendaciones_path, class: "form-control" %>
+          <%= form.autocomplete_field :prestador_nombre, autocomplete_prestador_nombre_recomendaciones_path, class: "form-control", disabled: @recomendacion.cerrada? %>
         </div>
       </div>
       <div class="form-group">
         <%= form.label :farmacia, class: "col-sm-2 control-label" %>
         <div class="col-sm-4">
-          <%= form.autocomplete_field :farmacia_nombre, autocomplete_farmacia_nombre_recomendaciones_path, class: "form-control" %>
+          <%= form.autocomplete_field :farmacia_nombre, autocomplete_farmacia_nombre_recomendaciones_path, class: "form-control", disabled: @recomendacion.cerrada? %>
         </div>
       </div> 
       <div class="form-group">
         <%= form.label :medico, 'Medico Solicitante (Nombre1 apellido1 apellido2)',class: "col-sm-6 control-label" %>
         <div class="col-sm-4">
-          <%= form.text_field :medico_nombre, data: { autocomplete_source: Medico.select("concat(coalesce(nombres,''),' ', coalesce(primer_apellido,'')) as nombre_apellido, nombres").order(:nombres).map(&:nombre_apellido)}, class: "form-control" %>
+          <%= form.text_field :medico_nombre, data: { autocomplete_source: Medico.select("concat(coalesce(nombres,''),' ', coalesce(primer_apellido,'')) as nombre_apellido, nombres").order(:nombres).map(&:nombre_apellido)}, class: "form-control", disabled: @recomendacion.cerrada? %>
         </div>
       </div>     
       
@@ -129,7 +129,7 @@
         </div>
         <div class="col-sm-2">
           <%= tratamiento_form.label :dias, 'Duracion (Dias)' %>
-          <%= tratamiento_form.number_field :dias, class: "form-control" %>
+          <%= tratamiento_form.number_field :dias, class: "form-control" , disabled: @recomendacion.cerrada? %>
         </div>
         <br>
         <h4>Esquema Posología</h4>
@@ -138,6 +138,7 @@
         <%= tratamiento_form.collection_select(:esquema_horario_id, EsquemaHorario.order(:id), :id, :nombre, {include_blank: 'Seleccione un tipo de horario'}, :"data-selects-visibility" => ".col" )  %>
         </div>
 
+        <% if !@recomendacion.cerrada? %>
         <div class="form-group w-75">
           <div class="form-row">
             <div class="col" data-show-for="1">
@@ -172,31 +173,19 @@
             </div>
           </div>
         </div>
-        
+        <%end%>
         <div class="col-sm-2">
           <%= tratamiento_form.label :cantidad, 'Total Comprimidos' %>
-          <%= tratamiento_form.number_field :cantidad, class: "form-control" %>
+          <%= tratamiento_form.number_field :cantidad, class: "form-control", disabled: @recomendacion.cerrada?%>
         </div>
       </div>    
     <% end %>    
     <div class="form-group">
-      <%= form.label :fecha_hora_respuesta, class: "col-sm-6 control-label" %>
-        <div class="col-sm-4">
-         <%= form.text_field :fecha_hora_respuesta, class: "datepicker" %>
-        </div>
-    </div>
-    <div class="form-group">
        <%= form.label :observaciones, class: "col-sm-2 control-label" %>
         <div class="col-sm-4">
-          <%= form.text_area :observaciones, class: "form-control" %>
+          <%= form.text_area :observaciones, class: "form-control", disabled: @recomendacion.cerrada?%>
         </div>
     </div>
-    <div class="form-group">
-    <%= form.label :qf_soporte_id, class: "col-sm-2 control-label" %>
-    <div class="col-sm-4">
-      <%= form.collection_select(:qf_soporte_id, User.where(role: 2).order(:id), :id, :name) %>
-    </div>
-  </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-4">
       <%= form.submit class: "btn btn-default bg-secondary text-white" %>

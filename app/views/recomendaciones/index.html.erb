@@ -12,6 +12,10 @@
       <%= f.label :estado %>
       <%= f.text_field :estado_cont, class: 'form-control' %>
     </div>
+    <div class="col">
+      <%= f.label :rut %>
+      <%= f.text_field :paciente_rut_cont, class: 'form-control' %>
+    </div>    
   </div>
 </div>
 <%= f.submit class: 'btn btn-default bg-secondary text-white' %>
@@ -27,18 +31,14 @@
     <tr>
       <th><%= sort_link(@query, :id_recomendacion) %></th>
       <!--th><%= sort_link(@query, :programa_id, Recomendacion.human_attribute_name(:programa))%></th-->
+      <th><%= sort_link(@query, :rut, Recomendacion.human_attribute_name(:paciente)) %></th>
       <th><%= sort_link(@query, :paciente_id, Recomendacion.human_attribute_name(:paciente))%></th>
       <th><%= sort_link(@query, :medico_id, Recomendacion.human_attribute_name(:medico))%></th>
-      <th><%= sort_link(@query, :prestador_id, Recomendacion.human_attribute_name(:prestador))%></th>
       <th><%= sort_link(@query, :farmacia_id, Recomendacion.human_attribute_name(:farmacia))%></th>    
       <th><%= sort_link(@query, :estado) %></th>
       <th><%= sort_link(@query, :resultado) %></th>
       <!--th><%= sort_link(@query, :con_alarma) %></th-->
-      <th><%= sort_link(@query, :qf_soporte_id, Recomendacion.human_attribute_name(:qf_soporte)) %></th>
-      <th><%= sort_link(@query, :ejecutivo_id, Recomendacion.human_attribute_name(:ejecutivo)) %></th>
       <th><%= sort_link(@query, :fecha_ingreso) %></th>
-      <th><%= sort_link(@query, :via_ingreso) %></th>
-      <th><%= sort_link(@query, :fecha_respuesta) %></th>
       <th colspan="3"><%=(t :text_actions)%></th>
     </tr>
   </thead>
@@ -47,19 +47,14 @@
     <% @recomendaciones.each do |recomendacion| %>
       <tr>
         <td><%= recomendacion.id_recomendacion %></td>
-        <!--td><%= recomendacion.programa ? recomendacion.programa.nombre : '' %></td-->
-        <td><%= recomendacion.paciente ? recomendacion.paciente.nombres+' '+recomendacion.paciente.primer_apellido : '' %></td>
-        <td><%= recomendacion.medico ? recomendacion.medico.nombres: '' %></td>
-        <td><%= recomendacion.prestador ? recomendacion.prestador.nombre : '' %></td>
+        <td><%= recomendacion.paciente ? recomendacion.paciente.rut : '' %></td>
+        <td><%= recomendacion.paciente ? recomendacion.paciente.nombre_completo : '' %></td>
+        <td><%= recomendacion.medico ? recomendacion.medico.name : '' %></td>
         <td><%= recomendacion.farmacia ? recomendacion.farmacia.nombre : '' %></td>
         <td><%= recomendacion.estado %></td>
         <td><%= recomendacion.resultado %></td>
         <!--td><%= recomendacion.con_alarma %></td-->
-        <td><%= recomendacion.qf_soporte ? recomendacion.qf_soporte.name : '' %></td>
-        <td><%= recomendacion.ejecutivo ? recomendacion.ejecutivo.name : '' %></td>
         <td><%= recomendacion.fecha_hora_ingreso ? recomendacion.fecha_hora_ingreso.strftime("%Y %m %d") : '' %></td>
-        <td><%= recomendacion.via_ingreso %></td>
-        <td><%= recomendacion.fecha_hora_respuesta ? recomendacion.fecha_hora_respuesta.strftime("%Y %m %d") : '' %></td>
         <td><%= link_to (t :text_show), recomendacion %></td>
         <td><%= link_to (t :text_edit), edit_recomendacion_path(recomendacion) %></td>
         <td><%= link_to (t :text_destroy), recomendacion, method: :delete, data: { confirm: (t :text_are_you_sure) } %></td>

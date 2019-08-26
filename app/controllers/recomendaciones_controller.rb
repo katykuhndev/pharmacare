@@ -15,6 +15,32 @@ class RecomendacionesController < ApplicationController
     @recomendaciones = @query.result.includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo).page(params[:page])
   end
 
+  def edit_cierre
+    @recomendacion = Recomendacion.find(params[:id])
+  end 
+
+  def cerrar
+    @recomendacion = Recomendacion.find(params[:id])
+    if params['rechazo_administrativo']
+      parametros = recomendacion_params.merge({fecha_hora_respuesta: Time.now, resultado: 'rechazo_administrativo', resolucion_qf: 'rechazada', estado: 'cerrada' })
+    elsif params['rechazo_tecnico']
+      parametros = recomendacion_params.merge({fecha_hora_respuesta: Time.now, resultado: 'rechazo_tecnico', resolucion_qf: 'rechazada', estado: 'cerrada' })
+    elsif params['aprobacion_con_reparos']
+      parametros = recomendacion_params.merge({fecha_hora_respuesta: Time.now, resultado: 'aprobacion_con_reparos', resolucion_qf: 'aprobada', estado: 'cerrada' })
+    elsif params['aprobacion']
+      parametros = recomendacion_params.merge({fecha_hora_respuesta: Time.now, resultado: 'aprobacion', resolucion_qf: 'aprobada', estado: 'cerrada' })
+    end  
+    respond_to do |format|
+      if @recomendacion.update(parametros)
+         format.html { redirect_to @recomendacion, notice: 'Recomendacion se cerró correctamente.' }
+         format.json { render :show, status: :ok, location: @recomendacion }
+      else
+        format.html { render :edit_cierre }
+        format.json { render json: @recomendacion.errors, status: :unprocessable_entity }
+      end
+     end 
+  end 
+
   # GET /recomendaciones/1
   # GET /recomendaciones/1.json
   def show
@@ -147,10 +173,13 @@ class RecomendacionesController < ApplicationController
        # mejorar el codigo
        # este codigo solo se hizo para ael piloto
        atributos_paciente = recomendacion_params["atributos_paciente"]
-       rut = atributos_paciente.delete(:paciente_rut)
-       atributos_paciente[:rut] = rut
-       @paciente = Paciente.find_or_create_by(atributos_paciente)
-       @recomendacion.paciente_id = @paciente.id
+       if atributos_paciente
+         rut = atributos_paciente.delete(:paciente_rut)
+         atributos_paciente[:rut] = rut
+         @paciente = Paciente.find_or_create_by(atributos_paciente)
+         @recomendacion.paciente_id = @paciente.id
+       end
+
 
        #@prestador = Prestador.find_or_create_by(nombre: recomendacion_params["prestador_nombre"])
        #@farmacia = Farmacia.find_or_create_by(nombre: recomendacion_params["atributos_receta"]["farmacia_nombre"])

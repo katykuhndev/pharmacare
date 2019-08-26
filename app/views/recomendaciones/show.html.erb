@@ -7,7 +7,7 @@
 <dl class="dl-horizontal">
 
   <h3>Estado: <%= @recomendacion.estado.upcase %> </h3>
-  <h3>Resultado: <%= @recomendacion.resultado.upcase %></h3>
+  <h3>Resultado: <%= @recomendacion.resultado.upcase %> &nbsp;<%= !@recomendacion.cerrada? ? (link_to 'Cerrar Solicitud' , edit_cierre_path(@recomendacion), class: 'btn btn-default bg-secondary text-white') : ''%></h3>
   <% if @alarma %>
     <h3 style="color:<%=@alarma.color%>;"> <%=@alarma.nombre.upcase %></h3>
   <%else%>
@@ -32,7 +32,7 @@
     <h3>Datos Examen</h3>
       <dt><%= link_to 'ARCHIVO EXAMEN', rails_blob_url(@documento_examen.examen, disposition: "attachment") if @documento_examen && @documento_examen.examen.attached? %> </dt>
       <dt>Fecha Hemograma: <%= @fecha_examen %>
-       <%if @documento_examen.vencida? %>
+       <%if @documento_examen && @documento_examen.vencida? %>
        <div class="vencida"> Vencimiento : <%= @fecha_vencimiento_receta %> </div>
        <%else%>
           Vencimiento : <%= @fecha_vencimiento_examen %> 
@@ -47,7 +47,7 @@
       <h3>Datos Receta</h3>
       <dt><%= link_to 'ARCHIVO RECETA', rails_blob_url(@documento_receta.receta, disposition: "attachment") if @documento_receta && @documento_receta.receta.attached? %> </dt>
       <dt>Fecha Receta: <%= @fecha_receta%> 
-        <%if @documento_receta.vencida? %>
+        <%if @documento_examen && @documento_receta.vencida? %>
          <div class="vencida"> Vencimiento : <%= @fecha_vencimiento_receta %> </div>
        <%else%>
           Vencimiento : <%= @fecha_vencimiento_receta %> 
@@ -63,14 +63,16 @@
 
   <%= render 'tratamientos/list_show' %>
 
-  <dt>Autoriza : <%= @qf_soporte %> </dt>
+  <dt>Observaciones:</dt>
+  <dd><%= @recomendacion.observaciones %></dd>
 
   <dt>Ejecutivo a cargo : <%= @ejecutivo %></dt>
 
-  <dt>Fecha hora respuesta:</dt>
-  <dd><%= @recomendacion.fecha_hora_respuesta %></dd>
+  <%if @recomendacion.cerrada? %>
+    <dt>Fecha hora respuesta:</dt>
+    <dd><%= @recomendacion.fecha_hora_respuesta %></dd>
 
-  <dt>Observaciones:</dt>
-  <dd><%= @recomendacion.observaciones %></dd>
+    <dt>Autoriza : <%= @qf_soporte %> </dt>
+  <% end %> 
 
 </dl>

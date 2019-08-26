@@ -25,15 +25,12 @@ class Tratamiento < ApplicationRecord
 	        esquema = "#{esquema} #{dosis_bloque.to_s} - "
 	        esquema_fraccional = "#{esquema_fraccional} #{dosis_fraccional.to_s} - "
 	        esquema_completo = "#{esquema_completo} #{bloque} #{dosis_bloque.to_s} - "
-	        puts 'completoooo'
-	        puts esquema_completo
     	end	
     	esquema = esquema.chomp('- ')
     	esquema_fraccional = esquema_fraccional.chomp('- ')
     	texto_tratamiento = "#{texto_tratamiento} Paciente tomará #{dosis_diaria} 
-comprimidos diarios de #{dosis_medicamento} #{un_medicamento}. (#{dosis_medicamento*dosis_diaria} #{un_medicamento}  por día)."
+comprimidos diarios de #{dosis_medicamento} #{un_medicamento}. (#{dosis_medicamento*dosis_diaria} #{un_medicamento}  por día), durante #{self.dias} días."
 	    esquema_completo = esquema_completo.chomp('- ')
-	    puts esquema_completo
 	    return esquema, esquema_fraccional, texto_tratamiento, esquema_completo
 	end
 

@@ -11,7 +11,7 @@ class Paciente < ApplicationRecord
   end
 
   def name
-   self.nombre
+   self.rut
   end
 
   def nombre_completo

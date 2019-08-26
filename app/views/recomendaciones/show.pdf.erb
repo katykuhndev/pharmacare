@@ -24,6 +24,7 @@ Rut : <%= @rut_paciente %></h3>
 	<h4 style="text-decoration: underline;">Posología: </h4>
     <% tratamiento_completo = '' 
        count = 0
+       total_dias_tratamiento = 0
     %>
 
 	<% @tratamientos.each do |tratamiento| %>
@@ -33,8 +34,9 @@ Rut : <%= @rut_paciente %></h3>
     	dias = tratamiento.dias
     	cantidad = tratamiento.cantidad
     	esquema, esquema_fraccional, texto_tratamiento = tratamiento.posologias
-    	tratamiento_completo = "#{tratamiento_completo} #{texto_tratamiento}."
+    	tratamiento_completo = "#{tratamiento_completo} #{texto_tratamiento}"
     	count += 1
+    	total_dias_tratamiento += dias
 	   %>
 	   <dt><b><%=count%>. &nbsp;&nbsp;<%= esquema_fraccional %></b> &nbsp;&nbsp; por <%= dias %> días (<%= cantidad %> comprimidos de <%= presentacion %>) </dt>
 	<%end%>
@@ -46,7 +48,7 @@ Por lo tanto, <%= @accion=='RECHAZAR' ? 'NO ' : ''%>se autoriza el despacho del 
   Observaciones: <%=@recomendacion.observaciones%>.<br><br>
 <% end %>
 
-<p style="text-align:justify;"><%= @alarma ? @alarma.accion : "Siga cuidadosamente las indicaciones de su médico. #{tratamiento_completo} " %></p>
+<p style="text-align:justify;"><%= @alarma ? @alarma.accion : "Siga cuidadosamente las indicaciones de su médico. #{tratamiento_completo} Total días de tratamiento : #{total_dias_tratamiento}  días." %></p>
 
 <div style="position: relative; top:200px;">
 	Saludos cordiales, <br><br>

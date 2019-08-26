@@ -135,7 +135,7 @@ end
     documento_programa = DocumentoPrograma.find(1)
     dias_vencimiento_receta = documento_programa.dias_vencimiento 
     fecha_receta = self.get_fecha_receta
-    @fecha_vencimiento_receta = fecha_receta ? (fecha_receta + dias_vencimiento_receta.days) : false
+    @fecha_vencimiento_receta = fecha_receta ? (fecha_receta + dias_vencimiento_receta.day - 1) : false
   end
 
 
@@ -143,10 +143,11 @@ end
     examen_programa = ExamenPrograma.find(2)
     dias_vencimiento_examen = examen_programa.dias_vencimiento 
     fecha_examen = self.get_fecha_examen
-    @fecha_vencimiento_examen = fecha_examen ? (fecha_examen + dias_vencimiento_examen.days) : false
+    @fecha_vencimiento_examen = fecha_examen ? (fecha_examen + dias_vencimiento_examen.days - 1) : false
   end 
 
   def informacion_completa?
+    return true if self.preinforme?
     return false if self.paciente.nil?
     return false if self.medico.nil?
     return false if self.prestador.nil?

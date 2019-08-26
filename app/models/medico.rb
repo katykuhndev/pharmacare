@@ -5,7 +5,7 @@ class Medico < ApplicationRecord
   enum genero: [:femenino, :masculino]
 
   def name
-   self.nombre
+   self.nombre_completo
   end
 
   def nombre_completo
