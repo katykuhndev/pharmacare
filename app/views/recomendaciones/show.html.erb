@@ -30,7 +30,11 @@
   <div class="form-row">
     <div class="col">
     <h3>Datos Examen</h3>
-      <dt><%= link_to 'ARCHIVO EXAMEN', rails_blob_url(@documento_examen.examen, disposition: "attachment") if @documento_examen && @documento_examen.examen.attached? %> </dt>
+      <%if @documento_examen && @documento_examen.examen.attached? %>
+        <dt><%= link_to 'ARCHIVO EXAMEN', rails_blob_url(@documento_examen.examen, disposition: "attachment") %> </dt>
+      <%else%>
+        <div class="vencida"> NO HAY ARCHIVO </div>
+      <%end%>
       <dt>Fecha Hemograma: <%= @fecha_examen %>
        <%if @documento_examen && @documento_examen.vencida? %>
        <div class="vencida"> Vencimiento : <%= @fecha_vencimiento_receta %> </div>
@@ -45,7 +49,11 @@
     </div>
     <div class="col">
       <h3>Datos Receta</h3>
-      <dt><%= link_to 'ARCHIVO RECETA', rails_blob_url(@documento_receta.receta, disposition: "attachment") if @documento_receta && @documento_receta.receta.attached? %> </dt>
+      <%if @documento_receta && @documento_receta.receta.attached? %>
+        <dt><%= link_to 'ARCHIVO RECETA', rails_blob_url(@documento_receta.receta, disposition: "attachment") %> </dt>
+      <%else%>
+        <div class="vencida"> NO HAY ARCHIVO </div>
+      <%end%>
       <dt>Fecha Receta: <%= @fecha_receta%> 
         <%if @documento_examen && @documento_receta.vencida? %>
          <div class="vencida"> Vencimiento : <%= @fecha_vencimiento_receta %> </div>

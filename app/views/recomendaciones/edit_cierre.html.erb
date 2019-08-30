@@ -27,22 +27,28 @@
       <div class="col-sm-offset-2 col-sm-4">
         <%= form.submit 'Rechazo Administrativo', name: 'rechazo_administrativo' , class: "btn btn-default bg-secondary text-white" %>
       </div>
-    <% elsif @recomendacion.aprobacion? && @recomendacion.preinforme?  %>
-      <div class="col-sm-offset-2 col-sm-4">
-        <%= form.submit 'Aprobar', name: 'aprobacion', class: "btn btn-default bg-secondary text-white" %>
-      </div>
-    <% elsif @recomendacion.aprobacion_con_reparos? && @recomendacion.preinforme?  %>  
-      <div class="col-sm-offset-2 col-sm-4">
-        <%= form.submit 'Aprobar con Reparos', name: 'aprobacion_con_reparos', class: "btn btn-default bg-secondary text-white" %>
-      </div>
-      <br>
-      <div class="col-sm-offset-2 col-sm-4">
-        <%= form.submit 'Rechazo Tecnico', name: 'rechazo_tecnico', class: "btn btn-default bg-secondary text-white" %>
-      </div>
-    <% elsif @recomendacion.rechazo_tecnico? && @recomendacion.preinforme?  %>
-      <div class="col-sm-offset-2 col-sm-4">
-        <%= form.submit 'Rechazo Tecnico', name: 'rechazo_tecnico', class: "btn btn-default bg-secondary text-white" %>
-      </div>
+    <% elsif @recomendacion.preinforme?  %>
+      <% if @recomendacion.aprobacion?  %>
+        <div class="col-sm-offset-2 col-sm-4">
+          <%= form.submit 'Aprobar', name: 'aprobacion', class: "btn btn-default bg-secondary text-white" %>
+        </div>
+      <% elsif @recomendacion.aprobacion_con_reparos?  %>  
+        <div class="col-sm-offset-2 col-sm-4">
+          <%= form.submit 'Aprobar con Reparos', name: 'aprobacion_con_reparos', class: "btn btn-default bg-secondary text-white" %>
+        </div>
+        <br>
+        <div class="col-sm-offset-2 col-sm-4">
+          <%= form.submit 'Rechazo Tecnico', name: 'rechazo_tecnico', class: "btn btn-default bg-secondary text-white" %>
+        </div>
+      <% elsif @recomendacion.rechazo_administrativo?  %>
+        <div class="col-sm-offset-2 col-sm-4">
+          <%= form.submit 'Rechazo Administrativo', name: 'rechazo_administrativo', class: "btn btn-default bg-secondary text-white" %>
+        </div>
+      <% elsif @recomendacion.rechazo_tecnico?  %>
+        <div class="col-sm-offset-2 col-sm-4">
+          <%= form.submit 'Rechazo Tecnico', name: 'rechazo_tecnico', class: "btn btn-default bg-secondary text-white" %>
+        </div>
+      <% end %>  
     <% end %>
   </div>
 <% end %>
