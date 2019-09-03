@@ -98,6 +98,7 @@ end
     self.resultado = :rechazo_administrativo if self.get_fecha_vencimiento_examen && self.get_fecha_vencimiento_examen < Time.now
     self.resolucion_qf = :rechazada if (self.rechazo_tecnico? || self.rechazo_administrativo?)
     self.estado = :preinforme if self.informacion_completa?
+    self.save
   end 
 
     def procesar_alarma
@@ -111,7 +112,9 @@ end
         if valor && valor >= alarma.valor_minimo && valor <= alarma.valor_maximo
           self.resultado = alarma.resultado
           self.alarma_id = alarma.id
-          self.con_alarma = 1
+          if !alarma.aprobacion?
+           self.con_alarma = 1
+          end
           return alarma
         end  
       end  
@@ -120,6 +123,34 @@ end
      return false 
     end
   end   
+
+  def informacion_completa?
+    return true if self.preinforme?
+    puts '1'
+    return false if self.paciente.nil?
+    puts '2'
+    return false if self.medico.nil?
+    puts '3'
+    return false if self.prestador.nil?
+    puts '4'
+    return false if self.farmacia.nil? 
+    puts '5'
+    return false if self.documento_recomendaciones.empty? 
+    puts '6'
+    self.documento_recomendaciones.map { |doc| return false if (doc.fecha.nil? && doc.nombre.nil?) }
+    puts '7'
+    return false if self.examen_recomendaciones.empty?
+    puts '8'
+    self.documento_recomendaciones.map { |doc| return false if (doc.fecha.nil? && doc.nombre.nil?) }
+    puts '9'
+    return false if self.medicion_recomendaciones.empty?
+    puts '10'
+    return false if self.tratamientos.empty?
+    puts '11'
+    return false if self.esquema_tratamientos.empty?
+    puts '12'
+    return true
+  end
 
   def get_fecha_receta
     documento_recomendacion = self.documento_recomendaciones.where(documento_programa_id: 1).first
@@ -145,22 +176,6 @@ end
     fecha_examen = self.get_fecha_examen
     @fecha_vencimiento_examen = fecha_examen ? (fecha_examen + dias_vencimiento_examen.days - 1) : false
   end 
-
-  def informacion_completa?
-    return true if self.preinforme?
-    return false if self.paciente.nil?
-    return false if self.medico.nil?
-    return false if self.prestador.nil?
-    return false if self.farmacia.nil? 
-    return false if self.documento_recomendaciones.empty? 
-    self.documento_recomendaciones.map { |doc| return false if (doc.fecha.nil? && doc.nombre.nil?) }
-    return false if self.examen_recomendaciones.empty?
-    self.documento_recomendaciones.map { |doc| return false if (doc.fecha.nil? && doc.nombre.nil?) }
-    return false if self.medicion_recomendaciones.empty?
-    return false if self.tratamientos.empty?
-    return false if self.esquema_tratamientos.empty?
-    return true
-  end
 
   def farmacia_nombre
     farmacia.try(:nombre)

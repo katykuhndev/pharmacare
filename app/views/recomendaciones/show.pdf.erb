@@ -48,7 +48,7 @@ Por lo tanto, <%= @accion=='RECHAZAR' ? 'NO ' : ''%>se autoriza el despacho del 
   Observaciones: <%=@recomendacion.observaciones%>.<br><br>
 <% end %>
 
-<p style="text-align:justify;"><%= @alarma ? @alarma.accion : "Siga cuidadosamente las indicaciones de su médico. #{tratamiento_completo} Total días de tratamiento : #{total_dias_tratamiento}  días." %></p>
+<p style="text-align:justify;"><%= @recomendacion.con_alarma ? @alarma.accion : "Siga cuidadosamente las indicaciones de su médico. #{tratamiento_completo} Total días de tratamiento : #{total_dias_tratamiento}  días." %></p>
 
 <div style="position: relative; top:200px;">
 	Saludos cordiales, <br><br>

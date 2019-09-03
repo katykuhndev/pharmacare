@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_20_215211) do
+ActiveRecord::Schema.define(version: 2019_08_31_203055) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", null: false
@@ -37,7 +37,7 @@ ActiveRecord::Schema.define(version: 2019_08_20_215211) do
     t.bigint "medicion_id"
     t.string "nombre"
     t.decimal "valor_minimo", precision: 6, scale: 2
-    t.decimal "valor_maximo", precision: 6, scale: 2
+    t.decimal "valor_maximo", precision: 10, scale: 2
     t.text "accion"
     t.integer "resultado"
     t.text "observaciones"
@@ -113,7 +113,7 @@ ActiveRecord::Schema.define(version: 2019_08_20_215211) do
     t.index ["recomendacion_id"], name: "index_documento_recomendaciones_on_recomendacion_id"
   end
 
-  create_table "esquema_horarios", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "esquema_horarios", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.text "observaciones"
     t.datetime "created_at", null: false
@@ -240,6 +240,21 @@ ActiveRecord::Schema.define(version: 2019_08_20_215211) do
     t.index ["comuna_id"], name: "index_medicos_on_comuna_id"
   end
 
+  create_table "paciente_temporal", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.integer "paciente_id"
+    t.string "codigo_paciente"
+    t.string "nombres"
+    t.string "apellido_paterno"
+    t.string "apellido_materno"
+    t.string "rut"
+    t.string "fecha_consentimiento"
+    t.string "ci"
+    t.string "fecha_nacimiento"
+    t.string "edad_2019"
+    t.string "domicilio"
+    t.string "comuna"
+  end
+
   create_table "pacientes", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombres"
     t.string "primer_apellido"
@@ -278,6 +293,44 @@ ActiveRecord::Schema.define(version: 2019_08_20_215211) do
     t.datetime "updated_at", null: false
     t.index ["laboratorio_id"], name: "index_programas_on_laboratorio_id"
     t.index ["qf_soporte_id"], name: "index_programas_on_qf_soporte_id"
+  end
+
+  create_table "recomendacion_temporal", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "id_recomendacion"
+    t.string "hemograma"
+    t.string "receta"
+    t.string "consentimiento"
+    t.string "tipo_alerta"
+    t.string "autorizacion"
+    t.string "motivo_rechazo"
+    t.string "fecha_recomendacion"
+    t.string "mes_recomendacion"
+    t.string "codigo_paciente"
+    t.string "id_paciente"
+    t.string "nombre_paciente"
+    t.string "ap_paterno"
+    t.string "ap_materno"
+    t.string "rut"
+    t.string "fecha_receta"
+    t.string "prestador"
+    t.string "receta_aceptada"
+    t.string "fecha_hemograma"
+    t.string "leucocitos"
+    t.string "baciliformes"
+    t.string "segmentados"
+    t.string "RAN"
+    t.string "hemograma_aceptado"
+    t.string "medico_tratante"
+    t.string "cadena"
+    t.string "QF"
+    t.string "comentario"
+    t.string "valor1"
+    t.string "valor2"
+    t.string "valor3"
+    t.string "valor4"
+    t.string "valor5"
+    t.string "valor6"
+    t.string "ejecutivo"
   end
 
   create_table "recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|

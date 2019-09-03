@@ -46,6 +46,7 @@ class RecomendacionesController < ApplicationController
   def show
     # TODO
     # Parametrizar correctamente todo 
+        
     @datos_paciente = @recomendacion.paciente ? @recomendacion.paciente.nombre_completo  : '' 
     @iniciales_paciente = @recomendacion.paciente ? @recomendacion.paciente.iniciales : ''
     @rut_paciente = @recomendacion.paciente ? @recomendacion.paciente.rut : ''
@@ -256,11 +257,12 @@ class RecomendacionesController < ApplicationController
            medicion_recomendacion.update(valor: recomendacion_params["atributos_examen"]["segmentados"])  
          end    
         end
-       
-       @recomendacion.resolucion_recomendacion
 
     respond_to do |format|
       if @recomendacion.update(recomendacion_params)
+
+         @recomendacion.resolucion_recomendacion
+         
          format.html { redirect_to @recomendacion, notice: 'Recomendacion se actualizo correctamente.' }
          format.json { render :show, status: :ok, location: @recomendacion }
       else
