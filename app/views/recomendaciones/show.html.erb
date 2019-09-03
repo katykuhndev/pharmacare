@@ -9,7 +9,7 @@
   <h3>Estado: <%= @recomendacion.estado.upcase %> </h3>
   <h3>Resultado: <%= @recomendacion.resultado.upcase %> &nbsp;<%= !@recomendacion.cerrada? ? (link_to 'Cerrar Solicitud' , edit_cierre_path(@recomendacion), class: 'btn btn-default bg-secondary text-white') : ''%></h3>
   <% if @alarma %>
-    <h3><span style="background-color:<%=@alarma.color%>;" > STATUS<%=@alarma.nombre.upcase %></span></h3>
+    <h3><span style="background-color:<%=@alarma.color%>;" > STATUS : <%=@alarma.nombre.upcase %></span></h3>
   <%end%>
 
   <h3>Paciente: <%= @datos_paciente %></h3>

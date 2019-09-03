@@ -34,6 +34,16 @@ $(document).ready(function(){
     });
 });
 
+$(document).ready(function(){
+    $("#recomendacion_atributos_examen_baciliformes").keyup(function(){
+          var leuco = +$("#recomendacion_atributos_examen_leucocitos").val();
+          var seg = +$("#recomendacion_atributos_examen_segmentados").val();
+          var bacil = +$("#recomendacion_atributos_examen_baciliformes").val();
+          var ran = (seg+bacil)*leuco/100;
+          $("#recomendacion_atributos_examen_ran").val(ran);
+    });
+});
+
 $(function() {
   function selectVisibility() {
     var selector = $($(this).attr('data-selects-visibility'));
