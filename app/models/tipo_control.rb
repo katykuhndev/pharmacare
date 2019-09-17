@@ -1,0 +1,2 @@
+class TipoControl < ApplicationRecord
+end

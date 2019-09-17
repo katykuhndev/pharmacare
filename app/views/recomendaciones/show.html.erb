@@ -12,7 +12,20 @@
     <h3><span style="background-color:<%=@alarma.color%>;" > STATUS : <%=@alarma.nombre.upcase %></span></h3>
   <%end%>
 
-  <h3>Paciente: <%= @datos_paciente %></h3>
+  <h3>Paciente: 
+     <% if @datos_paciente.empty? %>
+       <div class="alerta"> NO HAY PACIENTE </div> 
+     <%else%> 
+       <%=@datos_paciente %>
+     <%end%>
+   </h3>
+   <h3>Consentimiento Informado: 
+      <%if @documento_caso && @documento_caso.consentimiento_informado.attached? %>
+        <%= link_to 'ARCHIVO CI', rails_blob_url(@documento_caso.consentimiento_informado, disposition: "attachment") %>
+      <%else%>
+        <div class="alerta"> NO HAY ARCHIVO </div>
+      <%end%>
+   </h3>    
   <div id="show" class="btn btn-default bg-secondary text-white">Ver historial</div>
     <div class="menu" style="display: none;">
      <%= render 'list_historial' %>
@@ -31,11 +44,11 @@
       <%if @documento_examen && @documento_examen.examen.attached? %>
         <dt><%= link_to 'ARCHIVO EXAMEN', rails_blob_url(@documento_examen.examen, disposition: "attachment") %> </dt>
       <%else%>
-        <div class="vencida"> NO HAY ARCHIVO </div>
+        <div class="alerta"> NO HAY ARCHIVO </div>
       <%end%>
       <dt>Fecha Hemograma: <%= @fecha_examen %>
        <%if @documento_examen && @documento_examen.vencida? %>
-       <div class="vencida"> Vencimiento : <%= @fecha_vencimiento_receta %> </div>
+       <div class="alerta"> Vencimiento : <%= @fecha_vencimiento_receta %> </div>
        <%else%>
           Vencimiento : <%= @fecha_vencimiento_examen %> 
        <%end%>
@@ -50,11 +63,11 @@
       <%if @documento_receta && @documento_receta.receta.attached? %>
         <dt><%= link_to 'ARCHIVO RECETA', rails_blob_url(@documento_receta.receta, disposition: "attachment") %> </dt>
       <%else%>
-        <div class="vencida"> NO HAY ARCHIVO </div>
+        <div class="alerta"> NO HAY ARCHIVO </div>
       <%end%>
       <dt>Fecha Receta: <%= @fecha_receta%> 
         <%if @documento_examen && @documento_receta.vencida? %>
-         <div class="vencida"> Vencimiento : <%= @fecha_vencimiento_receta %> </div>
+         <div class="alerta"> Vencimiento : <%= @fecha_vencimiento_receta %> </div>
        <%else%>
           Vencimiento : <%= @fecha_vencimiento_receta %> 
        <%end%>

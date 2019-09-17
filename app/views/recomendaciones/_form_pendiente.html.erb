@@ -33,6 +33,22 @@
             <%= paciente_form.text_field :segundo_apellido, class: "form-control", value:@segundo_apellido_paciente, disabled: @recomendacion.cerrada? %>
           </div>
         </div>
+        <div id="consentimiento_informado" class="form-group">
+          <% if @documento_caso && @documento_caso.consentimiento_informado.attached? %>
+              <div class="col-sm-4">
+                <%= link_to 'ARCHIVO CI', rails_blob_url(@documento_caso.consentimiento_informado, disposition: "attachment") %>
+              </div>  
+          <% else %>
+              <%= paciente_form.label :consentimiento_informado, class: "col-sm-4 control-label" %>
+              <div class="col-sm-4">
+                <%= paciente_form.file_field :consentimiento_informado, accept: 'application/pdf,image/png,image/gif,image/jpeg, image/tiff' %>
+              </div>
+              <%= paciente_form.label :fecha_consentimiento_informado,'Fecha CI', class: "col-sm-2 control-label" %>
+              <div class="col-sm-4">
+                <%= paciente_form.text_field :fecha_consentimiento_informado, class: "datepicker" %>
+              </div>
+          <%end%>
+        </div>  
       <% end %>
   </div>
 
@@ -51,7 +67,7 @@
               <%= examen_form.hidden_field :examen, value: @documento_examen.examen.signed_id %>
               <%= link_to 'ARCHIVO EXAMEN', rails_blob_url(@documento_examen.examen, disposition: "attachment") %>
             <%end%>
-            <%= examen_form.file_field :examen, accept: 'application/pdf,image/png,image/gif,image/jpeg' %>
+            <%= examen_form.file_field :examen, accept: 'application/pdf,image/png,image/gif,image/jpeg, image/tiff' %>
           </div>
         </div>  
         <div class="form-group">
@@ -95,7 +111,7 @@
               <%= receta_form.hidden_field :receta, value: @documento_receta.receta.signed_id %>
               <%= link_to 'ARCHIVO RECETA', rails_blob_url(@documento_receta.receta, disposition: "attachment") %>
           <% end %>  
-            <%= receta_form.file_field :receta, accept: 'application/pdf,image/png,image/gif,image/jpeg' %>
+            <%= receta_form.file_field :receta, accept: 'application/pdf,image/png,image/gif,image/jpeg, image/tiff' %>
         </div>
       </div> 
       <% end %>       
@@ -193,3 +209,4 @@
     </div>
   </div>
 <% end %>
+

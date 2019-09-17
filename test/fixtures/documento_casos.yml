@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  nombre: MyString
+  caso: one
+  documento_programa: one
+  ejecutivo_id: 1
+  fecha: 2019-09-05 08:34:41
+  observaciones: MyText
+  fecha_vencimiento: 2019-09-05
+
+two:
+  nombre: MyString
+  caso: two
+  documento_programa: two
+  ejecutivo_id: 1
+  fecha: 2019-09-05 08:34:41
+  observaciones: MyText
+  fecha_vencimiento: 2019-09-05

@@ -6,4 +6,9 @@ class Programa < ApplicationRecord
   has_many :examen_programas
   has_many :mediciones, class_name: 'Medicion'
   has_and_belongs_to_many :bloques
+
+  def inicial
+    self.nombre[0]
+  end
+
 end

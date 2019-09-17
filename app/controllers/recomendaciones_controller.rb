@@ -47,7 +47,7 @@ class RecomendacionesController < ApplicationController
     # TODO
     # Parametrizar correctamente todo 
         
-    @datos_paciente = @recomendacion.paciente ? @recomendacion.paciente.nombre_completo  : '' 
+    @datos_paciente = @recomendacion.paciente ? @recomendacion.paciente.nombre_completo  : ''
     @iniciales_paciente = @recomendacion.paciente ? @recomendacion.paciente.iniciales : ''
     @rut_paciente = @recomendacion.paciente ? @recomendacion.paciente.rut : ''
     @datos_medico = @recomendacion.medico ? "#{@recomendacion.medico.nombres} #{@recomendacion.medico.primer_apellido} #{@recomendacion.medico.segundo_apellido}"  : '' 
@@ -55,7 +55,12 @@ class RecomendacionesController < ApplicationController
     @datos_farmacia = @recomendacion.farmacia ? @recomendacion.farmacia.nombre  : ''
     @qf_soporte = @recomendacion.qf_soporte ? @recomendacion.qf_soporte.name : ''
     @ejecutivo = @recomendacion.ejecutivo ? @recomendacion.ejecutivo.name : ''
-    
+     
+    @caso = @recomendacion.caso
+
+    @documento_caso = @caso.tiene_documentos_asociados?
+
+
     #tratamimento 
 
     @tratamientos = @recomendacion.tratamientos
@@ -69,6 +74,9 @@ class RecomendacionesController < ApplicationController
 
     @alarma = @recomendacion.alarma
     
+    # TODO 
+    # Adaptar esto al generico
+
     @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
     @documento_examen = @recomendacion.examen_recomendaciones.where(examen_programa_id: 1).first
  
@@ -123,7 +131,9 @@ class RecomendacionesController < ApplicationController
     @primer_apellido_paciente = @recomendacion.paciente ? @recomendacion.paciente.primer_apellido  : '' 
     @segundo_apellido_paciente = @recomendacion.paciente ? @recomendacion.paciente.segundo_apellido  : '' 
     @rut_paciente = @recomendacion.paciente ? @recomendacion.paciente.rut  : '' 
-    
+    @caso = @recomendacion.caso
+    @documento_caso = @caso ? @caso.tiene_documentos_asociados? : false
+
     @presentaciones = @recomendacion.programa.medicamento_programas
 
     @tratamientos = @recomendacion.tratamientos
@@ -169,28 +179,63 @@ class RecomendacionesController < ApplicationController
   # PATCH/PUT /recomendaciones/1
   # PATCH/PUT /recomendaciones/1.json
   def update
-       # TODO
-       # Parametrizar correctamente todo 
-       # mejorar el codigo
-       # este codigo solo se hizo para ael piloto
-       atributos_paciente = recomendacion_params["atributos_paciente"]
-       if atributos_paciente
-         rut = atributos_paciente.delete(:paciente_rut)
-         atributos_paciente[:rut] = rut
-         @paciente = Paciente.find_or_create_by(atributos_paciente)
-         @recomendacion.paciente_id = @paciente.id
-       end
+      # TODO
+      # Parametrizar correctamente todo 
+      # mejorar el codigo
+      # este codigo solo se hizo para ael piloto
+      programa = @recomendacion.programa
+      atributos_paciente = recomendacion_params["atributos_paciente"]
+      atributos_paciente.delete(:consentimiento_informado)
+      atributos_paciente.delete(:fecha_consentimiento_informado)
+      if atributos_paciente
+        rut = atributos_paciente.delete(:paciente_rut)
+        atributos_paciente[:rut] = rut
+        se_puede_crear = true
+        atributos_paciente.each do |key,value|
+          if value.empty?
+            se_puede_crear = false
+            break
+          else
+            atributos_paciente["#{key}"] = value.strip.capitalize
+          end
+        end 
+        @paciente = Paciente.find_or_initialize_by(atributos_paciente)
+        if @paciente.new_record? 
+          if se_puede_crear
+           @paciente.save 
+           @recomendacion.paciente_id = @paciente.id
+           inicial = programa.inicial
+           codigo = "#{inicial}-#{@paciente.iniciales}"
+           codigo_correcto = Caso.busca_codigo(codigo,programa.id)
+           # TODO 
+           # mejorar tipo_control_id, al crear por defecto se usa semanal en caso de lodux
+           @caso = Caso.create(paciente_id: @paciente.id, programa_id: programa.id, codigo: codigo_correcto, tipo_control_id: 2)
+           @recomendacion.caso = @caso
+          end 
+        else
+          @paciente.save 
+          @recomendacion.paciente_id = @paciente.id
+          if @recomendacion.caso
+            @caso = @recomendacion.caso
+          else
+            inicial = programa.inicial
+            codigo_correcto = "#{inicial}-#{@paciente.iniciales}"
+            @caso = Caso.create(paciente_id: @paciente.id, programa_id: programa.id, codigo: codigo_correcto, tipo_control_id: 2)
+            @recomendacion.caso = @caso
+          end  
+          @caso.paciente_id = @paciente.id
+          @caso.save
+        end
+        @documento_caso = @caso.documento_casos.where(documento_programa_id: 2).first
+        if @documento_caso.nil?
+          @documento_caso = DocumentoCaso.create(caso_id: @caso.id, documento_programa_id: 2, fecha: recomendacion_params["atributos_paciente"]["fecha_consentimiento_informado"])
+        end
+        if recomendacion_params["atributos_paciente"]["consentimiento_informado"]
+          @documento_caso.consentimiento_informado.attach(recomendacion_params["atributos_paciente"]["consentimiento_informado"])
+          @documento_caso.nombrar_archivo_consentimiento_informado  
+        end    
+      end
 
-
-       #@prestador = Prestador.find_or_create_by(nombre: recomendacion_params["prestador_nombre"])
-       #@farmacia = Farmacia.find_or_create_by(nombre: recomendacion_params["atributos_receta"]["farmacia_nombre"])
-       
-       #nombre_medico = recomendacion_params["atributos_receta"]["medico"].split if recomendacion_params["atributos_receta"]["medico"]
-       #@medico = Medico.find_or_create_by(nombres: nombre_medico[0], primer_apellido: nombre_medico[1], segundo_apellido: nombre_medico[2]) if nombre_medico
-      # @recomendacion.medico_id = @medico.id if @medico
-       #@recomendacion.prestador_id = @prestador.id
-       #@recomendacion.farmacia_id = @farmacia.id
-       
       @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
       if @documento_receta.nil?
         @documento_receta = DocumentoRecomendacion.create(recomendacion_id: @recomendacion.id, documento_programa_id: 1, fecha: recomendacion_params["atributos_receta"]["fecha_receta"])
@@ -260,7 +305,7 @@ class RecomendacionesController < ApplicationController
 
     respond_to do |format|
       if @recomendacion.update(recomendacion_params)
-
+         @caso.update(medico_id: @recomendacion.medico_id, ejecutivo_id: @recomendacion.ejecutivo_id, via_ingreso: @recomendacion.via_ingreso, qf_soporte_id: @recomendacion.qf_soporte_id)
          @recomendacion.resolucion_recomendacion
          
          format.html { redirect_to @recomendacion, notice: 'Recomendacion se actualizo correctamente.' }
@@ -291,6 +336,6 @@ class RecomendacionesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recomendacion_params
-      params.require(:recomendacion).permit(:prestador_nombre, :farmacia_nombre, :medico, :medico_nombre, { atributos_examen: [:fecha_examen, :examen, :ran, :leucocitos, :baciliformes, :segmentados]}, {atributos_receta: [:fecha_receta, :receta]}, {atributos_tratamiento: [:esquema_horario_id, :dia, :tarde, :noche, :am, :pm, :dia_entero, :dias, :cantidad,  :medicamento_programa_id]}, {atributos_paciente: [:paciente_rut, :nombres, :primer_apellido, :segundo_apellido]}, :id_recomendacion, :estado, :resultado, :caso_id, :programa_id, :paciente_id, :medico_id, :prestador_id, :farmacia_id, :qf_soporte_id, :ejecutivo_id, :fecha_hora_ingreso, :via_ingreso, :fecha_hora_respuesta, :observaciones, :con_alarma)
+      params.require(:recomendacion).permit(:prestador_nombre, :farmacia_nombre, :medico, :medico_nombre, { atributos_examen: [:fecha_examen, :examen, :ran, :leucocitos, :baciliformes, :segmentados]}, {atributos_receta: [:fecha_receta, :receta]}, {atributos_tratamiento: [:esquema_horario_id, :dia, :tarde, :noche, :am, :pm, :dia_entero, :dias, :cantidad,  :medicamento_programa_id]}, {atributos_paciente: [:paciente_rut, :nombres, :primer_apellido, :segundo_apellido, :consentimiento_informado, :fecha_consentimiento_informado]}, :id_recomendacion, :estado, :resultado, :caso_id, :programa_id, :paciente_id, :medico_id, :prestador_id, :farmacia_id, :qf_soporte_id, :ejecutivo_id, :fecha_hora_ingreso, :via_ingreso, :fecha_hora_respuesta, :observaciones, :con_alarma)
     end
 end

@@ -82,3 +82,12 @@ $(function() {
   });
 });
 
+$(function() {
+  $('#recomendacion_atributos_paciente_paciente_rut').bind('railsAutocomplete.select', function(event, data){
+    /* Do something here */
+    $("#consentimiento_informado").hide();
+  });
+});
+
+
+

@@ -149,6 +149,7 @@ end
     puts '11'
     return false if self.esquema_tratamientos.empty?
     puts '12'
+    self.caso.documento_casos.map { |doc| return false if (doc.fecha.nil? && doc.nombre.nil?) }
     return true
   end
 

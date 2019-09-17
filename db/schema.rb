@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_31_203055) do
+ActiveRecord::Schema.define(version: 2019_09_17_173241) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", null: false
@@ -76,9 +76,11 @@ ActiveRecord::Schema.define(version: 2019_08_31_203055) do
     t.text "observaciones"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "tipo_control_id"
     t.index ["medico_id"], name: "index_casos_on_medico_id"
     t.index ["paciente_id"], name: "index_casos_on_paciente_id"
     t.index ["programa_id"], name: "index_casos_on_programa_id"
+    t.index ["tipo_control_id"], name: "index_casos_on_tipo_control_id"
   end
 
   create_table "comunas", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -89,6 +91,20 @@ ActiveRecord::Schema.define(version: 2019_08_31_203055) do
     t.index ["region_id"], name: "index_comunas_on_region_id"
   end
 
+  create_table "documento_casos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "nombre"
+    t.bigint "caso_id"
+    t.bigint "documento_programa_id"
+    t.integer "ejecutivo_id"
+    t.datetime "fecha"
+    t.text "observaciones"
+    t.date "fecha_vencimiento"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["caso_id"], name: "index_documento_casos_on_caso_id"
+    t.index ["documento_programa_id"], name: "index_documento_casos_on_documento_programa_id"
+  end
+
   create_table "documento_programas", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.text "descripcion"
@@ -96,6 +112,7 @@ ActiveRecord::Schema.define(version: 2019_08_31_203055) do
     t.integer "dias_vencimiento"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "asociado_caso", default: false
     t.index ["programa_id"], name: "index_documento_programas_on_programa_id"
   end
 
@@ -140,8 +157,10 @@ ActiveRecord::Schema.define(version: 2019_08_31_203055) do
     t.integer "dias_vencimiento"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "tipo_control_id"
     t.index ["examen_id"], name: "index_examen_programas_on_examen_id"
     t.index ["programa_id"], name: "index_examen_programas_on_programa_id"
+    t.index ["tipo_control_id"], name: "index_examen_programas_on_tipo_control_id"
   end
 
   create_table "examen_recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -203,7 +222,7 @@ ActiveRecord::Schema.define(version: 2019_08_31_203055) do
   create_table "medicion_recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "recomendacion_id"
     t.bigint "medicion_id"
-    t.decimal "valor", precision: 6, scale: 2
+    t.decimal "valor", precision: 10, scale: 2
     t.string "unidad_medida"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -370,6 +389,13 @@ ActiveRecord::Schema.define(version: 2019_08_31_203055) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "tipo_controles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "nombre"
+    t.integer "dias"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tratamientos", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.bigint "recomendacion_id"
     t.integer "dias"
@@ -404,7 +430,10 @@ ActiveRecord::Schema.define(version: 2019_08_31_203055) do
   add_foreign_key "casos", "medicos"
   add_foreign_key "casos", "pacientes"
   add_foreign_key "casos", "programas"
+  add_foreign_key "casos", "tipo_controles"
   add_foreign_key "comunas", "regiones"
+  add_foreign_key "documento_casos", "casos"
+  add_foreign_key "documento_casos", "documento_programas"
   add_foreign_key "documento_programas", "programas"
   add_foreign_key "documento_recomendaciones", "documento_programas"
   add_foreign_key "documento_recomendaciones", "recomendaciones"
@@ -413,6 +442,7 @@ ActiveRecord::Schema.define(version: 2019_08_31_203055) do
   add_foreign_key "esquema_tratamientos", "tratamientos"
   add_foreign_key "examen_programas", "examenes"
   add_foreign_key "examen_programas", "programas"
+  add_foreign_key "examen_programas", "tipo_controles"
   add_foreign_key "examen_recomendaciones", "examen_programas"
   add_foreign_key "examen_recomendaciones", "recomendaciones"
   add_foreign_key "farmacias", "comunas"
