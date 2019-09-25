@@ -209,26 +209,17 @@ class RecomendacionesController < ApplicationController
            codigo_correcto = Caso.busca_codigo(codigo,programa.id)
            # TODO 
            # mejorar tipo_control_id, al crear por defecto se usa semanal en caso de lodux
-           @caso = Caso.create(paciente_id: @paciente.id, programa_id: programa.id, codigo: codigo_correcto, tipo_control_id: 2)
+           @caso = Caso.create(paciente_id: @paciente.id, programa_id: programa.id, ejecutivo_id: @recomendacion.ejecutivo_id, codigo: codigo_correcto, tipo_control_id: 2)
            @recomendacion.caso = @caso
           end 
         else
-          @paciente.save 
           @recomendacion.paciente_id = @paciente.id
-          if @recomendacion.caso
-            @caso = @recomendacion.caso
-          else
-            inicial = programa.inicial
-            codigo_correcto = "#{inicial}-#{@paciente.iniciales}"
-            @caso = Caso.create(paciente_id: @paciente.id, programa_id: programa.id, codigo: codigo_correcto, tipo_control_id: 2)
-            @recomendacion.caso = @caso
-          end  
-          @caso.paciente_id = @paciente.id
-          @caso.save
+          @caso = Caso.where("programa_id = ? and paciente_id = ? ", programa.id, @paciente.id).first
+          @recomendacion.caso = @caso
         end
         @documento_caso = @caso.documento_casos.where(documento_programa_id: 2).first
         if @documento_caso.nil?
-          @documento_caso = DocumentoCaso.create(caso_id: @caso.id, documento_programa_id: 2, fecha: recomendacion_params["atributos_paciente"]["fecha_consentimiento_informado"])
+          @documento_caso = DocumentoCaso.create(caso_id: @caso.id, documento_programa_id: 2, ejecutivo_id: @recomendacion.ejecutivo_id, fecha: recomendacion_params["atributos_paciente"]["fecha_consentimiento_informado"])
         end
         if recomendacion_params["atributos_paciente"]["consentimiento_informado"]
           @documento_caso.consentimiento_informado.attach(recomendacion_params["atributos_paciente"]["consentimiento_informado"])
@@ -305,7 +296,7 @@ class RecomendacionesController < ApplicationController
 
     respond_to do |format|
       if @recomendacion.update(recomendacion_params)
-         @caso.update(medico_id: @recomendacion.medico_id, ejecutivo_id: @recomendacion.ejecutivo_id, via_ingreso: @recomendacion.via_ingreso, qf_soporte_id: @recomendacion.qf_soporte_id)
+         @caso.update(medico_id: @recomendacion.medico_id, via_ingreso: @recomendacion.via_ingreso, qf_soporte_id: @recomendacion.qf_soporte_id)
          @recomendacion.resolucion_recomendacion
          
          format.html { redirect_to @recomendacion, notice: 'Recomendacion se actualizo correctamente.' }
