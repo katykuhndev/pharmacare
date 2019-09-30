@@ -188,9 +188,9 @@ class RecomendacionesController < ApplicationController
       # este codigo solo se hizo para ael piloto
       programa = @recomendacion.programa
       atributos_paciente = recomendacion_params["atributos_paciente"]
-      atributos_paciente.delete(:consentimiento_informado)
-      atributos_paciente.delete(:fecha_consentimiento_informado)
       if atributos_paciente
+        atributos_paciente.delete(:consentimiento_informado)
+        atributos_paciente.delete(:fecha_consentimiento_informado)
         rut = atributos_paciente.delete(:paciente_rut)
         atributos_paciente[:rut] = rut
         se_puede_crear = true
