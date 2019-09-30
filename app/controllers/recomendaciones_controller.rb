@@ -46,20 +46,19 @@ class RecomendacionesController < ApplicationController
   def show
     # TODO
     # Parametrizar correctamente todo 
-        
-    @datos_paciente = @recomendacion.paciente ? @recomendacion.paciente.nombre_completo  : ''
-    @iniciales_paciente = @recomendacion.paciente ? @recomendacion.paciente.iniciales : ''
-    @rut_paciente = @recomendacion.paciente ? @recomendacion.paciente.rut : ''
+    programa = @recomendacion.programa    
+    @paciente = @recomendacion.paciente
+    @datos_paciente = @paciente ? @paciente.nombre_completo  : ''
+    @rut_paciente = @paciente ? @paciente.rut : ''
     @datos_medico = @recomendacion.medico ? "#{@recomendacion.medico.nombres} #{@recomendacion.medico.primer_apellido} #{@recomendacion.medico.segundo_apellido}"  : '' 
     @datos_prestador = @recomendacion.prestador ? @recomendacion.prestador.nombre  : '' 
     @datos_farmacia = @recomendacion.farmacia ? @recomendacion.farmacia.nombre  : ''
     @qf_soporte = @recomendacion.qf_soporte ? @recomendacion.qf_soporte.name : ''
     @ejecutivo = @recomendacion.ejecutivo ? @recomendacion.ejecutivo.name : ''
      
-    @caso = @recomendacion.caso
-
-    @documento_caso = @caso.tiene_documentos_asociados?
-
+    @caso = @paciente ? Caso.where("programa_id = ? and paciente_id = ? ", programa.id, @paciente.id).first : nil 
+    @documento_caso = @caso ? @caso.tiene_documentos_asociados? : nil
+    @iniciales_paciente = @caso ? @caso.codigo : @paciente.iniciales
 
     #tratamimento 
 
@@ -89,7 +88,7 @@ class RecomendacionesController < ApplicationController
     fecha_vencimiento_examen = @documento_examen.fecha_vencimiento if @documento_examen
     @fecha_vencimiento_examen = fecha_vencimiento_examen ? fecha_vencimiento_examen.strftime("%d/%m/%Y") : ''
 
-    @rechazo_por_vencimiento = (@recomendacion.get_fecha_vencimiento_examen < Time.now) ? true : false if fecha_vencimiento_examen
+    @rechazo_por_vencimiento = (fecha_vencimiento_examen ? (fecha_vencimiento_examen < Time.now) : false) ? true : false
     @titulo = @recomendacion.aprobada? ? 'APROBADA' : 'RECHAZADA' 
     @accion = @recomendacion.aprobada? ? 'APROBAR' : 'RECHAZAR' 
 
@@ -110,6 +109,10 @@ class RecomendacionesController < ApplicationController
 
   end
 
+  def encuentra_caso
+    @caso = Caso.where("programa_id = ? and paciente_id = ? ", params[:programa_id], params[:paciente_id]).first
+  end  
+
   # GET /recomendaciones/new
   def new
     # TODO
@@ -125,14 +128,14 @@ class RecomendacionesController < ApplicationController
   def edit
     # TODO
     # Parametrizar correctamente todo 
-
+    programa = @recomendacion.programa
     @paciente = @recomendacion.paciente
-    @nombres_paciente = @recomendacion.paciente ? @recomendacion.paciente.nombres  : '' 
-    @primer_apellido_paciente = @recomendacion.paciente ? @recomendacion.paciente.primer_apellido  : '' 
-    @segundo_apellido_paciente = @recomendacion.paciente ? @recomendacion.paciente.segundo_apellido  : '' 
-    @rut_paciente = @recomendacion.paciente ? @recomendacion.paciente.rut  : '' 
-    @caso = @recomendacion.caso
-    @documento_caso = @caso ? @caso.tiene_documentos_asociados? : false
+    @nombres_paciente = @paciente ? @paciente.nombres  : '' 
+    @primer_apellido_paciente = @paciente ? @paciente.primer_apellido  : '' 
+    @segundo_apellido_paciente = @paciente ? @paciente.segundo_apellido  : '' 
+    @rut_paciente = @paciente ? @paciente.rut  : '' 
+    @caso = @paciente ? Caso.where("programa_id = ? and paciente_id = ? ", programa.id, @paciente.id).first : nil 
+    @documento_caso = @caso ? @caso.tiene_documentos_asociados? : nil
 
     @presentaciones = @recomendacion.programa.medicamento_programas
 
@@ -215,16 +218,27 @@ class RecomendacionesController < ApplicationController
         else
           @recomendacion.paciente_id = @paciente.id
           @caso = Caso.where("programa_id = ? and paciente_id = ? ", programa.id, @paciente.id).first
+          if @caso.nil?
+            inicial = programa.inicial
+            codigo = "#{inicial}-#{@paciente.iniciales}"
+            codigo_correcto = Caso.busca_codigo(codigo,programa.id)
+            @caso = Caso.create(paciente_id: @paciente.id, programa_id: programa.id, ejecutivo_id: @recomendacion.ejecutivo_id, codigo: codigo_correcto, tipo_control_id: 2)
+          end  
           @recomendacion.caso = @caso
         end
-        @documento_caso = @caso.documento_casos.where(documento_programa_id: 2).first
-        if @documento_caso.nil?
+        @documento_caso = @caso ? @caso.documento_casos.where(documento_programa_id: 2).first : nil
+        if @caso && @documento_caso.nil?
           @documento_caso = DocumentoCaso.create(caso_id: @caso.id, documento_programa_id: 2, ejecutivo_id: @recomendacion.ejecutivo_id, fecha: recomendacion_params["atributos_paciente"]["fecha_consentimiento_informado"])
         end
         if recomendacion_params["atributos_paciente"]["consentimiento_informado"]
           @documento_caso.consentimiento_informado.attach(recomendacion_params["atributos_paciente"]["consentimiento_informado"])
           @documento_caso.nombrar_archivo_consentimiento_informado  
         end    
+      end
+         
+      if @caso && params["tipo_control"]
+        @caso.tipo_control_id=params["tipo_control"]
+        @caso.save
       end
 
       @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
@@ -255,21 +269,22 @@ class RecomendacionesController < ApplicationController
       end     
 
       @documento_examen = @recomendacion.examen_recomendaciones.where(examen_programa_id: 1).first
-      if @documento_examen.nil?
-       @documento_examen = ExamenRecomendacion.create(recomendacion_id: @recomendacion.id, examen_programa_id: 1, fecha: recomendacion_params["atributos_examen"]["fecha_examen"])
+      if @caso && @documento_examen.nil?
+        examen_programa = ExamenPrograma.where("programa_id = ? and tipo_control_id = ? ", programa.id, @caso.tipo_control_id).first
+        @documento_examen = ExamenRecomendacion.create(recomendacion_id: @recomendacion.id, examen_programa_id: examen_programa ? examen_programa.id : 2, fecha: recomendacion_params["atributos_examen"]["fecha_examen"])
       else
-        @documento_examen.update(fecha: recomendacion_params["atributos_examen"]["fecha_examen"])
+        @documento_examen.update(fecha: recomendacion_params["atributos_examen"]["fecha_examen"]) if @caso
       end
-
+ 
       fecha_vencimiento = @recomendacion.get_fecha_vencimiento_examen
       if fecha_vencimiento
         @documento_examen.update(fecha_vencimiento: fecha_vencimiento)
       end 
 
-      
-      @documento_examen.examen.attach(recomendacion_params["atributos_examen"]["examen"])
-      @documento_examen.nombrar_archivo_examen
-       
+      if @caso
+        @documento_examen.examen.attach(recomendacion_params["atributos_examen"]["examen"])
+        @documento_examen.nombrar_archivo_examen
+      end 
        @medicion_recomendaciones_ran = @recomendacion.medicion_recomendaciones.where(recomendacion_id: @recomendacion.id, medicion_id: 1)
        @medicion_recomendaciones_leucocitos = @recomendacion.medicion_recomendaciones.where(recomendacion_id: @recomendacion.id, medicion_id: 2)
        @medicion_recomendaciones_baciliformes = @recomendacion.medicion_recomendaciones.where(recomendacion_id: @recomendacion.id, medicion_id: 3)
@@ -296,7 +311,6 @@ class RecomendacionesController < ApplicationController
 
     respond_to do |format|
       if @recomendacion.update(recomendacion_params)
-         @caso.update(medico_id: @recomendacion.medico_id, via_ingreso: @recomendacion.via_ingreso, qf_soporte_id: @recomendacion.qf_soporte_id)
          @recomendacion.resolucion_recomendacion
          
          format.html { redirect_to @recomendacion, notice: 'Recomendacion se actualizo correctamente.' }

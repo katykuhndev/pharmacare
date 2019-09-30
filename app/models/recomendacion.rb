@@ -159,7 +159,14 @@ end
   end
 
   def get_fecha_examen
-    documento_examen = self.examen_recomendaciones.where(examen_programa_id: 1).first
+    caso = self.caso
+    programa = self.programa
+    if caso && programa
+      examen_programa = ExamenPrograma.where("programa_id = ? and tipo_control_id = ? ", programa.id, caso.tipo_control_id).first
+      documento_examen = self.examen_recomendaciones.where(examen_programa_id: examen_programa.id).first
+    else
+      documento_examen = self.examen_recomendaciones.where(examen_programa_id: 1).first  
+    end
     @fecha_examen = documento_examen ? documento_examen.fecha : false
   end  
 
@@ -167,13 +174,19 @@ end
     documento_programa = DocumentoPrograma.find(1)
     dias_vencimiento_receta = documento_programa.dias_vencimiento 
     fecha_receta = self.get_fecha_receta
-    @fecha_vencimiento_receta = fecha_receta ? (fecha_receta + dias_vencimiento_receta.day - 1) : false
+    @fecha_vencimiento_receta = fecha_receta ? (fecha_receta + dias_vencimiento_receta.days - 1) : false
   end
 
 
   def get_fecha_vencimiento_examen
-    examen_programa = ExamenPrograma.find(2)
-    dias_vencimiento_examen = examen_programa.dias_vencimiento 
+    caso = self.caso
+    programa = self.programa
+    if caso && programa
+     examen_programa = ExamenPrograma.where("programa_id = ? and tipo_control_id = ? ", programa.id, caso.tipo_control_id).first
+     dias_vencimiento_examen = examen_programa.dias_vencimiento 
+    else
+     dias_vencimiento_examen = 5  
+    end 
     fecha_examen = self.get_fecha_examen
     @fecha_vencimiento_examen = fecha_examen ? (fecha_examen + dias_vencimiento_examen.days - 1) : false
   end 

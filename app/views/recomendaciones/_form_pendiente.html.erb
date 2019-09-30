@@ -33,7 +33,17 @@
             <%= paciente_form.text_field :segundo_apellido, class: "form-control", value:@segundo_apellido_paciente, disabled: @recomendacion.cerrada? %>
           </div>
         </div>
-        <div id="consentimiento_informado" class="form-group">
+       <div id="form_caso" class="form-group">
+        <div class="form-group">
+          Tipo de Control :<br>
+          <div class="col-sm-4">
+          Semanal <%= radio_button_tag(:tipo_control, "2",(checked = true if @caso.nil? || @caso.tipo_control_id==2) ) %>   
+          </div>
+          <div class="col-sm-4">
+          Mensual <%= radio_button_tag(:tipo_control, "3",(checked = true if @caso && @caso.tipo_control_id==3)) %>
+          </div>
+        </div>
+
           <% if @documento_caso && @documento_caso.consentimiento_informado.attached? %>
               <div class="col-sm-4">
                 <%= link_to 'ARCHIVO CI', rails_blob_url(@documento_caso.consentimiento_informado, disposition: "attachment") %>

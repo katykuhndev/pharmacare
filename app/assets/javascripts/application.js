@@ -82,12 +82,20 @@ $(function() {
   });
 });
 
+
+
 $(function() {
   $('#recomendacion_atributos_paciente_paciente_rut').bind('railsAutocomplete.select', function(event, data){
-    /* Do something here */
-    $("#consentimiento_informado").hide();
+    $.get( "/recomendaciones/encuentra_caso/"+data.item.id+"/1", function(datos) {
+      alert(datos.id);
+      $("#form_caso").hide();
+    });
   });
 });
 
-
+/*$(document).ready(function(){
+    $("#recomendacion_atributos_paciente_segundo_apellido").keyup(function(){
+      $("#form_caso").show();
+    });
+});*/
 

@@ -17,6 +17,10 @@
        <div class="alerta"> NO HAY PACIENTE </div> 
      <%else%> 
        <%=@datos_paciente %>
+       <%if @caso %>
+        <br>
+         Tipo Control : <%=@caso.tipo_control.nombre %>
+       <%end%>
      <%end%>
    </h3>
    <h3>Consentimiento Informado: 

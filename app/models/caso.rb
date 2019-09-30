@@ -2,14 +2,20 @@ class Caso < ApplicationRecord
   belongs_to :programa
   belongs_to :paciente
   belongs_to :medico, optional: true
+  belongs_to :tipo_control
 
   has_many :recomendaciones
   has_many :documento_casos
   
   after_initialize :set_default_fecha_hora_ingreso, :if => :new_record?
-
+  after_initialize :set_default_tipo_control_id, :if => :new_record?
+  
   def set_default_fecha_hora_ingreso
     self.fecha_hora_ingreso = Time.now()
+  end 
+
+  def set_default_tipo_control_id
+    self.tipo_control_id = 1
   end 
 
   def self.busca_codigo(codigo, programa_id)
