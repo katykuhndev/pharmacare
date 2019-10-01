@@ -29,7 +29,7 @@ class Caso < ApplicationRecord
     end
   end
 
-  def tiene_documentos_asociados?
+  def get_documentos_caso
   	# TODO
   	# Adaptar a generico
   	@documento_programa_caso = DocumentoPrograma.where("programa_id = ? and asociado_caso = ?", self.programa_id, 1).first

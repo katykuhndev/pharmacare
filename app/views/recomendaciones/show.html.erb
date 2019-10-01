@@ -52,7 +52,7 @@
       <%end%>
       <dt>Fecha Hemograma: <%= @fecha_examen %>
        <%if @documento_examen && @documento_examen.vencida? %>
-       <div class="alerta"> Vencimiento : <%= @fecha_vencimiento_receta %> </div>
+       <div class="alerta"> Vencimiento : <%= @fecha_vencimiento_examen %> </div>
        <%else%>
           Vencimiento : <%= @fecha_vencimiento_examen %> 
        <%end%>

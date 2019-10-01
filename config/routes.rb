@@ -12,7 +12,7 @@ Rails.application.routes.draw do
   get 'recomendaciones/show/:id' => 'recomendaciones#show', :format => 'pdf', :as => 'show'
   get 'recomendaciones/edit_cierre/:id' => 'recomendaciones#edit_cierre', :as => 'edit_cierre'
   #put 'recomendaciones/cerrar/:id' => 'recomendaciones#cerrar', :as => 'cerrar'
-  get 'recomendaciones/encuentra_caso/:paciente_id/:programa_id' => 'recomendaciones#encuentra_caso', :as => 'encuentra_caso'
+  post 'recomendaciones/encuentra_caso' => 'recomendaciones#encuentra_caso', :as => 'encuentra_caso'
   resources :bloques
   resources :casos
   resources :mediciones do

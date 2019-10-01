@@ -94,9 +94,23 @@ end
 
   def resolucion_recomendacion
     self.procesar_alarma
-    self.resultado = :aprobacion_con_reparos if self.get_fecha_vencimiento_receta && self.get_fecha_vencimiento_receta < Time.now
-    self.resultado = :rechazo_administrativo if self.get_fecha_vencimiento_examen && self.get_fecha_vencimiento_examen < Time.now
-    self.resolucion_qf = :rechazada if (self.rechazo_tecnico? || self.rechazo_administrativo?)
+    ultimo_resultado = self.resultado
+    if self.get_fecha_vencimiento_receta && self.get_fecha_vencimiento_receta < Time.now
+      self.resultado = :aprobacion_con_reparos 
+    else
+      self.resultado = ultimo_resultado
+    end  
+    ultimo_resultado = self.resultado 
+    if self.get_fecha_vencimiento_examen && self.get_fecha_vencimiento_examen < Time.now
+      self.resultado = :rechazo_administrativo 
+    else
+      self.resultado = ultimo_resultado
+    end  
+    if (self.rechazo_tecnico? || self.rechazo_administrativo?)
+      self.resolucion_qf = :rechazada 
+    else
+      self.resolucion_qf = :aprobada
+    end  
     self.estado = :preinforme if self.informacion_completa?
     self.save
   end 

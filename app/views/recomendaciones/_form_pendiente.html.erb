@@ -7,6 +7,7 @@
     </div>
   </div>
   <div class="form-group">
+    <%= hidden_field_tag 'form_pendiente_recomendacion_id', @recomendacion.id %>
     <h2>Datos paciente</h2>
       <%= form.fields :atributos_paciente do |paciente_form| %>
         <div class="form-group">
@@ -33,9 +34,14 @@
             <%= paciente_form.text_field :segundo_apellido, class: "form-control", value:@segundo_apellido_paciente, disabled: @recomendacion.cerrada? %>
           </div>
         </div>
-       <div id="form_caso" class="form-group">
+       
         <div class="form-group">
-          Tipo de Control :<br>
+          <% if @caso %>
+            <div class="col-sm-4"> CASO : <%=@caso.codigo%></div>
+          <%else%>
+            <div class="col-sm-4" id='codigo_caso'></div>
+          <%end%>
+          <div class="col-sm-4">Tipo de Control : </div>
           <div class="col-sm-4">
           Semanal <%= radio_button_tag(:tipo_control, "2",(checked = true if @caso.nil? || @caso.tipo_control_id==2) ) %>   
           </div>
@@ -44,6 +50,7 @@
           </div>
         </div>
 
+        <div id="form_consentimiento" class="form-group">
           <% if @documento_caso && @documento_caso.consentimiento_informado.attached? %>
               <div class="col-sm-4">
                 <%= link_to 'ARCHIVO CI', rails_blob_url(@documento_caso.consentimiento_informado, disposition: "attachment") %>

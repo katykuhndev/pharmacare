@@ -86,10 +86,25 @@ $(function() {
 
 $(function() {
   $('#recomendacion_atributos_paciente_paciente_rut').bind('railsAutocomplete.select', function(event, data){
-    $.get( "/recomendaciones/encuentra_caso/"+data.item.id+"/1", function(datos) {
-      alert(datos.id);
-      $("#form_caso").hide();
+    var recomendacion_id = +$("#form_pendiente_recomendacion_id").val();
+    $.ajax({
+      type:"POST",
+      url:"/recomendaciones/encuentra_caso",
+      data: {paciente_id :data.item.id, recomendacion_id :recomendacion_id},
+      dataType:"json",
+      success:function(result){
+        $("#form_consentimiento").hide();
+        $("#codigo_caso").html("CASO : " + result.codigo);
+        if (result.tipo_control_id == 2) {
+          $( "#tipo_control_2" ).prop( "checked", true );
+          $( "#tipo_control_3" ).prop( "checked", false );
+        } else if(result.tipo_control_id == 3){  
+          $( "#tipo_control_2" ).prop( "checked", false );
+          $( "#tipo_control_3" ).prop( "checked", true );
+        }
+      }
     });
+    /*$("#form_conse").hide();*/
   });
 });
 
