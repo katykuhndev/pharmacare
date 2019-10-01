@@ -43,10 +43,10 @@
           <%end%>
           <div class="col-sm-4">Tipo de Control : </div>
           <div class="col-sm-4">
-          Semanal <%= radio_button_tag(:tipo_control, "2",(checked = true if @caso.nil? || @caso.tipo_control_id==2) ) %>   
+          Semanal <%= radio_button_tag(:tipo_control, "2",(checked = true if @caso.nil? || @caso.tipo_control_id==2) , disabled: @recomendacion.cerrada?) %>   
           </div>
           <div class="col-sm-4">
-          Mensual <%= radio_button_tag(:tipo_control, "3",(checked = true if @caso && @caso.tipo_control_id==3)) %>
+          Mensual <%= radio_button_tag(:tipo_control, "3",(checked = true if @caso && @caso.tipo_control_id==3), disabled: @recomendacion.cerrada?) %>
           </div>
         </div>
 

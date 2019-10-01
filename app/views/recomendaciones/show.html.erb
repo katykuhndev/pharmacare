@@ -70,7 +70,7 @@
         <div class="alerta"> NO HAY ARCHIVO </div>
       <%end%>
       <dt>Fecha Receta: <%= @fecha_receta%> 
-        <%if @documento_examen && @documento_receta.vencida? %>
+        <%if @documento_receta && @documento_receta.vencida? %>
          <div class="alerta"> Vencimiento : <%= @fecha_vencimiento_receta %> </div>
        <%else%>
           Vencimiento : <%= @fecha_vencimiento_receta %> 
