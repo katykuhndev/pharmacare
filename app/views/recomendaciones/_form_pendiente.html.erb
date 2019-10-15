@@ -219,6 +219,12 @@
           <%= form.text_area :observaciones, class: "form-control", disabled: @recomendacion.cerrada?%>
         </div>
     </div>
+        <div class="form-group">
+    <%= form.label :qf_soporte_id, class: "col-sm-2 control-label" %>
+    <div class="col-sm-4">
+      <%= form.collection_select(:qf_soporte_id, User.where(role: 2).order(:id), :id, :name) %>
+    </div>
+  </div>
   <div class="form-group">
     <div class="col-sm-offset-2 col-sm-4">
       <%= form.submit class: "btn btn-default bg-secondary text-white" %>

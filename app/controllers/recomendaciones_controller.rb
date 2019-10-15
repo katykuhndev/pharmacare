@@ -21,20 +21,23 @@ class RecomendacionesController < ApplicationController
 
   def cerrar
     @recomendacion = Recomendacion.find(params[:id])
-    if params['rechazo_administrativo']
-      parametros = recomendacion_params.merge({fecha_hora_respuesta: Time.now, resultado: 'rechazo_administrativo', resolucion_qf: 'rechazada', estado: 'cerrada' })
-    elsif params['rechazo_tecnico']
-      parametros = recomendacion_params.merge({fecha_hora_respuesta: Time.now, resultado: 'rechazo_tecnico', resolucion_qf: 'rechazada', estado: 'cerrada' })
-    elsif params['aprobacion_con_reparos']
-      parametros = recomendacion_params.merge({fecha_hora_respuesta: Time.now, resultado: 'aprobacion_con_reparos', resolucion_qf: 'aprobada', estado: 'cerrada' })
-    elsif params['aprobacion']
-      parametros = recomendacion_params.merge({fecha_hora_respuesta: Time.now, resultado: 'aprobacion', resolucion_qf: 'aprobada', estado: 'cerrada' })
-    end  
     respond_to do |format|
-      if @recomendacion.update(parametros)
+      if params['recomendacion'] && recomendacion_params["carta_pdf"]
+         @recomendacion.carta_pdf.attach(recomendacion_params["carta_pdf"])
+         if params['rechazo_administrativo']
+          parametros = {fecha_hora_respuesta: Time.now, resultado: 'rechazo_administrativo', resolucion_qf: 'rechazada', estado: 'cerrada' }
+         elsif params['rechazo_tecnico']
+          parametros = {fecha_hora_respuesta: Time.now, resultado: 'rechazo_tecnico', resolucion_qf: 'rechazada', estado: 'cerrada' }
+         elsif params['aprobacion_con_reparos']
+          parametros = {fecha_hora_respuesta: Time.now, resultado: 'aprobacion_con_reparos', resolucion_qf: 'aprobada', estado: 'cerrada' }
+         elsif params['aprobacion']
+          parametros = {fecha_hora_respuesta: Time.now, resultado: 'aprobacion', resolucion_qf: 'aprobada', estado: 'cerrada' }
+         end  
+         @recomendacion.update(parametros) 
          format.html { redirect_to @recomendacion, notice: 'Recomendacion se cerró correctamente.' }
          format.json { render :show, status: :ok, location: @recomendacion }
       else
+        @recomendacion.errors.add(:carta_pdf)
         format.html { render :edit_cierre }
         format.json { render json: @recomendacion.errors, status: :unprocessable_entity }
       end
@@ -77,7 +80,6 @@ class RecomendacionesController < ApplicationController
 
     @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
     if @caso
-      puts 'sssssssssssssssssssssssssssss'
       examen_programa = ExamenPrograma.where("programa_id = ? and tipo_control_id = ? and examen_id = ?", programa.id, @caso.tipo_control_id, 1).first
       @documento_examen = @recomendacion.examen_recomendaciones.where(examen_programa_id: examen_programa.id).first
     end
@@ -99,10 +101,10 @@ class RecomendacionesController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-          render :pdf => 'solicitud_recomendacion',
+          render :pdf => "solicitud_recomendacion_#{@caso.codigo}_#{@recomendacion.id_recomendacion}",
                  :layout => 'pdf.html',
                  :template => "recomendaciones/show.pdf.erb",
-                 :disposition => 'inline',
+                 :disposition => 'attachment',
                  :page_size => 'A4',
                  :encoding => 'UTF-8',
                  :margin => {:top => 20, :left => 20, :right => 20, :bottom => 10}
@@ -255,7 +257,7 @@ class RecomendacionesController < ApplicationController
 
       @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
       if @documento_receta.nil?
-        @documento_receta = DocumentoRecomendacion.create(recomendacion_id: @recomendacion.id, documento_programa_id: 1, fecha: recomendacion_params["atributos_receta"]["fecha_receta"])
+        @documento_receta = DocumentoRecomendacion.create(recomendacion_id: @recomendacion.id, documento_programa_id: 1, fecha: recomendacion_params["atributos_receta"]["fecha_receta"], ejecutivo_id: current_user.id)
       else
         @documento_receta.update(fecha: recomendacion_params["atributos_receta"]["fecha_receta"])
       end
@@ -282,7 +284,7 @@ class RecomendacionesController < ApplicationController
         @documento_examen = @recomendacion.examen_recomendaciones.first
         examen_programa = ExamenPrograma.where("programa_id = ? and tipo_control_id = ? ", programa.id, @caso.tipo_control_id).first
         if @documento_examen.nil?    
-          @documento_examen = ExamenRecomendacion.create(recomendacion_id: @recomendacion.id, examen_programa_id: examen_programa ? examen_programa.id : 2, fecha: recomendacion_params["atributos_examen"]["fecha_examen"])
+          @documento_examen = ExamenRecomendacion.create(recomendacion_id: @recomendacion.id, examen_programa_id: examen_programa ? examen_programa.id : 2, fecha: recomendacion_params["atributos_examen"]["fecha_examen"], ejecutivo_id: current_user.id)
         else
           @documento_examen.update(fecha: recomendacion_params["atributos_examen"]["fecha_examen"], examen_programa_id: examen_programa.id)
         end
@@ -351,6 +353,6 @@ class RecomendacionesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recomendacion_params
-      params.require(:recomendacion).permit(:prestador_nombre, :farmacia_nombre, :medico, :medico_nombre, { atributos_examen: [:fecha_examen, :examen, :ran, :leucocitos, :baciliformes, :segmentados]}, {atributos_receta: [:fecha_receta, :receta]}, {atributos_tratamiento: [:esquema_horario_id, :dia, :tarde, :noche, :am, :pm, :dia_entero, :dias, :cantidad,  :medicamento_programa_id]}, {atributos_paciente: [:paciente_rut, :nombres, :primer_apellido, :segundo_apellido, :consentimiento_informado, :fecha_consentimiento_informado]}, :id_recomendacion, :estado, :resultado, :caso_id, :programa_id, :paciente_id, :medico_id, :prestador_id, :farmacia_id, :qf_soporte_id, :ejecutivo_id, :fecha_hora_ingreso, :via_ingreso, :fecha_hora_respuesta, :observaciones, :con_alarma)
+      params.require(:recomendacion).permit(:prestador_nombre, :farmacia_nombre, :medico, :medico_nombre, { atributos_examen: [:fecha_examen, :examen, :ran, :leucocitos, :baciliformes, :segmentados]}, {atributos_receta: [:fecha_receta, :receta]}, {atributos_tratamiento: [:esquema_horario_id, :dia, :tarde, :noche, :am, :pm, :dia_entero, :dias, :cantidad,  :medicamento_programa_id]}, {atributos_paciente: [:paciente_rut, :nombres, :primer_apellido, :segundo_apellido, :consentimiento_informado, :fecha_consentimiento_informado]}, :id_recomendacion, :estado, :resultado, :caso_id, :programa_id, :paciente_id, :medico_id, :prestador_id, :farmacia_id, :qf_soporte_id, :ejecutivo_id, :fecha_hora_ingreso, :via_ingreso, :fecha_hora_respuesta, :observaciones, :con_alarma, :carta_pdf)
     end
 end

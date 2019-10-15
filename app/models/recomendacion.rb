@@ -1,4 +1,6 @@
 class Recomendacion < ApplicationRecord
+ 
+has_one_attached :carta_pdf
 
 validate :id_recomendacion_valido, on: :create
  
