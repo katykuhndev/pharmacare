@@ -101,7 +101,7 @@ class RecomendacionesController < ApplicationController
     respond_to do |format|
       format.html
       format.pdf do
-          render :pdf => "solicitud_recomendacion_#{@caso.codigo}_#{@recomendacion.id_recomendacion}",
+          render :pdf => "solicitud_recomendacion_#{@caso ? @caso.codigo : 'sin_codigo'}_#{@recomendacion.id_recomendacion}",
                  :layout => 'pdf.html',
                  :template => "recomendaciones/show.pdf.erb",
                  :disposition => 'attachment',
