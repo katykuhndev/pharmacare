@@ -10,6 +10,7 @@ Rails.application.routes.draw do
     get :autocomplete_farmacia_nombre, :on => :collection
   end
   get 'recomendaciones/show/:id' => 'recomendaciones#show', :format => 'pdf', :as => 'show'
+  get 'recomendaciones/index' => 'recomendaciones#index', :format => 'pdf', :as => 'index'
   get 'recomendaciones/edit_cierre/:id' => 'recomendaciones#edit_cierre', :as => 'edit_cierre'
   #put 'recomendaciones/cerrar/:id' => 'recomendaciones#cerrar', :as => 'cerrar'
   post 'recomendaciones/encuentra_caso' => 'recomendaciones#encuentra_caso', :as => 'encuentra_caso'

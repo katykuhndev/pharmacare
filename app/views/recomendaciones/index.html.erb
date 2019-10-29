@@ -7,10 +7,16 @@
     <div class="col">
       <%= f.label :id_recomendacion %>
       <%= f.text_field :id_recomendacion_cont, class: 'form-control' %>
+      <br>
+      <%= f.label :created_at_gteq, 'Desde' %>
+      <%= f.text_field :created_at_gteq, class: "datepicker" %>
     </div>
     <div class="col">
       <%= f.label :estado %>
       <%= f.text_field :estado_cont, class: 'form-control' %>
+      <br>
+      <%= f.label :created_at_lteq, 'Hasta' %>
+      <%= f.text_field :created_at_lteq, class: "datepicker" %>
     </div>
     <div class="col">
       <%= f.label :rut %>
@@ -24,6 +30,13 @@
 </div>
 <% end %>
 </div>
+<br>
+<div>
+  <%= link_to  recomendaciones_path( :format => :pdf), class: 'btn btn-default bg-secondary text-white' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    INFORME
+  <% end %>
+</div>  
 <%= will_paginate @recomendaciones, list_classes: %w(pagination justify-content-end) %>
 <div class="table-responsive">
   <table class="table table-striped table-bordered table-hover">

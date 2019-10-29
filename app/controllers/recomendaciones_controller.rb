@@ -13,6 +13,19 @@ class RecomendacionesController < ApplicationController
     @recomendaciones = Recomendacion.all
     @query = Recomendacion.ransack(params[:q])
     @recomendaciones = @query.result.includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo).page(params[:page])
+    @recomendaciones_informe = @query.result.includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo)
+    respond_to do |format|
+      format.html
+      format.pdf do
+          render :pdf => "informe",
+                 :layout => 'pdf.html',
+                 :template => "recomendaciones/index.pdf.erb",
+                 :disposition => 'attachment',
+                 :page_size => 'A4',
+                 :encoding => 'UTF-8',
+                 :margin => {:top => 20, :left => 20, :right => 20, :bottom => 10}
+      end
+    end
   end
 
   def edit_cierre
@@ -43,6 +56,10 @@ class RecomendacionesController < ApplicationController
       end
      end 
   end 
+
+  def informe_semanal
+    
+  end  
 
   # GET /recomendaciones/1
   # GET /recomendaciones/1.json

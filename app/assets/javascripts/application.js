@@ -27,7 +27,9 @@ $(document).ready(function(){
   	autoclose: true,
     todayHighlight: true, 
     orientation: 'auto top', 
-    format: 'yyyy-mm-dd'
+    format: 'yyyy-mm-dd',
+    language: 'es',
+    endDate: "1d"
   });
   $('#show').click(function() {
       $('.menu').toggle("slide");
