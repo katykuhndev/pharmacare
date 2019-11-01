@@ -3,6 +3,8 @@ class Caso < ApplicationRecord
   belongs_to :paciente
   belongs_to :medico, optional: true
   belongs_to :tipo_control
+  belongs_to :qf_soporte, optional: true, :foreign_key => :qf_soporte_id, class_name: 'User'
+  belongs_to :ejecutivo, optional: true, :foreign_key => :ejecutivo_id, class_name: 'User'
 
   has_many :recomendaciones
   has_many :documento_casos

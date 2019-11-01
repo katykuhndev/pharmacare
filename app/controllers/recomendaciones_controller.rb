@@ -35,8 +35,8 @@ class RecomendacionesController < ApplicationController
   def cerrar
     @recomendacion = Recomendacion.find(params[:id])
     respond_to do |format|
-      if params['recomendacion'] && recomendacion_params["carta_pdf"]
-         @recomendacion.carta_pdf.attach(recomendacion_params["carta_pdf"])
+     # if params['recomendacion'] && recomendacion_params["carta_pdf"]
+        # @recomendacion.carta_pdf.attach(recomendacion_params["carta_pdf"])
          if params['rechazo_administrativo']
           parametros = {fecha_hora_respuesta: Time.now, resultado: 'rechazo_administrativo', resolucion_qf: 'rechazada', estado: 'cerrada' }
          elsif params['rechazo_tecnico']
@@ -46,14 +46,21 @@ class RecomendacionesController < ApplicationController
          elsif params['aprobacion']
           parametros = {fecha_hora_respuesta: Time.now, resultado: 'aprobacion', resolucion_qf: 'aprobada', estado: 'cerrada' }
          end  
+         #parametros.merge!(observaciones: "#{@recomendacion.observaciones} #{recomendacion_params['observaciones']}")
+         @caso = @recomendacion.caso
+         if @caso && @caso.qf_soporte_id.nil? && @caso.fecha_hora_ingreso.present? && @caso.fecha_hora_ingreso.today?
+           @caso.qf_soporte_id = @recomendacion.qf_soporte_id
+           @caso.save
+         end 
          @recomendacion.update(parametros) 
+
          format.html { redirect_to @recomendacion, notice: 'Recomendacion se cerró correctamente.' }
          format.json { render :show, status: :ok, location: @recomendacion }
-      else
-        @recomendacion.errors.add(:carta_pdf)
-        format.html { render :edit_cierre }
-        format.json { render json: @recomendacion.errors, status: :unprocessable_entity }
-      end
+     # else
+        #@recomendacion.errors.add(:carta_pdf)
+        #format.html { render :edit_cierre }
+        #format.json { render json: @recomendacion.errors, status: :unprocessable_entity }
+     # end
      end 
   end 
 
@@ -117,17 +124,19 @@ class RecomendacionesController < ApplicationController
 
     respond_to do |format|
       format.html
+      filename = "solicitud_recomendacion_#{@caso ? @caso.codigo : 'sin_codigo'}_#{@recomendacion.id_recomendacion}"
       format.pdf do
-          render :pdf => "solicitud_recomendacion_#{@caso ? @caso.codigo : 'sin_codigo'}_#{@recomendacion.id_recomendacion}",
+          render :pdf => filename,
                  :layout => 'pdf.html',
                  :template => "recomendaciones/show.pdf.erb",
                  :disposition => 'attachment',
                  :page_size => 'A4',
                  :encoding => 'UTF-8',
+                 :save_to_file => Rails.root.join('tmp', "#{filename}.pdf"),
                  :margin => {:top => 20, :left => 20, :right => 20, :bottom => 10}
+          @recomendacion.carta_pdf.attach(io: File.open("tmp/#{filename}.pdf"), filename: "#{filename}.pdf")       
       end
     end
-
   end
 
   def encuentra_caso
@@ -242,7 +251,7 @@ class RecomendacionesController < ApplicationController
            codigo_correcto = Caso.busca_codigo(codigo,programa.id)
            # TODO 
            # mejorar tipo_control_id, al crear por defecto se usa semanal en caso de lodux
-           @caso = Caso.create(paciente_id: @paciente.id, programa_id: programa.id, ejecutivo_id: @recomendacion.ejecutivo_id, codigo: codigo_correcto, tipo_control_id: 2)
+           @caso = Caso.create(paciente_id: @paciente.id, programa_id: programa.id, ejecutivo_id: current_user.id, codigo: codigo_correcto, tipo_control_id: 2, via_ingreso: @recomendacion.via_ingreso )
            @recomendacion.caso = @caso
           end 
         else
@@ -252,7 +261,7 @@ class RecomendacionesController < ApplicationController
             inicial = programa.inicial
             codigo = "#{inicial}-#{@paciente.iniciales}"
             codigo_correcto = Caso.busca_codigo(codigo,programa.id)
-            @caso = Caso.create(paciente_id: @paciente.id, programa_id: programa.id, ejecutivo_id: @recomendacion.ejecutivo_id, codigo: codigo_correcto, tipo_control_id: 2)
+            @caso = Caso.create(paciente_id: @paciente.id, programa_id: programa.id, ejecutivo_id: current_user.id, codigo: codigo_correcto, tipo_control_id: 2, via_ingreso: @recomendacion.via_ingreso )
           end  
           @recomendacion.caso = @caso
         end
@@ -264,12 +273,15 @@ class RecomendacionesController < ApplicationController
 
         @documento_caso = @caso ? @caso.get_documentos_caso : nil
         if @caso && @documento_caso.nil?
-          @documento_caso = DocumentoCaso.create(caso_id: @caso.id, documento_programa_id: 2, ejecutivo_id: @recomendacion.ejecutivo_id, fecha: recomendacion_params["atributos_paciente"]["fecha_consentimiento_informado"])
+          @documento_caso = DocumentoCaso.create(caso_id: @caso.id, documento_programa_id: 2, ejecutivo_id: current_user.id, fecha: recomendacion_params["atributos_paciente"]["fecha_consentimiento_informado"])
         end
         if recomendacion_params["atributos_paciente"]["consentimiento_informado"]
           @documento_caso.consentimiento_informado.attach(recomendacion_params["atributos_paciente"]["consentimiento_informado"])
           @documento_caso.nombrar_archivo_consentimiento_informado  
         end    
+        if recomendacion_params["atributos_paciente"]["fecha_consentimiento_informado"]
+          @documento_caso.update(fecha: recomendacion_params["atributos_paciente"]["fecha_consentimiento_informado"])
+        end   
       end
 
       @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first

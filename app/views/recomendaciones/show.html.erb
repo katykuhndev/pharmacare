@@ -26,6 +26,8 @@
    <h3>Consentimiento Informado: 
       <%if @documento_caso && @documento_caso.consentimiento_informado.attached? %>
         <%= link_to 'ARCHIVO CI', rails_blob_url(@documento_caso.consentimiento_informado, disposition: "attachment") %>
+         <br>
+         Fecha CI: <%= @documento_caso.fecha ? @documento_caso.fecha.strftime("%m/%d/%Y") : '' %>
       <%else%>
         <div class="alerta"> NO HAY ARCHIVO </div>
       <%end%>

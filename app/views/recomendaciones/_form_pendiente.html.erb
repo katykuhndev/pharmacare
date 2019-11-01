@@ -55,6 +55,12 @@
               <div class="col-sm-4">
                 <%= link_to 'ARCHIVO CI', rails_blob_url(@documento_caso.consentimiento_informado, disposition: "attachment") %>
               </div>  
+              <% if @documento_caso.fecha.nil? %>
+                <%= paciente_form.label :fecha_consentimiento_informado,'Fecha CI', class: "col-sm-2 control-label" %>
+                <div class="col-sm-4">
+                  <%= paciente_form.text_field :fecha_consentimiento_informado, class: "datepicker" %>
+                </div>
+              <% end %>
           <% else %>
               <%= paciente_form.label :consentimiento_informado, class: "col-sm-4 control-label" %>
               <div class="col-sm-4">
