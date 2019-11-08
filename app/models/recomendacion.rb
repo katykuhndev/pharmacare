@@ -238,5 +238,13 @@ end
     end
   end
 
+  def get_nombre_carta_recomendacion
+    titulo = self.aprobada? ? 'APROBADA' : 'RECHAZADA' 
+    codigo = self.caso.codigo
+    programa = self.programa ? self.programa.nombre : ''
+    id_recomendacion = self.id_recomendacion
+    nombre = "RECOMENDACIÓN #{programa} #{titulo} #{codigo} #{id_recomendacion}"
+  end  
+
 end
  

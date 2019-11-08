@@ -35,37 +35,68 @@ class RecomendacionesController < ApplicationController
   def cerrar
     @recomendacion = Recomendacion.find(params[:id])
     respond_to do |format|
-     # if params['recomendacion'] && recomendacion_params["carta_pdf"]
-        # @recomendacion.carta_pdf.attach(recomendacion_params["carta_pdf"])
-         if params['rechazo_administrativo']
+        if params['rechazo_administrativo']
           parametros = {fecha_hora_respuesta: Time.now, resultado: 'rechazo_administrativo', resolucion_qf: 'rechazada', estado: 'cerrada' }
-         elsif params['rechazo_tecnico']
+        elsif params['rechazo_tecnico']
           parametros = {fecha_hora_respuesta: Time.now, resultado: 'rechazo_tecnico', resolucion_qf: 'rechazada', estado: 'cerrada' }
-         elsif params['aprobacion_con_reparos']
+        elsif params['aprobacion_con_reparos']
           parametros = {fecha_hora_respuesta: Time.now, resultado: 'aprobacion_con_reparos', resolucion_qf: 'aprobada', estado: 'cerrada' }
-         elsif params['aprobacion']
+        elsif params['aprobacion']
           parametros = {fecha_hora_respuesta: Time.now, resultado: 'aprobacion', resolucion_qf: 'aprobada', estado: 'cerrada' }
-         end  
-         #parametros.merge!(observaciones: "#{@recomendacion.observaciones} #{recomendacion_params['observaciones']}")
-         @caso = @recomendacion.caso
-         if @caso && @caso.qf_soporte_id.nil? && @caso.fecha_hora_ingreso.present? && @caso.fecha_hora_ingreso.today?
+        end  
+        @caso = @recomendacion.caso
+        if @caso && @caso.qf_soporte_id.nil? && @caso.fecha_hora_ingreso.present? && @caso.fecha_hora_ingreso.today?
            @caso.qf_soporte_id = @recomendacion.qf_soporte_id
            @caso.save
-         end 
-         @recomendacion.update(parametros) 
+        end 
+        @recomendacion.update(parametros) 
+        filename = @recomendacion.get_nombre_carta_recomendacion
 
-         format.html { redirect_to @recomendacion, notice: 'Recomendacion se cerró correctamente.' }
-         format.json { render :show, status: :ok, location: @recomendacion }
-     # else
-        #@recomendacion.errors.add(:carta_pdf)
-        #format.html { render :edit_cierre }
-        #format.json { render json: @recomendacion.errors, status: :unprocessable_entity }
-     # end
+        programa = @recomendacion.programa    
+        @paciente = @recomendacion.paciente
+        @datos_paciente = @paciente ? @paciente.nombre_completo  : ''
+        @rut_paciente = @paciente ? @paciente.rut : ''
+        @datos_medico = @recomendacion.medico ? "#{@recomendacion.medico.nombres} #{@recomendacion.medico.primer_apellido} #{@recomendacion.medico.segundo_apellido}"  : '' 
+        @datos_prestador = @recomendacion.prestador ? @recomendacion.prestador.nombre  : '' 
+        @datos_farmacia = @recomendacion.farmacia ? @recomendacion.farmacia.nombre  : ''
+        @qf_soporte = @recomendacion.qf_soporte ? @recomendacion.qf_soporte.name : ''           
+        @iniciales_paciente = @caso ? @caso.codigo : (@paciente ? @paciente.iniciales : '')
+        @tratamientos = @recomendacion.tratamientos
+        @ran = @recomendacion.medicion_recomendaciones.where(medicion_id: 1).first ? @recomendacion.medicion_recomendaciones.where(medicion_id: 1).first.valor : ''
+        @alarma = @recomendacion.alarma
+        fecha_examen = @recomendacion.get_fecha_examen
+        @fecha_examen = fecha_examen ? fecha_examen.strftime("%d/%m/%Y") : ''
+        fecha_receta = @recomendacion.get_fecha_receta
+        @fecha_receta = fecha_receta ? fecha_receta.strftime("%d/%m/%Y") : ''
+        @titulo = @recomendacion.aprobada? ? 'APROBADA' : 'RECHAZADA' 
+        @accion = @recomendacion.aprobada? ? 'APROBAR' : 'RECHAZAR' 
+        @autorizador = @recomendacion.qf_soporte ? @recomendacion.qf_soporte.name : ''
+        pdf_html = ActionController::Base.new.render_to_string(
+          template: 'recomendaciones/show.pdf.erb', 
+          :locals => {
+              :@titulo => @titulo,
+              :@iniciales_paciente => @iniciales_paciente,
+              :@recomendacion => @recomendacion,
+              :@datos_paciente => @datos_paciente,
+              :@rut_paciente => @rut_paciente,
+              :@alarma => @alarma,
+              :@ran => @ran,
+              :@fecha_examen => @fecha_examen,
+              :@fecha_receta => @fecha_receta,
+              :@datos_prestador => @datos_prestador,
+              :@datos_farmacia => @datos_farmacia,
+              :@datos_medico => @datos_medico,
+              :@accion => @accion,
+              :@tratamientos => @tratamientos,
+              :@autorizador => @autorizador
+          },
+          layout: 'pdf')
+        carta_pdf = WickedPdf.new.pdf_from_string(pdf_html,:encoding => 'UTF-8',:page_size => 'A4',:margin => {:top => 20, :left => 20, :right => 20, :bottom => 10})
+        @recomendacion.carta_pdf.attach(io: StringIO.new(carta_pdf), filename: "#{filename}.pdf", content_type: "application/pdf")
+        RecomendacionMailer.with(recomendacion: @recomendacion).informe_recomendacion.deliver_later
+        format.html { redirect_to @recomendacion, notice: 'Recomendacion se cerró correctamente.' }
+        format.json { render :show, status: :ok, location: @recomendacion }
      end 
-  end 
-
-  def informe_semanal
-    
   end  
 
   # GET /recomendaciones/1
@@ -121,10 +152,9 @@ class RecomendacionesController < ApplicationController
     @titulo = @recomendacion.aprobada? ? 'APROBADA' : 'RECHAZADA' 
     @accion = @recomendacion.aprobada? ? 'APROBAR' : 'RECHAZAR' 
     @autorizador = @recomendacion.qf_soporte ? @recomendacion.qf_soporte.name : ''
-
+    filename =  @recomendacion.get_nombre_carta_recomendacion
     respond_to do |format|
       format.html
-      filename = "solicitud_recomendacion_#{@caso ? @caso.codigo : 'sin_codigo'}_#{@recomendacion.id_recomendacion}"
       format.pdf do
           render :pdf => filename,
                  :layout => 'pdf.html',
@@ -132,9 +162,7 @@ class RecomendacionesController < ApplicationController
                  :disposition => 'attachment',
                  :page_size => 'A4',
                  :encoding => 'UTF-8',
-                 :save_to_file => Rails.root.join('tmp', "#{filename}.pdf"),
-                 :margin => {:top => 20, :left => 20, :right => 20, :bottom => 10}
-          @recomendacion.carta_pdf.attach(io: File.open("tmp/#{filename}.pdf"), filename: "#{filename}.pdf")       
+                 :margin => {:top => 20, :left => 20, :right => 20, :bottom => 10}      
       end
     end
   end
@@ -275,15 +303,15 @@ class RecomendacionesController < ApplicationController
         if @caso && @documento_caso.nil?
           @documento_caso = DocumentoCaso.create(caso_id: @caso.id, documento_programa_id: 2, ejecutivo_id: current_user.id, fecha: recomendacion_params["atributos_paciente"]["fecha_consentimiento_informado"])
         end
-        if recomendacion_params["atributos_paciente"]["consentimiento_informado"]
+        if @documento_caso && recomendacion_params["atributos_paciente"]["consentimiento_informado"]
           @documento_caso.consentimiento_informado.attach(recomendacion_params["atributos_paciente"]["consentimiento_informado"])
           @documento_caso.nombrar_archivo_consentimiento_informado  
         end    
-        if recomendacion_params["atributos_paciente"]["fecha_consentimiento_informado"]
+        if @documento_caso && recomendacion_params["atributos_paciente"]["fecha_consentimiento_informado"]
           @documento_caso.update(fecha: recomendacion_params["atributos_paciente"]["fecha_consentimiento_informado"])
         end   
       end
-
+       
       @documento_receta = @recomendacion.documento_recomendaciones.where(documento_programa_id: 1).first
       if @documento_receta.nil?
         @documento_receta = DocumentoRecomendacion.create(recomendacion_id: @recomendacion.id, documento_programa_id: 1, fecha: recomendacion_params["atributos_receta"]["fecha_receta"], ejecutivo_id: current_user.id)
