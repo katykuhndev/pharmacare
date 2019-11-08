@@ -46,6 +46,36 @@ $(document).ready(function(){
     });
 });
 
+$(document).ready(function(){
+    $("#recomendacion_atributos_tratamiento_dia_entero").keyup(function(){
+          var dias = +$("#recomendacion_atributos_tratamiento_dias").val();
+          var dia_entero = +$("#recomendacion_atributos_tratamiento_dia_entero").val();
+          var total = dias*dia_entero
+          $("#recomendacion_atributos_tratamiento_cantidad").val(total);
+    });
+});
+
+$(document).ready(function(){
+    $("#recomendacion_atributos_tratamiento_pm").keyup(function(){
+          var dias = +$("#recomendacion_atributos_tratamiento_dias").val();
+          var am = +$("#recomendacion_atributos_tratamiento_am").val();
+          var pm = +$("#recomendacion_atributos_tratamiento_pm").val();
+          var total = dias*(am+pm)
+          $("#recomendacion_atributos_tratamiento_cantidad").val(total);
+    });
+});
+
+$(document).ready(function(){
+    $("#recomendacion_atributos_tratamiento_noche").keyup(function(){
+          var dias = +$("#recomendacion_atributos_tratamiento_dias").val();
+          var dia = +$("#recomendacion_atributos_tratamiento_dia").val();
+          var tarde = +$("#recomendacion_atributos_tratamiento_tarde").val();
+          var noche = +$("#recomendacion_atributos_tratamiento_noche").val();
+          var total = dias*(dia+tarde+noche)
+          $("#recomendacion_atributos_tratamiento_cantidad").val(total);
+    });
+});
+
 $(function() {
   function selectVisibility() {
     var selector = $($(this).attr('data-selects-visibility'));
