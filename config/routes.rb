@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :recomendaciones do
     member do
       patch :cerrar
+      get :enmendar
     end
     resources :tratamientos
     get :autocomplete_paciente_rut, :on => :collection

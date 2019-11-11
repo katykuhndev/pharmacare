@@ -176,6 +176,67 @@ class RecomendacionesController < ApplicationController
     end
   end  
 
+  def enmendar
+    @recomendacion = Recomendacion.find(params[:id])
+    @recomendacion_nueva = @recomendacion.dup
+    id_recomendacion_nuevo = @recomendacion.get_id_recomendacion_enmendado
+    @recomendacion_nueva.id_recomendacion = id_recomendacion_nuevo
+    @recomendacion_nueva.estado = 0
+    @recomendacion_nueva.save(validate: false)
+    @recomendacion.tratamientos.each do |tratamiento|
+      tratamiento_nuevo = tratamiento.dup
+      tratamiento_nuevo.recomendacion_id = @recomendacion_nueva.id
+      tratamiento_nuevo.created_at = Time.now
+      tratamiento_nuevo.updated_at = Time.now
+      tratamiento_nuevo.save
+      tratamiento.esquema_tratamientos.each do |esquema_tratamiento|
+        esquema_tratamiento_nuevo = esquema_tratamiento.dup
+        esquema_tratamiento_nuevo.tratamiento_id = tratamiento_nuevo.id
+        esquema_tratamiento_nuevo.recomendacion_id = @recomendacion_nueva.id
+        esquema_tratamiento_nuevo.created_at = Time.now
+        esquema_tratamiento_nuevo.updated_at = Time.now        
+        esquema_tratamiento_nuevo.save
+
+      end
+    end  
+    @recomendacion.documento_recomendaciones.each do |documento_recomendacion|
+      documento_recomendacion_nueva = documento_recomendacion.dup
+      documento_recomendacion_nueva.recomendacion_id = @recomendacion_nueva.id
+      documento_recomendacion_nueva.ejecutivo_id = current_user.id
+      documento_recomendacion_nueva.nombre = nil
+      documento_recomendacion_nueva.fecha = nil
+      documento_recomendacion_nueva.created_at = Time.now
+      documento_recomendacion_nueva.updated_at = Time.now
+      documento_recomendacion_nueva.save
+      #documento_recomendacion.receta.open do |tempfile|
+      #documento_recomendacion_nueva.receta.attach({
+       # io: tempfile, 
+        #filename: documento_recomendacion.receta.blob.filename, 
+        #content_type: documento_recomendacion.receta.blob.content_type 
+      #})
+      #end
+
+    end  
+    @recomendacion.examen_recomendaciones.each do |examen_recomendacion|
+      examen_recomendacion_nueva = examen_recomendacion.dup
+      examen_recomendacion_nueva.recomendacion_id = @recomendacion_nueva.id
+      examen_recomendacion_nueva.ejecutivo_id = current_user.id
+      examen_recomendacion_nueva.nombre = nil
+      examen_recomendacion_nueva.fecha = nil
+      examen_recomendacion_nueva.created_at = Time.now
+      examen_recomendacion_nueva.updated_at = Time.now
+      examen_recomendacion_nueva.save
+    end  
+    @recomendacion.medicion_recomendaciones.each do |medicion_recomendacion|
+      medicion_recomendacion_nueva = medicion_recomendacion.dup
+      medicion_recomendacion_nueva.recomendacion_id = @recomendacion_nueva.id
+      medicion_recomendacion_nueva.created_at = Time.now
+      medicion_recomendacion_nueva.updated_at = Time.now
+      medicion_recomendacion_nueva.save
+    end  
+    redirect_to edit_recomendacion_path(@recomendacion_nueva)
+  end  
+
   # GET /recomendaciones/new
   def new
     # TODO
@@ -254,7 +315,7 @@ class RecomendacionesController < ApplicationController
       # este codigo solo se hizo para ael piloto
       programa = @recomendacion.programa
       atributos_paciente = recomendacion_params["atributos_paciente"]
-      if atributos_paciente
+      if atributos_paciente 
         atributos_paciente.delete(:consentimiento_informado)
         atributos_paciente.delete(:fecha_consentimiento_informado)
         rut = atributos_paciente.delete(:paciente_rut)

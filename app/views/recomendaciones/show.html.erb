@@ -1,6 +1,10 @@
 <div class="page-header">
   <%= link_to 'Volver', recomendaciones_path, class: 'btn btn-default' %>
+  <% if @recomendacion.cerrada? %>
+      <%= link_to 'Enmendar', enmendar_recomendacion_path(@recomendacion), class: 'btn btn-default bg-secondary text-white' %>
+  <% else %>    
   <%= link_to 'Editar', edit_recomendacion_path(@recomendacion), class: 'btn btn-default bg-secondary text-white' %>
+  <% end %>
   <h1>Recomendacion <%=@recomendacion.id_recomendacion%> Programa <%= @recomendacion.programa.nombre %> </h1>
 </div>
 

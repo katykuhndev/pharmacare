@@ -157,7 +157,7 @@ end
     puts '7'
     return false if self.examen_recomendaciones.empty?
     puts '8'
-    self.documento_recomendaciones.map { |doc| return false if (doc.fecha.nil? && doc.nombre.nil?) }
+    self.examen_recomendaciones.map { |doc| return false if (doc.fecha.nil? && doc.nombre.nil?) }
     puts '9'
     return false if self.medicion_recomendaciones.empty?
     puts '10'
@@ -240,10 +240,22 @@ end
 
   def get_nombre_carta_recomendacion
     titulo = self.aprobada? ? 'APROBADA' : 'RECHAZADA' 
-    codigo = self.caso.codigo
+    codigo = self.caso ? self.caso.codigo : ''
     programa = self.programa ? self.programa.nombre : ''
     id_recomendacion = self.id_recomendacion
     nombre = "RECOMENDACIÓN #{programa} #{titulo} #{codigo} #{id_recomendacion}"
+  end  
+
+  def get_id_recomendacion_enmendado
+    id_recomendacion = self.id_recomendacion
+    recomendacion = Recomendacion.where("id_recomendacion LIKE ?", "%#{id_recomendacion}%").order('id desc').first 
+    if recomendacion.id_recomendacion.size == 11
+      id_recomendacion_nuevo = "#{id_recomendacion}-1"
+    else
+      numero_siguiente = recomendacion.id_recomendacion[12..13].to_i + 1
+      recomendacion_original = id_recomendacion[0..10]
+      id_recomendacion_nuevo = "#{recomendacion_original}-#{numero_siguiente}"
+    end  
   end  
 
 end
