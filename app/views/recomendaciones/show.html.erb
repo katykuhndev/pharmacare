@@ -56,10 +56,15 @@
       <%else%>
         <div class="alerta"> NO HAY ARCHIVO </div>
       <%end%>
-      <dt>Fecha Hemograma: <%= @fecha_examen %>
-       <%if @documento_examen && @documento_examen.vencida? %>
-       <div class="alerta"> Vencimiento : <%= @fecha_vencimiento_examen %> </div>
-       <%else%>
+      <dt>Fecha Hemograma:
+        <%if @documento_examen && @documento_examen.fecha.nil? %>
+          <div class="alerta"> Sin fecha </div>
+        <%else%>  
+          <%= @fecha_examen%> 
+        <%end%> 
+        <%if @documento_examen && @documento_examen.vencida? %>
+          <div class="alerta"> Vencimiento : <%= @fecha_vencimiento_examen %> </div>
+        <%else%>
           Vencimiento : <%= @fecha_vencimiento_examen %> 
        <%end%>
      </dt>
@@ -75,12 +80,17 @@
       <%else%>
         <div class="alerta"> NO HAY ARCHIVO </div>
       <%end%>
-      <dt>Fecha Receta: <%= @fecha_receta%> 
+      <dt>Fecha Receta: 
+        <%if @documento_receta && @documento_receta.fecha.nil? %>
+          <div class="alerta"> Sin fecha </div>
+        <%else%>  
+          <%= @fecha_receta%> 
+        <%end%>  
         <%if @documento_receta && @documento_receta.vencida? %>
-         <div class="alerta"> Vencimiento : <%= @fecha_vencimiento_receta %> </div>
-       <%else%>
+          <div class="alerta"> Vencimiento : <%= @fecha_vencimiento_receta %> </div>
+        <%else%>
           Vencimiento : <%= @fecha_vencimiento_receta %> 
-       <%end%>
+        <%end%>
 
       </dt>
       <dt>Medico: <%= @datos_medico %> </dt>
@@ -102,6 +112,10 @@
     <dd><%= @recomendacion.fecha_hora_respuesta %></dd>
 
     <dt>Autoriza : <%= @qf_soporte %> </dt>
+
+    <dt>Comentarios Internos:</dt>
+    <dd><%= @recomendacion.comentarios %></dd>
+
   <% end %> 
 
 </dl>

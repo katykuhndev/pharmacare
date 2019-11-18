@@ -10,9 +10,8 @@ class RecomendacionesController < ApplicationController
   # GET /recomendaciones
   # GET /recomendaciones.json
   def index
-    @recomendaciones = Recomendacion.all
     @query = Recomendacion.ransack(params[:q])
-    @recomendaciones = @query.result.includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo).page(params[:page])
+    @recomendaciones = @query.result.includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo).order('created_at desc').page(params[:page])
     @recomendaciones_informe = @query.result.includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo)
     respond_to do |format|
       format.html
@@ -49,6 +48,7 @@ class RecomendacionesController < ApplicationController
            @caso.qf_soporte_id = @recomendacion.qf_soporte_id
            @caso.save
         end 
+        parametros = parametros.merge(recomendacion_params)
         @recomendacion.update(parametros) 
         filename = @recomendacion.get_nombre_carta_recomendacion
 
@@ -381,10 +381,7 @@ class RecomendacionesController < ApplicationController
       end
 
       fecha_vencimiento = @recomendacion.get_fecha_vencimiento_receta
-      if fecha_vencimiento
-        @documento_receta.update(fecha_vencimiento: fecha_vencimiento)
-      end 
-
+      @documento_receta.update(fecha_vencimiento: fecha_vencimiento)
       @documento_receta.receta.attach(recomendacion_params["atributos_receta"]["receta"])
       @documento_receta.nombrar_archivo_receta
 
@@ -408,11 +405,10 @@ class RecomendacionesController < ApplicationController
         end
    
         fecha_vencimiento = @recomendacion.get_fecha_vencimiento_examen
-        if fecha_vencimiento
-          @documento_examen.update(fecha_vencimiento: fecha_vencimiento)
-        end 
-          @documento_examen.examen.attach(recomendacion_params["atributos_examen"]["examen"])
-          @documento_examen.nombrar_archivo_examen
+        @documento_examen.update(fecha_vencimiento: fecha_vencimiento)
+        @documento_examen.examen.attach(recomendacion_params["atributos_examen"]["examen"])
+        @documento_examen.nombrar_archivo_examen
+
       end 
 
        @medicion_recomendaciones_ran = @recomendacion.medicion_recomendaciones.where(recomendacion_id: @recomendacion.id, medicion_id: 1)
@@ -471,6 +467,6 @@ class RecomendacionesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def recomendacion_params
-      params.require(:recomendacion).permit(:prestador_nombre, :farmacia_nombre, :medico, :medico_nombre, { atributos_examen: [:fecha_examen, :examen, :ran, :leucocitos, :baciliformes, :segmentados]}, {atributos_receta: [:fecha_receta, :receta]}, {atributos_tratamiento: [:esquema_horario_id, :dia, :tarde, :noche, :am, :pm, :dia_entero, :dias, :cantidad,  :medicamento_programa_id]}, {atributos_paciente: [:paciente_rut, :nombres, :primer_apellido, :segundo_apellido, :consentimiento_informado, :fecha_consentimiento_informado]}, :id_recomendacion, :estado, :resultado, :caso_id, :programa_id, :paciente_id, :medico_id, :prestador_id, :farmacia_id, :qf_soporte_id, :ejecutivo_id, :fecha_hora_ingreso, :via_ingreso, :fecha_hora_respuesta, :observaciones, :con_alarma, :carta_pdf)
+      params.require(:recomendacion).permit(:comentarios, :prestador_nombre, :farmacia_nombre, :medico, :medico_nombre, { atributos_examen: [:fecha_examen, :examen, :ran, :leucocitos, :baciliformes, :segmentados]}, {atributos_receta: [:fecha_receta, :receta]}, {atributos_tratamiento: [:esquema_horario_id, :dia, :tarde, :noche, :am, :pm, :dia_entero, :dias, :cantidad,  :medicamento_programa_id]}, {atributos_paciente: [:paciente_rut, :nombres, :primer_apellido, :segundo_apellido, :consentimiento_informado, :fecha_consentimiento_informado]}, :id_recomendacion, :estado, :resultado, :caso_id, :programa_id, :paciente_id, :medico_id, :prestador_id, :farmacia_id, :qf_soporte_id, :ejecutivo_id, :fecha_hora_ingreso, :via_ingreso, :fecha_hora_respuesta, :observaciones, :con_alarma, :carta_pdf)
     end
 end

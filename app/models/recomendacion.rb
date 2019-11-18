@@ -97,13 +97,13 @@ end
   def resolucion_recomendacion
     self.procesar_alarma
     ultimo_resultado = self.resultado
-    if self.get_fecha_vencimiento_receta && self.get_fecha_vencimiento_receta < Time.now
+    if self.get_fecha_receta.nil? || (self.get_fecha_vencimiento_receta && self.get_fecha_vencimiento_receta < Time.now)
       self.resultado = :aprobacion_con_reparos 
     else
-      self.resultado = ultimo_resultado
+      self.resultado =  ultimo_resultado
     end  
     ultimo_resultado = self.resultado 
-    if self.get_fecha_vencimiento_examen && self.get_fecha_vencimiento_examen < Time.now
+    if self.get_fecha_examen.nil? || (self.get_fecha_vencimiento_examen && self.get_fecha_vencimiento_examen < Time.now)
       self.resultado = :rechazo_administrativo 
     else
       self.resultado = ultimo_resultado
@@ -171,7 +171,7 @@ end
 
   def get_fecha_receta
     documento_recomendacion = self.documento_recomendaciones.where(documento_programa_id: 1).first
-    @fecha_receta = documento_recomendacion ? documento_recomendacion.fecha : false
+    @fecha_receta = documento_recomendacion ? documento_recomendacion.fecha : nil
   end
 
   def get_fecha_examen
@@ -183,14 +183,14 @@ end
     else
       documento_examen = self.examen_recomendaciones.where(examen_programa_id: 1).first  
     end
-    @fecha_examen = documento_examen ? documento_examen.fecha : false
+    @fecha_examen = documento_examen ? documento_examen.fecha : nil
   end  
 
   def get_fecha_vencimiento_receta
     documento_programa = DocumentoPrograma.find(1)
     dias_vencimiento_receta = documento_programa.dias_vencimiento 
     fecha_receta = self.get_fecha_receta
-    @fecha_vencimiento_receta = fecha_receta ? (fecha_receta + dias_vencimiento_receta.days - 1) : false
+    @fecha_vencimiento_receta = fecha_receta ? (fecha_receta + dias_vencimiento_receta.days - 1) : nil
   end
 
 
@@ -204,7 +204,7 @@ end
      dias_vencimiento_examen = 5  
     end 
     fecha_examen = self.get_fecha_examen
-    @fecha_vencimiento_examen = fecha_examen ? (fecha_examen + dias_vencimiento_examen.days - 1) : false
+    @fecha_vencimiento_examen = fecha_examen ? (fecha_examen + dias_vencimiento_examen.days - 1) : nil
   end 
 
   def farmacia_nombre

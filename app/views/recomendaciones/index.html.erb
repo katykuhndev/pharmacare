@@ -44,7 +44,7 @@
     <tr>
       <th><%= sort_link(@query, :id_recomendacion) %></th>
       <!--th><%= sort_link(@query, :programa_id, Recomendacion.human_attribute_name(:programa))%></th-->
-      <th><%= sort_link(@query, :rut, Recomendacion.human_attribute_name(:paciente)) %></th>
+      <th><%= sort_link(@query, :rut, Recomendacion.human_attribute_name(:rut)) %></th>
       <th><%= sort_link(@query, :paciente_id, Recomendacion.human_attribute_name(:paciente))%></th>
       <th><%= sort_link(@query, :medico_id, Recomendacion.human_attribute_name(:medico))%></th>
       <th><%= sort_link(@query, :farmacia_id, Recomendacion.human_attribute_name(:farmacia))%></th>    
@@ -52,7 +52,7 @@
       <th><%= sort_link(@query, :resultado) %></th>
       <!--th><%= sort_link(@query, :con_alarma) %></th-->
       <th><%= sort_link(@query, :fecha_ingreso) %></th>
-      <th colspan="3"><%=(t :text_actions)%></th>
+      <th colspan="2"><%=(t :text_actions)%></th>
     </tr>
   </thead>
 
@@ -70,7 +70,7 @@
         <td><%= recomendacion.fecha_hora_ingreso ? recomendacion.fecha_hora_ingreso.strftime("%Y %m %d") : '' %></td>
         <td><%= link_to (t :text_show), recomendacion %></td>
         <td><%= link_to (t :text_edit), edit_recomendacion_path(recomendacion) %></td>
-        <td><%= link_to (t :text_destroy), recomendacion, method: :delete, data: { confirm: (t :text_are_you_sure) } %></td>
+        <!--td><%= link_to (t :text_destroy), recomendacion, method: :delete, data: { confirm: (t :text_are_you_sure) } %></td-->
       </tr>
     <% end %>
   </tbody>

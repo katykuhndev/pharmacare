@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_17_173241) do
+ActiveRecord::Schema.define(version: 2019_11_17_023442) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", null: false
@@ -91,7 +91,7 @@ ActiveRecord::Schema.define(version: 2019_09_17_173241) do
     t.index ["region_id"], name: "index_comunas_on_region_id"
   end
 
-  create_table "documento_casos", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "documento_casos", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.bigint "caso_id"
     t.bigint "documento_programa_id"
@@ -242,6 +242,11 @@ ActiveRecord::Schema.define(version: 2019_09_17_173241) do
     t.index ["programa_id"], name: "index_mediciones_on_programa_id"
   end
 
+  create_table "medico_temporal", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.string "nombre"
+    t.string "fecha_inicio"
+  end
+
   create_table "medicos", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombres"
     t.string "primer_apellido"
@@ -259,7 +264,34 @@ ActiveRecord::Schema.define(version: 2019_09_17_173241) do
     t.index ["comuna_id"], name: "index_medicos_on_comuna_id"
   end
 
+  create_table "paciente_formateado", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.string "id_paciente"
+    t.string "codigo_paciente"
+    t.string "nombre"
+    t.string "ap_paterno"
+    t.string "ap_materno"
+    t.string "rut"
+    t.string "fecha_consentimiento"
+    t.string "consentimiento"
+    t.string "fecha_nacimiento"
+    t.string "edad"
+    t.string "domicilio"
+    t.string "comuna"
+  end
+
   create_table "paciente_temporal", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+    t.string "id_paciente"
+    t.string "codigo_paciente"
+    t.string "nombre"
+    t.string "ap_paterno"
+    t.string "ap_materno"
+    t.string "nombre_paciente_completo"
+    t.string "fecha_ingreso"
+    t.string "rut"
+    t.string "fecha_consentimiento"
+  end
+
+  create_table "paciente_temporal_antigua", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "paciente_id"
     t.string "codigo_paciente"
     t.string "nombres"
@@ -288,6 +320,7 @@ ActiveRecord::Schema.define(version: 2019_09_17_173241) do
     t.bigint "comuna_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "id_paciente"
     t.index ["comuna_id"], name: "index_pacientes_on_comuna_id"
   end
 
@@ -314,7 +347,7 @@ ActiveRecord::Schema.define(version: 2019_09_17_173241) do
     t.index ["qf_soporte_id"], name: "index_programas_on_qf_soporte_id"
   end
 
-  create_table "recomendacion_temporal", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "recomendacion_temporal", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "id_recomendacion"
     t.string "hemograma"
     t.string "receta"
@@ -342,14 +375,27 @@ ActiveRecord::Schema.define(version: 2019_09_17_173241) do
     t.string "medico_tratante"
     t.string "cadena"
     t.string "QF"
+    t.string "detalle_alarma"
     t.string "comentario"
-    t.string "valor1"
-    t.string "valor2"
-    t.string "valor3"
-    t.string "valor4"
-    t.string "valor5"
-    t.string "valor6"
+    t.string "presentacion"
+    t.string "manana"
+    t.string "tarde"
+    t.string "noche"
+    t.string "dias_tratamiento"
+    t.string "cantidad"
     t.string "ejecutivo"
+    t.string "presentacion2"
+    t.string "manana2"
+    t.string "tarde2"
+    t.string "noche2"
+    t.string "dias_tratamiento2"
+    t.string "cantidad2"
+    t.integer "qf_soporte_id"
+    t.integer "ejecutivo_id"
+    t.integer "medico_id"
+    t.integer "farmacia_id"
+    t.integer "prestador_id"
+    t.integer "paciente_id"
   end
 
   create_table "recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -373,6 +419,7 @@ ActiveRecord::Schema.define(version: 2019_09_17_173241) do
     t.datetime "updated_at", null: false
     t.bigint "alarma_id"
     t.integer "resolucion_qf"
+    t.text "comentarios"
     t.index ["alarma_id"], name: "index_recomendaciones_on_alarma_id"
     t.index ["caso_id"], name: "index_recomendaciones_on_caso_id"
     t.index ["farmacia_id"], name: "index_recomendaciones_on_farmacia_id"
@@ -389,7 +436,7 @@ ActiveRecord::Schema.define(version: 2019_09_17_173241) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "tipo_controles", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "tipo_controles", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "nombre"
     t.integer "dias"
     t.datetime "created_at", null: false
