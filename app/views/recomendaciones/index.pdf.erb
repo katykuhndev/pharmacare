@@ -24,9 +24,9 @@
         <td><%= recomendacion.id_recomendacion %></td>
         <td><%= recomendacion.created_at ? recomendacion.created_at.strftime("%Y %m %d") : '' %></td>
         <td><%= recomendacion.caso ? recomendacion.caso.codigo : '' %></td>
-        <td><%= recomendacion.medicion_recomendaciones ? recomendacion.medicion_recomendaciones.where('medicion_id = ?',2).first.valor : '' %></td>
-        <td><%= recomendacion.medicion_recomendaciones ? recomendacion.medicion_recomendaciones.where('medicion_id = ?',1).first.valor : ''%></td>
-        <td><%= recomendacion.alarma.nombre %></td>
+        <td><%= recomendacion.medicion_recomendaciones ? (recomendacion.medicion_recomendaciones.where('medicion_id = ?',2).first ? recomendacion.medicion_recomendaciones.where('medicion_id = ?',2).first.valor : '') : '' %></td>
+        <<td><%= recomendacion.medicion_recomendaciones ? (recomendacion.medicion_recomendaciones.where('medicion_id = ?',1).first ? recomendacion.medicion_recomendaciones.where('medicion_id = ?',1).first.valor : '') : '' %></td>
+        <td><%= recomendacion.alarma ? recomendacion.alarma.nombre : '' %></td>
         <td><%= recomendacion.resolucion_qf %></td>
       </tr>
     <% end %>

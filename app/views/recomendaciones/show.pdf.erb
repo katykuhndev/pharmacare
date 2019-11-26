@@ -1,6 +1,7 @@
-
-<div style=" margin-left: 550px; "><%= (localize(Date.today, :format => "%A, %e de %B de %Y")).capitalize %></div>
-<br><br>
+<div ><%= wicked_pdf_image_tag('encabezado_carta.png') %></div>
+<br>
+<div style=" margin-left: 500px; "><%= (localize(Date.today, :format => "%A, %e de %B de %Y")).capitalize %></div>
+<br>
 <h3 align="center">RECOMENDACIÓN LODUX <%= @titulo %> <%= @iniciales_paciente %> <%=@recomendacion.id_recomendacion%> </h3>
 
 Estimado (a) <br>
@@ -48,7 +49,7 @@ Por lo tanto, <%= @accion=='RECHAZAR' ? 'NO ' : ''%>se autoriza el despacho del 
   Observaciones: <%=@recomendacion.observaciones%>.<br><br>
 <% end %>
 
-<p style="text-align:justify;"><%= @recomendacion.con_alarma ? @alarma.accion : "Siga cuidadosamente las indicaciones de su médico. #{tratamiento_completo} Total días de tratamiento : #{total_dias_tratamiento}  días." %></p>
+<p style="text-align:justify;"><%= @recomendacion.con_alarma ? @alarma.accion : "IMPORTANTE : Siga cuidadosamente las indicaciones de su médico. #{tratamiento_completo} Total días de tratamiento : #{total_dias_tratamiento}  días." %></p>
 
 <div style="position: relative; top:200px;">
 	Saludos cordiales, <br><br>

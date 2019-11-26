@@ -162,7 +162,7 @@ class RecomendacionesController < ApplicationController
                  :disposition => 'attachment',
                  :page_size => 'A4',
                  :encoding => 'UTF-8',
-                 :margin => {:top => 20, :left => 20, :right => 20, :bottom => 10}      
+                 :margin => {:top => 10, :left => 20, :right => 20, :bottom => 10}      
       end
     end
   end

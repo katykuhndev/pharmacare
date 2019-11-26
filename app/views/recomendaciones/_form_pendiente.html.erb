@@ -95,25 +95,25 @@
         </div>  
         <div class="form-group">
           <%= examen_form.label :leucocitos, class: "col-sm-2 control-label" %>
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <%= examen_form.number_field :leucocitos, class: "form-control", step: 0.1 , value:@leucocitos, disabled: @recomendacion.cerrada? %>
           </div>
         </div>
         <div class="form-group">
           <%= examen_form.label :segmentados, 'Segmentados %', class: "col-sm-2 control-label" %>
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <%= examen_form.number_field :segmentados, class: "form-control", step: 0.01 , value:@segmentados, disabled: @recomendacion.cerrada? %>
           </div>
         </div>
         <div class="form-group">
           <%= examen_form.label :baciliformes, 'Baciliformes %', class: "col-sm-2 control-label" %>
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <%= examen_form.number_field :baciliformes, class: "form-control", step: 0.01 , value:@baciliformes, disabled: @recomendacion.cerrada? %>
           </div>
         </div>
         <div class="form-group">
           <%= examen_form.label :ran, class: "col-sm-2 control-label" %>
-          <div class="col-sm-2">
+          <div class="col-sm-3">
             <%= examen_form.number_field :ran, class: "form-control", step: 0.1 , value:@ran, disabled: @recomendacion.cerrada? %>
           </div>
         </div>        
@@ -181,31 +181,31 @@
         <div class="form-group w-75">
           <div class="form-row">
             <div class="col" data-show-for="1">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <%= tratamiento_form.label :dia, 'Mañana' %>
                   <%= tratamiento_form.number_field :dia, class: "form-control", step: 0.01 %>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <%= tratamiento_form.label :tarde %>
                   <%= tratamiento_form.number_field :tarde, class: "form-control", step: 0.01 %>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <%= tratamiento_form.label :noche %>
                   <%= tratamiento_form.number_field :noche, class: "form-control", step: 0.01 %>
                 </div>
             </div>
             <div class="col" data-show-for="2">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <%= tratamiento_form.label :am %>
                   <%= tratamiento_form.number_field :am, class: "form-control", step: 0.01 %>
                 </div>
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <%= tratamiento_form.label :pm %>
                   <%= tratamiento_form.number_field :pm, class: "form-control", step: 0.01 %>
                 </div>
             </div>
             <div class="col" data-show-for="3">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                   <%= tratamiento_form.label :dia_entero %>
                   <%= tratamiento_form.number_field :dia_entero, class: "form-control", step: 0.01 %>
                 </div>
@@ -213,7 +213,7 @@
           </div>
         </div>
         <%end%>
-        <div class="col-sm-2">
+        <div class="col-sm-3">
           <%= tratamiento_form.label :cantidad, 'Total Comprimidos' %>
           <%= tratamiento_form.number_field :cantidad, class: "form-control", disabled: @recomendacion.cerrada?%>
         </div>
