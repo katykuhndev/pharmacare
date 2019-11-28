@@ -2,17 +2,17 @@
 <br>
 <div style=" margin-left: 500px; "><%= (localize(Date.today, :format => "%A, %e de %B de %Y")).capitalize %></div>
 <br>
-<h3 align="center">RECOMENDACIÓN LODUX <%= @titulo %> <%= @iniciales_paciente %> <%=@recomendacion.id_recomendacion%> </h3>
+<h5 style="text-align: center; font-weight: bold;">RECOMENDACIÓN LODUX <%= @titulo %> <%= @iniciales_paciente %> <%=@recomendacion.id_recomendacion%> </h5>
 
 Estimado (a) <br>
 Químico Farmacéutico <br>
 
 <p>Gracias por contactar al soporte de farmacovigilancia. A continuación se presenta un resumen de los datos utilizados para autorizar o no el despacho del medicamento Lodux®.</p>
 
-<h3>Nombre Paciente: <%= @datos_paciente %><br>
-Rut : <%= @rut_paciente %></h3>
+<h5 style="font-weight: bold;">Nombre Paciente: <%= @datos_paciente %><br>
+Rut : <%= @rut_paciente %></h5>
 
-<h3>Hemograma (status) :  <%= @alarma ? @alarma.nombre : 'Sin Alarma' %> </h3> 
+<h5 style="font-weight: bold;">Hemograma (status) :  <%= @alarma ? @alarma.nombre : 'Sin Alarma' %> </h5> 
 <dl class="dl-horizontal">
 	<dt><b>R.A.N: <%= @ran %> mm3</b> </dt>
 	<dt><b>Fecha Hemograma : <%= @fecha_examen%> </b> </dt>
