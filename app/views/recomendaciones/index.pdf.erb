@@ -1,36 +1,18 @@
-<h2>Solicitudes de Recomendacion</h2>
-<table>
-	<tr><td>Servicio : </td><td>Acompañamiento pacientes y farmacovigilancia.</td></tr>
-	<tr><td>Reporte : </td><td>Pacientes Lodux</td></tr>
-	<tr><td>Intervalo de Reporte : </td><td>Pacientes Lodux</td></tr>
-</table>
-<div >
-  <table>
-  <thead >
-    <tr>
-      <th>N rec</th>
-      <th>Fecha Rec</th>
-      <th>Codigo</th>
-      <th>Leucocitos</th>    
-      <th>R.A.N.</th>
-      <th>Alarmas</th>
-      <th>A/R</th>
-    </tr>
-  </thead>
 
+<table class="informe">
   <tbody>
-    <% @recomendaciones.each do |recomendacion| %>
+    <% @recomendaciones_informe.each do |recomendacion| %>
       <tr>
         <td><%= recomendacion.id_recomendacion %></td>
         <td><%= recomendacion.created_at ? recomendacion.created_at.strftime("%Y %m %d") : '' %></td>
         <td><%= recomendacion.caso ? recomendacion.caso.codigo : '' %></td>
         <td><%= recomendacion.medicion_recomendaciones ? (recomendacion.medicion_recomendaciones.where('medicion_id = ?',2).first ? recomendacion.medicion_recomendaciones.where('medicion_id = ?',2).first.valor : '') : '' %></td>
-        <<td><%= recomendacion.medicion_recomendaciones ? (recomendacion.medicion_recomendaciones.where('medicion_id = ?',1).first ? recomendacion.medicion_recomendaciones.where('medicion_id = ?',1).first.valor : '') : '' %></td>
+        <td><%= recomendacion.medicion_recomendaciones ? (recomendacion.medicion_recomendaciones.where('medicion_id = ?',1).first ? recomendacion.medicion_recomendaciones.where('medicion_id = ?',1).first.valor : '') : '' %></td>
         <td><%= recomendacion.alarma ? recomendacion.alarma.nombre : '' %></td>
         <td><%= recomendacion.resolucion_qf %></td>
       </tr>
     <% end %>
   </tbody>
 </table>
-</div>
+
 

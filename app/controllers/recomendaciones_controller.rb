@@ -12,7 +12,13 @@ class RecomendacionesController < ApplicationController
   def index
     @query = Recomendacion.ransack(params[:q])
     @recomendaciones = @query.result.includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo).order('created_at desc').page(params[:page])
-    @recomendaciones_informe = @query.result.includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo)
+    @recomendaciones_informe = @query.result.includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo).order('created_at desc')
+    @pacientes = []
+    for rec in @recomendaciones_informe
+      @pacientes<<rec.paciente_id
+    end  
+    @pacientes = @pacientes.uniq
+
     respond_to do |format|
       format.html
       format.pdf do
@@ -22,7 +28,10 @@ class RecomendacionesController < ApplicationController
                  :disposition => 'attachment',
                  :page_size => 'A4',
                  :encoding => 'UTF-8',
-                 :margin => {:top => 20, :left => 20, :right => 20, :bottom => 10}
+                 :margin => {:top => 70, :left => 20, :right => 20, :bottom => 10},
+                 :header => {:html => { :template => 'recomendaciones/cabecera.pdf.erb'},
+                  :margin => { :top => 10, :bottom => 10 }, # margin on header
+                 }
       end
     end
   end
