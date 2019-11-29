@@ -17,6 +17,10 @@ class RecomendacionesController < ApplicationController
     for rec in @recomendaciones_informe
       @pacientes<<rec.paciente_id
     end  
+    if params[:q]
+     @fecha_desde = params[:q][:fecha_hora_ingreso_gteq]
+     @fecha_hasta = params[:q][:fecha_hora_ingreso_lteq]
+    end 
     @pacientes = @pacientes.uniq
 
     respond_to do |format|

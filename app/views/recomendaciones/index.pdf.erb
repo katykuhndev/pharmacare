@@ -4,7 +4,7 @@
     <% @recomendaciones_informe.each do |recomendacion| %>
       <tr>
         <td><%= recomendacion.id_recomendacion %></td>
-        <td><%= recomendacion.created_at ? recomendacion.created_at.strftime("%Y %m %d") : '' %></td>
+        <td><%= recomendacion.fecha_hora_ingreso ? recomendacion.fecha_hora_ingreso.strftime("%Y %m %d") : '' %></td>
         <td><%= recomendacion.caso ? recomendacion.caso.codigo : '' %></td>
         <td><%= recomendacion.medicion_recomendaciones ? (recomendacion.medicion_recomendaciones.where('medicion_id = ?',2).first ? recomendacion.medicion_recomendaciones.where('medicion_id = ?',2).first.valor : '') : '' %></td>
         <td><%= recomendacion.medicion_recomendaciones ? (recomendacion.medicion_recomendaciones.where('medicion_id = ?',1).first ? recomendacion.medicion_recomendaciones.where('medicion_id = ?',1).first.valor : '') : '' %></td>

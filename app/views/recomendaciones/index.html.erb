@@ -8,15 +8,15 @@
       <%= f.label :id_recomendacion %>
       <%= f.text_field :id_recomendacion_cont, class: 'form-control' %>
       <br>
-      <%= f.label :created_at_gteq, 'Desde' %>
-      <%= f.text_field :created_at_gteq, class: "datepicker" %>
+      <%= f.label :fecha_hora_ingreso_gteq, 'Desde' %>
+      <%= f.text_field :fecha_hora_ingreso_gteq, class: "datepicker", value:Time.now.beginning_of_month %>
     </div>
     <div class="col">
       <%= f.label :estado %>
       <%= f.text_field :estado_cont, class: 'form-control' %>
       <br>
-      <%= f.label :created_at_lteq, 'Hasta' %>
-      <%= f.text_field :created_at_lteq, class: "datepicker" %>
+      <%= f.label :fecha_hora_ingreso_lteq, 'Hasta' %>
+      <%= f.text_field :fecha_hora_ingreso_lteq, class: "datepicker", value:Time.now %>
     </div>
     <div class="col">
       <%= f.label :rut %>
