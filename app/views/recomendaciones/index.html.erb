@@ -9,14 +9,14 @@
       <%= f.text_field :id_recomendacion_cont, class: 'form-control' %>
       <br>
       <%= f.label :fecha_hora_ingreso_gteq, 'Desde' %>
-      <%= f.text_field :fecha_hora_ingreso_gteq, class: "datepicker", value:Time.now.beginning_of_month %>
+      <%= f.text_field :fecha_hora_ingreso_gteq, class: "datepicker", value: @fecha_desde %>
     </div>
     <div class="col">
       <%= f.label :estado %>
       <%= f.text_field :estado_cont, class: 'form-control' %>
       <br>
       <%= f.label :fecha_hora_ingreso_lteq, 'Hasta' %>
-      <%= f.text_field :fecha_hora_ingreso_lteq, class: "datepicker", value:Time.now %>
+      <%= f.text_field :fecha_hora_ingreso_lteq, class: "datepicker", value: @fecha_hasta %>
     </div>
     <div class="col">
       <%= f.label :rut %>
