@@ -16,6 +16,8 @@ Rails.application.configure do
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
+  config.action_controller.forgery_protection_origin_check = false
+ 
  # Zona horaraia local
 
   config.time_zone = 'America/Santiago'

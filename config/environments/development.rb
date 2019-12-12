@@ -9,7 +9,7 @@ Rails.application.configure do
   # Do not eager load code on boot.
   config.eager_load = false
 
-  WillPaginate.per_page = 4
+  WillPaginate.per_page = 10
 
   # Show full error reports.
   config.consider_all_requests_local = true
@@ -28,6 +28,8 @@ Rails.application.configure do
 
     config.cache_store = :null_store
   end
+
+  config.action_controller.forgery_protection_origin_check = false
 
   # Store uploaded files on the local file system (see config/storage.yml for options)
   config.active_storage.service = :local
