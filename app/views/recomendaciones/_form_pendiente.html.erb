@@ -213,9 +213,10 @@
           </div>
         </div>
         <%end%>
-        <div class="col-sm-3">
+        <div class="col-sm-2">
           <%= tratamiento_form.label :cantidad, 'Total Comprimidos' %>
           <%= tratamiento_form.number_field :cantidad, class: "form-control", disabled: @recomendacion.cerrada?%>
+          <input type="button" name="clickbtn" id="clickbtn" value="Calcula Comprimidos" >
         </div>
       </div>    
     <% end %>    

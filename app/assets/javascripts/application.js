@@ -36,6 +36,36 @@ $(document).ready(function(){
     });
 });
 
+
+$(document).ready(function(){
+  $("#clickbtn").click(function(){
+    var opcion = +$("#recomendacion_atributos_tratamiento_esquema_horario_id").val();
+    var dias = +$("#recomendacion_atributos_tratamiento_dias").val();
+    var total = 0;
+    if (opcion == '3' ) {
+      if (am!=0 && pm!=0 ) {
+        var dia_entero = +$("#recomendacion_atributos_tratamiento_dia_entero").val();
+        var total = dias * dia_entero;
+      }  
+    } else if (opcion == '2' ){
+      var am = +$("#recomendacion_atributos_tratamiento_am").val();
+      var pm = +$("#recomendacion_atributos_tratamiento_pm").val();
+      if (am!=0 && pm!=0 ) {
+        var total = dias*( am + pm );
+      }  
+    } else if (opcion == '1' ){
+      var dia = +$("#recomendacion_atributos_tratamiento_dia").val();
+      var tarde = +$("#recomendacion_atributos_tratamiento_tarde").val();
+      var noche = +$("#recomendacion_atributos_tratamiento_noche").val();
+      if (dia!=0 && tarde!=0 && noche!=0 ) {
+        var total = dias*(dia + tarde + noche);   
+      }       
+    }
+    $("#recomendacion_atributos_tratamiento_cantidad").val(total);
+
+  });
+});
+
 $(document).ready(function(){
     $("#recomendacion_atributos_examen_baciliformes").keyup(function(){
           var leuco = +$("#recomendacion_atributos_examen_leucocitos").val();
@@ -45,6 +75,8 @@ $(document).ready(function(){
           $("#recomendacion_atributos_examen_ran").val(ran);
     });
 });
+
+/*
 
 $(document).ready(function(){
     $("#recomendacion_atributos_tratamiento_dia_entero").keyup(function(){
@@ -75,9 +107,10 @@ $(document).ready(function(){
           $("#recomendacion_atributos_tratamiento_cantidad").val(total);
     });
 });
-
+*/
 $(function() {
   function selectVisibility() {
+     $("#recomendacion_atributos_tratamiento_cantidad").val('');
     var selector = $($(this).attr('data-selects-visibility'));
     if ($(this).is('input[type="checkbox"]')) {
       if ($(this).is(':checked')) {
