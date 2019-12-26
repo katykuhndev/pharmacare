@@ -13,7 +13,7 @@ class ExamenRecomendacion < ApplicationRecord
   end
 
   def vencida?
-    return self.fecha_vencimiento ? self.fecha_vencimiento < Time.now : false
+    return self.fecha_vencimiento ? self.fecha_vencimiento >= Time.now : true
   end  
 
 end
