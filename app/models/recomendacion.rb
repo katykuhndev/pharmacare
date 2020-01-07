@@ -53,10 +53,10 @@ def id_recomendacion_valido
   if self.id_recomendacion.size != 11
     errors.add(:id_recomendacion, "Debe ser de 11 caracteres de largo")
   end
-  proximo_id_recomendacion = self.get_proximo_id_recomendacion
-  if proximo_id_recomendacion != self.id_recomendacion
-    errors.add(:id_recomendacion, "El proximo id_recomendacion debe ser #{proximo_id_recomendacion}")
-  end  
+  #proximo_id_recomendacion = self.get_proximo_id_recomendacion
+  #if proximo_id_recomendacion != self.id_recomendacion
+  #  errors.add(:id_recomendacion, "El proximo id_recomendacion debe ser #{proximo_id_recomendacion}")
+  #end  
 end
 
 def get_proximo_id_recomendacion
