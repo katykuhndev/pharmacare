@@ -10,16 +10,18 @@ class RecomendacionesController < ApplicationController
   # GET /recomendaciones
   # GET /recomendaciones.json
   def index
-    @query = Recomendacion.ransack(params[:q])
-
     @fecha_desde = Time.now.beginning_of_month.strftime("%Y-%m-%d")
     @fecha_hasta = Time.now.strftime("%Y-%m-%d")
     if params[:q] && params[:q][:fecha_hora_ingreso_gteq]!='' && params[:q][:fecha_hora_ingreso_lteq]!=''
       @fecha_desde = params[:q][:fecha_hora_ingreso_gteq]
       @fecha_hasta = params[:q][:fecha_hora_ingreso_lteq]
+      params[:q][:fecha_hora_ingreso_gteq] = "#{@fecha_desde} 00:00:00"
+      params[:q][:fecha_hora_ingreso_lteq] = "#{@fecha_hasta} 23:59:59"
+      @query = Recomendacion.ransack(params[:q])
       @recomendaciones_informe = @query.result.includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo).order('created_at desc')
     else
-      @recomendaciones_informe = @query.result.where(" fecha_hora_ingreso >= '#{@fecha_desde}' and fecha_hora_ingreso <= '#{@fecha_hasta}' ").includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo).order('created_at desc')
+      @query = Recomendacion.ransack(params[:q])
+      @recomendaciones_informe = @query.result.where(" fecha_hora_ingreso >= '#{@fecha_desde} 00:00:00' and fecha_hora_ingreso <= '#{@fecha_hasta} 23:59:59'").includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo).order('created_at desc')
     end 
     @recomendaciones = @recomendaciones_informe.page(params[:page])
 
