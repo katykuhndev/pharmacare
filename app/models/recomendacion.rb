@@ -53,29 +53,32 @@ def id_recomendacion_valido
   if self.id_recomendacion.size != 11
     errors.add(:id_recomendacion, "Debe ser de 11 caracteres de largo")
   end
-  #proximo_id_recomendacion = self.get_proximo_id_recomendacion
-  #if proximo_id_recomendacion != self.id_recomendacion
-  #  errors.add(:id_recomendacion, "El proximo id_recomendacion debe ser #{proximo_id_recomendacion}")
-  #end  
+  proximo_id_recomendacion = self.get_proximo_id_recomendacion
+  if proximo_id_recomendacion != self.id_recomendacion
+    errors.add(:id_recomendacion, "El proximo id_recomendacion debe ser #{proximo_id_recomendacion}")
+  end  
 end
 
 def get_proximo_id_recomendacion
   ultima_id_recomendacion = self.get_ultima_solicitud ? self.get_ultima_solicitud.id_recomendacion : nil
   fecha_hoy = Date.today.strftime("%d%m%Y")
-  proximo_numero_string = 1.to_s.rjust(3, "0")
-  proximo_id_recomendacion = proximo_numero_string + fecha_hoy
-  ultima_fecha = ultima_id_recomendacion ? ultima_id_recomendacion[3..11] : nil
+  ultima_fecha = ultima_id_recomendacion ? ultima_id_recomendacion[3..10] : nil
   if ultima_fecha == fecha_hoy
    # ya hubo casos antes en el mismo dia
     proximo_numero = ultima_id_recomendacion[0..2].sub!(/^0*/, '').to_i + 1
     proximo_numero_string = proximo_numero.to_s.rjust(3, "0")
     proximo_id_recomendacion = proximo_numero_string + fecha_hoy
+  else
+    proximo_numero_string = 1.to_s.rjust(3, "0")
+    proximo_id_recomendacion = proximo_numero_string + fecha_hoy 
   end  
   return proximo_id_recomendacion
 end
 
   def get_ultima_solicitud
-    recomendacion = Recomendacion.order("id").last
+    fecha_hora_ingreso = Recomendacion.order("fecha_hora_ingreso").last.fecha_hora_ingreso
+    fecha = fecha_hora_ingreso.strftime("%Y-%m-%d")  
+    recomendacion = Recomendacion.where("substring(fecha_hora_ingreso,1,10)='#{fecha}'").order('id_recomendacion').last
   end
 
   def set_default_resultado
