@@ -42,9 +42,10 @@ validate :id_recomendacion_valido, on: :create
   after_initialize :set_default_con_alarma, :if => :new_record?
   after_initialize :set_default_resultado, :if => :new_record?
   after_initialize :set_default_resolucion_qf, :if => :new_record?
+  after_initialize :set_default_alarma_id, :if => :new_record?
 
-scope :historicas, -> (recomendacion){ left_outer_joins(:documento_recomendaciones).left_outer_joins(:examen_recomendaciones)
-  .select('recomendaciones.id, recomendaciones.resultado, recomendaciones.id_recomendacion, recomendaciones.fecha_hora_ingreso, documento_recomendaciones.id as id_receta, examen_recomendaciones.id as id_examen')
+scope :historicas, -> (recomendacion){ left_outer_joins(:documento_recomendaciones).left_outer_joins(:examen_recomendaciones).left_outer_joins(:medicion_recomendaciones)
+  .select('recomendaciones.id, recomendaciones.resultado, recomendaciones.id_recomendacion, recomendaciones.fecha_hora_ingreso, medicion_recomendaciones.valor, documento_recomendaciones.id as id_receta, examen_recomendaciones.id as id_examen')
   .where("recomendaciones.paciente_id = ? ", recomendacion.paciente_id )
   .order("id")}
 
@@ -95,6 +96,10 @@ end
 
   def set_default_con_alarma
     self.con_alarma = 0
+  end
+
+  def set_default_alarma_id
+    self.alarma_id = 4
   end
 
   def set_default_fecha_hora_ingreso

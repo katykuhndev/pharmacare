@@ -318,7 +318,7 @@ class RecomendacionesController < ApplicationController
     @recomendacion.ejecutivo_id = current_user.id
     respond_to do |format|
       if @recomendacion.save
-        format.html { redirect_to edit_recomendacion_path(@recomendacion), notice: 'La solicitud se creo exitosamente' }
+        format.html { redirect_to edit_recomendacion_path(@recomendacion), notice: 'La solicitud se creó exitosamente' }
         format.json { render :show, status: :ok, location: @recomendacion }
       else
         format.html { render :new }
@@ -460,7 +460,7 @@ class RecomendacionesController < ApplicationController
       if @recomendacion.update(recomendacion_params)
          @recomendacion.resolucion_recomendacion
          
-         format.html { redirect_to @recomendacion, notice: 'Recomendacion se actualizo correctamente.' }
+         format.html { redirect_to @recomendacion, notice: 'Recomendacion se actualizó correctamente.' }
          format.json { render :show, status: :ok, location: @recomendacion }
       else
         format.html { render :edit }

@@ -5,7 +5,7 @@
   <% else %>    
   <%= link_to 'Editar', edit_recomendacion_path(@recomendacion), class: 'btn btn-default bg-secondary text-white' %>
   <% end %>
-  <h1>Recomendacion <%=@recomendacion.id_recomendacion%> Programa <%= @recomendacion.programa.nombre %> </h1>
+  <h1>Recomendación <%=@recomendacion.id_recomendacion%> Programa <%= @recomendacion.programa.nombre %> </h1>
 </div>
 
 <dl class="dl-horizontal">
@@ -40,7 +40,7 @@
     <div class="menu" style="display: none;">
      <%= render 'list_historial' %>
     </div>
-  <h4>Ingreso Via: <%= @recomendacion.via_ingreso %> Hora: <%= @recomendacion.fecha_hora_ingreso.strftime("%H:%M de %m/%d/%Y") %></h4>
+  <h4>Ingreso Vía: <%= @recomendacion.via_ingreso %> Hora: <%= @recomendacion.fecha_hora_ingreso.strftime("%H:%M de %m/%d/%Y") %></h4>
   
   <%= link_to  recomendacion_path(@recomendacion, :format => :pdf), class: 'btn btn-default bg-secondary text-white' do %>
     <span class="glyphicon glyphicon-plus"></span>
@@ -93,7 +93,7 @@
         <%end%>
 
       </dt>
-      <dt>Medico: <%= @datos_medico %> </dt>
+      <dt>Médico: <%= @datos_medico %> </dt>
       <dt>Prestador: <%= @datos_prestador %> </dt>
       <dt>Farmacia: <%= @datos_farmacia %> </dt>
     </div>

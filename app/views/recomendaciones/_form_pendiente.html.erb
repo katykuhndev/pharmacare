@@ -112,7 +112,7 @@
           </div>
         </div>
         <div class="form-group">
-          <%= examen_form.label :ran, class: "col-sm-2 control-label" %>
+          <%= examen_form.label :ran, 'R.A.N',  class: "col-sm-2 control-label" %>
           <div class="col-sm-3">
             <%= examen_form.number_field :ran, class: "form-control", step: 0.1 , value:@ran, disabled: @recomendacion.cerrada? %>
           </div>
@@ -151,7 +151,7 @@
         </div>
       </div> 
       <div class="form-group">
-        <%= form.label :medico, 'Medico Solicitante (Nombre1 apellido1 apellido2)',class: "col-sm-6 control-label" %>
+        <%= form.label :medico, 'Médico Solicitante (Nombre1 apellido1 apellido2)',class: "col-sm-6 control-label" %>
         <div class="col-sm-4">
           <%= form.text_field :medico_nombre, data: { autocomplete_source: Medico.select("concat(coalesce(nombres,''),' ', coalesce(primer_apellido,'')) as nombre_apellido, nombres").order(:nombres).map(&:nombre_apellido)}, class: "form-control", disabled: @recomendacion.cerrada? %>
         </div>
@@ -163,11 +163,11 @@
       <%= form.fields :atributos_tratamiento do |tratamiento_form| %>  
       <div class="form-group">
         <div class="col-sm-2">
-          <%= tratamiento_form.label :medicamento_programa_id, 'Presentacion' %>
-          <%= tratamiento_form.collection_select(:medicamento_programa_id, @presentaciones.order('nombre_comercial'), :id, :nombre_comercial, {include_blank: 'Seleccione una presentacion'}) %>
+          <%= tratamiento_form.label :medicamento_programa_id, 'Presentación' %>
+          <%= tratamiento_form.collection_select(:medicamento_programa_id, @presentaciones.order('nombre_comercial'), :id, :nombre_comercial, {include_blank: 'Seleccione una presentación'}) %>
         </div>
         <div class="col-sm-2">
-          <%= tratamiento_form.label :dias, 'Duracion (Dias)' %>
+          <%= tratamiento_form.label :dias, 'Duración (Días)' %>
           <%= tratamiento_form.number_field :dias, class: "form-control" , disabled: @recomendacion.cerrada? %>
         </div>
         <br>

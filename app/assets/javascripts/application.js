@@ -43,23 +43,17 @@ $(document).ready(function(){
     var dias = +$("#recomendacion_atributos_tratamiento_dias").val();
     var total = 0;
     if (opcion == '3' ) {
-      if (am!=0 && pm!=0 ) {
         var dia_entero = +$("#recomendacion_atributos_tratamiento_dia_entero").val();
         var total = dias * dia_entero;
-      }  
     } else if (opcion == '2' ){
-      var am = +$("#recomendacion_atributos_tratamiento_am").val();
-      var pm = +$("#recomendacion_atributos_tratamiento_pm").val();
-      if (am!=0 && pm!=0 ) {
+        var am = +$("#recomendacion_atributos_tratamiento_am").val();
+        var pm = +$("#recomendacion_atributos_tratamiento_pm").val();
         var total = dias*( am + pm );
-      }  
     } else if (opcion == '1' ){
       var dia = +$("#recomendacion_atributos_tratamiento_dia").val();
       var tarde = +$("#recomendacion_atributos_tratamiento_tarde").val();
       var noche = +$("#recomendacion_atributos_tratamiento_noche").val();
-      if (dia!=0 && tarde!=0 && noche!=0 ) {
-        var total = dias*(dia + tarde + noche);   
-      }       
+      var total = dias*(dia + tarde + noche);       
     }
     $("#recomendacion_atributos_tratamiento_cantidad").val(total);
 
