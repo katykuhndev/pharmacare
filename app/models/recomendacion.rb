@@ -46,7 +46,7 @@ validate :id_recomendacion_valido, on: :create
 
 scope :historicas, -> (recomendacion){ left_outer_joins(:documento_recomendaciones).left_outer_joins(:examen_recomendaciones).left_outer_joins(:medicion_recomendaciones)
   .select('recomendaciones.id, recomendaciones.resultado, recomendaciones.id_recomendacion, recomendaciones.fecha_hora_ingreso, medicion_recomendaciones.valor, documento_recomendaciones.id as id_receta, examen_recomendaciones.id as id_examen')
-  .where("recomendaciones.paciente_id = ? ", recomendacion.paciente_id )
+  .where("recomendaciones.paciente_id = ? and medicion_recomendaciones.medicion_id = ?", recomendacion.paciente_id , 1)
   .order("id")}
 
 
