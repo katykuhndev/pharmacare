@@ -13,7 +13,17 @@ class DocumentoRecomendacion < ApplicationRecord
   end
 
   def vencida?
-    return self.fecha_vencimiento ? self.fecha_vencimiento >= Time.now : true
-  end  
+    dias_vencimiento= self.documento_programa.dias_vencimiento
+    if self.fecha_vencimiento
+      diferencia_dias = (self.fecha_vencimiento.to_date - self.fecha.to_date).to_i + 1 
+      if self.recomendacion.cerrada?
+        return diferencia_dias > dias_vencimiento
+      else
+        return self.fecha_vencimiento < Time.now
+      end
+    else
+      return false
+    end    
+  end 
 
 end
