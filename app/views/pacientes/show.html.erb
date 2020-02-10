@@ -10,38 +10,88 @@
   <h1>Paciente</h1>
 </div>
 
-<dl class="dl-horizontal">
-  <dt>Nombres:</dt>
-  <dd><%= @paciente.nombres %></dd>
 
-  <dt>Primer apellido:</dt>
-  <dd><%= @paciente.primer_apellido %></dd>
+<div class="form-group w-100">
+  <div class="form-row">
+    <div class="col">
+      <dl class="dl-horizontal">
+        <dt>Nombres:</dt>
+        <dd><%= @paciente.nombres %></dd>
 
-  <dt>Segundo apellido:</dt>
-  <dd><%= @paciente.segundo_apellido %></dd>
+        <dt>Primer apellido:</dt>
+        <dd><%= @paciente.primer_apellido %></dd>
 
-  <dt>Rut:</dt>
-  <dd><%= @paciente.rut %></dd>
+        <dt>Segundo apellido:</dt>
+        <dd><%= @paciente.segundo_apellido %></dd>
 
-  <dt>Genero:</dt>
-  <dd><%= @paciente.genero %></dd>
+        <dt>Rut:</dt>
+        <dd><%= @paciente.rut %></dd>
 
-  <dt>Fecha nacimiento:</dt>
-  <dd><%= @paciente.fecha_nacimiento %></dd>
+        <dt>Genero:</dt>
+        <dd><%= @paciente.genero %></dd>
+      </dl>
+    </div>
+    <div class="col">
+      <dl class="dl-horizontal">
+        <dt>Fecha nacimiento:</dt>
+        <dd><%= @paciente.fecha_nacimiento %></dd>
 
-  <dt>Fono1:</dt>
-  <dd><%= @paciente.fono1 %></dd>
+        <dt>Fono1:</dt>
+        <dd><%= @paciente.fono1 %></dd>
 
-  <dt>Fono2:</dt>
-  <dd><%= @paciente.fono2 %></dd>
+        <dt>Fono2:</dt>
+        <dd><%= @paciente.fono2 %></dd>
 
-  <dt>Email:</dt>
-  <dd><%= @paciente.email %></dd>
+        <dt>Email:</dt>
+        <dd><%= @paciente.email %></dd>
 
-  <dt>Direccion:</dt>
-  <dd><%= @paciente.direccion %></dd>
+        <dt>Direccion:</dt>
+        <dd><%= @paciente.direccion %></dd>
 
-  <dt>Comuna:</dt>
-  <dd><%= @paciente.comuna ? @paciente.comuna.nombre : '' %></dd>
+        <dt>Comuna:</dt>
+        <dd><%= @paciente.comuna ? @paciente.comuna.nombre : '' %></dd>
+      </dl>
+    </div>
+  </div>
+</div>  
 
-</dl>
+<div class="page-header">
+  <%= link_to pacientes_path, class: 'btn btn-default' do %>
+    <span class="glyphicon glyphicon-list-alt"></span>
+    Volver
+  <% end %>
+  <%= link_to edit_caso_paciente_path(@paciente), class: 'btn btn-default bg-secondary text-white' do %>
+    <span class="glyphicon glyphicon-plus"></span>
+    Editar Carpeta
+  <% end %>
+</div>
+
+  <h3>Caso Paciente <%=@caso.codigo %> </h3>
+    <h4>Tipo Control : <%=@caso.tipo_control.nombre %></h4>
+  <h3>Archivos asociados </h3>  
+   <h3>Consentimiento Informado: 
+      <%if @documento_consentimiento_informado && @documento_consentimiento_informado.consentimiento_informado.attached? %>
+        <%= link_to 'ARCHIVO CI', rails_blob_url(@documento_consentimiento_informado.consentimiento_informado, disposition: "attachment") %>
+         <br>
+         Fecha CI: <%= @documento_consentimiento_informado.fecha ? @documento_consentimiento_informado.fecha.strftime("%m/%d/%Y") : '' %>
+      <%else%>
+        <div class="alerta"> NO HAY ARCHIVO </div>
+      <%end%>
+   </h3>  
+   <h3>Certificado Permanencia: 
+      <%if @documento_certificado_permanencia && @documento_certificado_permanencia.certificado_permanencia.attached? %>
+        <%= link_to 'CERTIFICADO PERMANENCIA', rails_blob_url(@documento_certificado_permanencia.certificado_permanencia, disposition: "attachment") %>
+         <br>
+         Fecha CP: <%= @documento_certificado_permanencia.fecha ? @documento_certificado_permanencia.fecha.strftime("%m/%d/%Y") : '' %>
+      <%else%>
+        <div class="alerta"> NO HAY ARCHIVO </div>
+      <%end%>
+   </h3>  
+
+
+
+<br>
+  <div id="show" class="btn btn-default bg-secondary text-white">Ver historial</div>
+    <div class="menu" style="display: none;">
+     <%= render 'list_historial' %>
+    </div>

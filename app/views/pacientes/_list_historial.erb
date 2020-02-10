@@ -1,0 +1,27 @@
+
+<% if !@recomendaciones_historicas.empty? %>
+  <div class="table-responsive">
+    <table class="table table-striped table-bordered table-hover">
+    <thead class='bg-secondary text-white' >
+      <tr>
+        <th>Id recomendación</th>
+        <th>Receta</th>
+        <th>Examen</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @recomendaciones_historicas.each do |historica| %>
+        <tr>
+          <td><%= link_to  historica.id_recomendacion, recomendacion_path(historica.id) %></td>
+          <% documento_recomendacion = DocumentoRecomendacion.find(historica.id_receta)%>
+          <td><%= link_to 'ARCHIVO RECETA', rails_blob_url(documento_recomendacion.receta, disposition: "attachment") if documento_recomendacion.receta.attached? %></td>
+          <% documento_examen = ExamenRecomendacion.find(historica.id_examen)%>
+          <td><%= link_to 'ARCHIVO EXAMEN', rails_blob_url(documento_examen.examen, disposition: "attachment") if documento_examen.examen.attached? %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  </div>
+<% end %>
+<br>

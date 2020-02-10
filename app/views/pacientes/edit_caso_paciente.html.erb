@@ -1,0 +1,65 @@
+<h2>Editar Caso <%=@caso.codigo%></h2>
+    
+    <div class="col-sm-offset-2 col-sm-4">
+      <%= link_to 'Volver', @paciente, class: 'btn btn-default bg-secondary text-white' %>
+    </div>
+    <br>
+
+<%= form_with(url: guardar_archivos_paciente_path(@paciente),  method: "patch", scope: @paciente, local: true, html: { class: "form-horizontal", role: "form" }) do |form| %>  
+  <div class="form-group">
+      <h3>Datos Caso</h3>
+      <%= form.label 'Tipo Control', class: "col-sm-4 control-label" %>
+      <div class="col-sm-4">
+        <%= form.collection_select(:tipo_control_id, TipoControl.all, :id, :name, :prompt => true, :selected =>@caso.tipo_control_id) %>
+      </div>
+      <%= form.label 'Codigo', class: "col-sm-4 control-label" %>
+      <div class="col-sm-4">
+        <%= form.text_field :codigo, class: "form-control" , value: @caso.codigo %>
+      </div>
+      <br>
+      <h3>Datos Documentos</h3>
+      <% if @documento_consentimiento_informado && @documento_consentimiento_informado.consentimiento_informado.attached? %>
+        <div class="col-sm-4">
+          <%= link_to 'ARCHIVO CI', rails_blob_url(@documento_consentimiento_informado.consentimiento_informado, disposition: "attachment") %>
+        </div>  
+      <% else %>
+        <div class="alerta">SIN CI </div> 
+      <% end %>
+      <br>
+      <h3>Agregar/Editar CI</h3>
+      <br>
+      <%= form.label :consentimiento_informado, class: "col-sm-4 control-label" %>
+      <div class="col-sm-4">
+        <%= form.file_field :consentimiento_informado, accept: 'application/pdf,image/png,image/gif,image/jpeg, image/tiff' %>
+      </div>
+      <%= form.label :fecha_consentimiento_informado,'Fecha CI', class: "col-sm-2 control-label" %>
+      <div class="col-sm-4">
+        <%= form.text_field :fecha_consentimiento_informado, class: "datepicker" %>
+      </div>
+      <br>
+
+      <% if @documento_certificado_permanencia && @documento_certificado_permanencia.certificado_permanencia.attached? %>
+        <div class="col-sm-4">
+          <%= link_to 'CERTIFICADO PERMANENCIA', rails_blob_url(@documento_certificado_permanencia.certificado_permanencia, disposition: "attachment") %>
+        </div>  
+      <% else %>
+        <div class="alerta">SIN CI </div> 
+      <% end %>
+      <br>
+      <h3>Agregar/Editar CI</h3>
+      <br>
+      <%= form.label :certificado_permanencia, class: "col-sm-4 control-label" %>
+      <div class="col-sm-4">
+        <%= form.file_field :certificado_permanencia, accept: 'application/pdf,image/png,image/gif,image/jpeg, image/tiff' %>
+      </div>
+      <%= form.label :fecha_certificado_permanencia,'Fecha CI', class: "col-sm-2 control-label" %>
+      <div class="col-sm-4">
+        <%= form.text_field :fecha_certificado_permanencia, class: "datepicker" %>
+      </div>
+      <br>
+
+      <div class="col-sm-offset-2 col-sm-4">
+        <%= form.submit 'Actualizar',  class: "btn btn-default bg-secondary text-white" %>
+      </div>  
+  </div>
+<% end %>

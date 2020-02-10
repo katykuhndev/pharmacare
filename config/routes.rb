@@ -27,7 +27,12 @@ Rails.application.routes.draw do
     resources :programas
   end
   resources :medicos
-  resources :pacientes
+  resources :pacientes do
+    member do
+      patch :guardar_archivos
+    end
+  end
+  get 'pacientes/edit_caso_paciente/:id' => 'pacientes#edit_caso_paciente', :as => 'edit_caso_paciente'
   devise_for :users
   resources :users
 
