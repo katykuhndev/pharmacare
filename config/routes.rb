@@ -33,6 +33,8 @@ Rails.application.routes.draw do
     end
   end
   get 'pacientes/edit_caso_paciente/:id' => 'pacientes#edit_caso_paciente', :as => 'edit_caso_paciente'
+  get 'informes/index', :as => 'informes'
+  patch 'informes/mostrar_listado' => 'informes#mostrar_listado', :as => 'mostrar_listado'
   devise_for :users
   resources :users
 

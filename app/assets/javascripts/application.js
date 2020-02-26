@@ -167,6 +167,15 @@ $(function() {
   });
 });
 
+$(function(){
+    $('#tipo_informe').on('change', function(){
+      tipo = $(this).val();
+      if (tipo == 'Informe Medico Adherido') {
+        $("#list_medicos").show();
+      }
+    });
+});
+
 /*$(document).ready(function(){
     $("#recomendacion_atributos_paciente_segundo_apellido").keyup(function(){
       $("#form_caso").show();

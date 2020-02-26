@@ -1,0 +1,8 @@
+
+<% if @tipo_informe == 'Informe Normal' %>
+  <%= render 'mostrar_listado_informe' %>
+<% elsif @tipo_informe == 'Informe Medicos' %>
+  <%= render 'mostrar_listado_informe_medicos' %>
+<% elsif @tipo_informe == 'Informe Medico Adherido' %>  
+  <%= render 'mostrar_listado_informe_medico_adherido' %>
+<% end %>

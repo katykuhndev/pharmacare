@@ -1,0 +1,39 @@
+<h2>Reporte</h2>
+
+<dl class="dl-horizontal">
+  <dt>Servicio : Acompañamiento pacientes y farmacovigilancia. </dt>
+  <dt>Reporte : Pacientes Lodux </dt>
+  <dt>Intervalo de reporte : Desde el <%=@fecha_desde%> al <%=@fecha_hasta%>. </dt>
+  <dt>Nº pacientes : </dt>
+  <dt>Nº recomendaciones : </dt>
+<dl>           
+
+  <div class="table-responsive">
+    <table class="table table-stri ped table-bordered table-hover">
+    <thead class='bg-secondary text-white' >
+      <tr>
+        <th>Nº rec.</th>
+        <th>Fecha rec.</th>
+        <th>Código</th>
+        <th>Leucocitos</th>
+        <th>R.A.N.</th> 
+        <th>Alarmas</th>
+        <th>A / R</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @informe.each do |data| %>
+        <tr>
+        <td><%= data[0] %></td>
+        <td><%= data[1] %></td>
+        <td><%= data[2] %></td>
+        <td><%= data[3] %></td>
+        <td><%= data[4] %></td> 
+        <td><%= data[5] %></td>
+        <td><%= data[6] %></td> 
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  </div>
