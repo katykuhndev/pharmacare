@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_17_023442) do
+ActiveRecord::Schema.define(version: 2020_03_10_021036) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", null: false
@@ -264,6 +264,14 @@ ActiveRecord::Schema.define(version: 2019_11_17_023442) do
     t.index ["comuna_id"], name: "index_medicos_on_comuna_id"
   end
 
+  create_table "medicos_rut", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+    t.string "nombres"
+    t.string "primer_apellido"
+    t.string "segundo_apellido"
+    t.string "rut"
+    t.integer "medico_id"
+  end
+
   create_table "paciente_formateado", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "id_paciente"
     t.string "codigo_paciente"
@@ -396,6 +404,17 @@ ActiveRecord::Schema.define(version: 2019_11_17_023442) do
     t.integer "farmacia_id"
     t.integer "prestador_id"
     t.integer "paciente_id"
+    t.integer "caso_id"
+    t.integer "estado"
+    t.integer "resultado"
+    t.integer "con_alarma"
+    t.integer "resolucion_qf"
+    t.datetime "fecha_hora_ingreso"
+    t.datetime "fecha_hora_respuesta"
+    t.integer "via_ingreso"
+    t.integer "recomendacion_id"
+    t.integer "programa_id"
+    t.integer "alarma_id"
   end
 
   create_table "recomendaciones", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
@@ -420,6 +439,7 @@ ActiveRecord::Schema.define(version: 2019_11_17_023442) do
     t.bigint "alarma_id"
     t.integer "resolucion_qf"
     t.text "comentarios"
+    t.text "motivo_rechazo"
     t.index ["alarma_id"], name: "index_recomendaciones_on_alarma_id"
     t.index ["caso_id"], name: "index_recomendaciones_on_caso_id"
     t.index ["farmacia_id"], name: "index_recomendaciones_on_farmacia_id"

@@ -18,10 +18,10 @@ class RecomendacionesController < ApplicationController
       params[:q][:fecha_hora_ingreso_gteq] = "#{@fecha_desde} 00:00:00"
       params[:q][:fecha_hora_ingreso_lteq] = "#{@fecha_hasta} 23:59:59"
       @query = Recomendacion.ransack(params[:q])
-      @recomendaciones_informe = @query.result.includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo).order('created_at desc')
+      @recomendaciones_informe = @query.result.includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo).order('fecha_hora_ingreso desc')
     else
       @query = Recomendacion.ransack(params[:q])
-      @recomendaciones_informe = @query.result.where(" fecha_hora_ingreso >= '#{@fecha_desde} 00:00:00' and fecha_hora_ingreso <= '#{@fecha_hasta} 23:59:59'").includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo).order('created_at desc')
+      @recomendaciones_informe = @query.result.where(" fecha_hora_ingreso >= '#{@fecha_desde} 00:00:00' and fecha_hora_ingreso <= '#{@fecha_hasta} 23:59:59'").includes(:programa,:paciente,:medico,:prestador,:farmacia,:qf_soporte,:ejecutivo).order('fecha_hora_ingreso desc')
     end 
     @recomendaciones = @recomendaciones_informe.page(params[:page])
 
